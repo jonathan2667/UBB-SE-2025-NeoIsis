@@ -1,0 +1,48 @@
+# Ignore Windows specific system files
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Ignore build output and temporary files
+bin/
+obj/
+Debug/
+Release/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore package and dependency directories
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignore IDE and editor settings
+.vscode/
+.idea/
+*.log
+
+# Ignore compiled files and executables
+*.exe
+*.dll
+*.pdb
+*.ilk
+*.idb
+*.lib
+*.exp
+
+# Ignore environment files
+.env
+
+# Ignore generated UI assets if applicable
+*.designer.cs
+*.g.cs
+*.g.i.cs
+
+# Ignore NuGet packages
+*.nupkg
+packages/
+
+# Ignore temporary files
+~$*
