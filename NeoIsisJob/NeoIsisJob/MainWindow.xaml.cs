@@ -10,6 +10,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using NeoIsisJob.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 
@@ -23,14 +24,18 @@ namespace NeoIsisJob
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        private UsersModel userModel;
         public MainWindow()
         {
             this.InitializeComponent();
+            userModel = new UsersModel();
+            userModel.Id = 1;
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            myButton.Content = "Clicked";
+            myButton.Content = userModel.Id.ToString();
+            Console.WriteLine(userModel.Id);
         }
 
         private void myTesting_Click(object sender, RoutedEventArgs e)

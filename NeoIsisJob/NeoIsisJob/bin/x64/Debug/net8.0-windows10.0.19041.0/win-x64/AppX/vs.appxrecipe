@@ -29,25 +29,25 @@
     <AppXManifest Include="C:\Users\Rares\Documents\GitHub\UBB-SE-2025-NeoIsis\NeoIsisJob\NeoIsisJob\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2025-03-25T20:45:44.584</Modified>
+      <Modified>2025-03-25T21:08:01.837</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
     <AppxPackagedFile Include="C:\Users\Rares\Documents\GitHub\UBB-SE-2025-NeoIsis\NeoIsisJob\NeoIsisJob\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\resources.pri">
       <PackagePath>resources.pri</PackagePath>
-      <Modified>2025-03-25T20:45:44.334</Modified>
+      <Modified>2025-03-25T21:08:01.653</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Rares\Documents\GitHub\UBB-SE-2025-NeoIsis\NeoIsisJob\NeoIsisJob\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\NeoIsisJob.runtimeconfig.json">
       <PackagePath>NeoIsisJob.runtimeconfig.json</PackagePath>
-      <Modified>2025-03-25T20:45:44.137</Modified>
+      <Modified>2025-03-25T21:08:01.607</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Rares\Documents\GitHub\UBB-SE-2025-NeoIsis\NeoIsisJob\NeoIsisJob\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\NeoIsisJob.dll">
       <PackagePath>NeoIsisJob.dll</PackagePath>
-      <Modified>2025-03-25T20:45:43.887</Modified>
+      <Modified>2025-03-25T21:08:01.502</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Rares\Documents\GitHub\UBB-SE-2025-NeoIsis\NeoIsisJob\NeoIsisJob\obj\x64\Debug\net8.0-windows10.0.19041.0\win-x64\apphost.exe">
       <PackagePath>NeoIsisJob.exe</PackagePath>
-      <Modified>2025-03-25T20:45:43.937</Modified>
+      <Modified>2025-03-25T21:08:01.505</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Rares\.nuget\packages\microsoft.netcore.app.runtime.win-x64\8.0.14\runtimes\win-x64\lib\net8.0\Microsoft.CSharp.dll">
       <PackagePath>Microsoft.CSharp.dll</PackagePath>
@@ -887,7 +887,7 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Rares\Documents\GitHub\UBB-SE-2025-NeoIsis\NeoIsisJob\NeoIsisJob\bin\x64\Debug\net8.0-windows10.0.19041.0\win-x64\NeoIsisJob.deps.json">
       <PackagePath>NeoIsisJob.deps.json</PackagePath>
-      <Modified>2025-03-25T20:45:44.134</Modified>
+      <Modified>2025-03-25T21:08:01.605</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\Rares\Documents\GitHub\UBB-SE-2025-NeoIsis\NeoIsisJob\NeoIsisJob\Assets\LockScreenLogo.scale-200.png">
       <PackagePath>Assets\LockScreenLogo.scale-200.png</PackagePath>

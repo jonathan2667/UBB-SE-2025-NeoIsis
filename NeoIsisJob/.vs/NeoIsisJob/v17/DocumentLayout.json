@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|c:\\users\\rares\\documents\\github\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|c:\\users\\rares\\documents\\github\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\model\\usersmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\model\\usersmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -24,7 +28,7 @@
               "RelativeDocumentMoniker": "NeoIsisJob\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Rares\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\MainWindow.xaml.cs",
               "RelativeToolTip": "NeoIsisJob\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABwAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-25T19:20:57.106Z",
               "EditorCaption": ""
@@ -33,8 +37,21 @@
         },
         {
           "DockedWidth": 205,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UsersModel.cs",
+              "DocumentMoniker": "C:\\Users\\Rares\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Model\\UsersModel.cs",
+              "RelativeDocumentMoniker": "NeoIsisJob\\Model\\UsersModel.cs",
+              "ToolTip": "C:\\Users\\Rares\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Model\\UsersModel.cs",
+              "RelativeToolTip": "NeoIsisJob\\Model\\UsersModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-25T21:06:37.456Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
@@ -42,6 +59,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             }
           ]
         }
