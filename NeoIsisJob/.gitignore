@@ -4,7 +4,6 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # Ignore build output and temporary files
-bin/
 obj/
 Debug/
 Release/
@@ -46,3 +45,9 @@ packages/
 
 # Ignore temporary files
 ~$*
+
+# Ignore bin files
+bin/
+
+# Ignore v2 files
+*v2*
