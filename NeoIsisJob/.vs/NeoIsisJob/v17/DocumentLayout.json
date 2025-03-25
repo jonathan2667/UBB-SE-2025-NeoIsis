@@ -1,10 +1,10 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\User\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\",
+  "WorkspaceRootPath": "C:\\Users\\ANDREI\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|c:\\users\\user\\documents\\github\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|c:\\users\\andrei\\documents\\github\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\model\\testing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\model\\testing.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -19,14 +19,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "App.xaml",
-              "DocumentMoniker": "C:\\Users\\User\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\App.xaml",
-              "RelativeDocumentMoniker": "NeoIsisJob\\App.xaml",
-              "ToolTip": "C:\\Users\\User\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\App.xaml",
-              "RelativeToolTip": "NeoIsisJob\\App.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-25T18:46:40.918Z",
+              "Title": "Testing.cs",
+              "DocumentMoniker": "C:\\Users\\ANDREI\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Model\\Testing.cs",
+              "RelativeDocumentMoniker": "NeoIsisJob\\Model\\Testing.cs",
+              "ToolTip": "C:\\Users\\ANDREI\\Documents\\GitHub\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Model\\Testing.cs",
+              "RelativeToolTip": "NeoIsisJob\\Model\\Testing.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-25T19:11:52.54Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
             }
           ]
         }
