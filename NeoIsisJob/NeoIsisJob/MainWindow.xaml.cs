@@ -32,5 +32,10 @@ namespace NeoIsisJob
         {
             myButton.Content = "Clicked";
         }
+
+        private void myTesting_Click(object sender, RoutedEventArgs e)
+        {
+            testingButton.Content = "mata";
+        }
     }
 }
