@@ -51,3 +51,13 @@ bin/
 
 # Ignore v2 files
 *v2*
+
+# Ignore Visual Studio index files
+*.vsidx
+
+# Ignore database journal files
+db-shm
+db-wal
+
+# Ignore Visual Studio .vs folder
+.vs/
