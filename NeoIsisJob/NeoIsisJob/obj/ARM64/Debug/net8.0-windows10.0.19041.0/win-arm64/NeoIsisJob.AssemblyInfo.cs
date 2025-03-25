@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NeoIsisJob")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1968803208208aec634065dff14be57b8c94569d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bdab653e89aa9a8e57b92e31768c3455ac40070d")]
 [assembly: System.Reflection.AssemblyProductAttribute("NeoIsisJob")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NeoIsisJob")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

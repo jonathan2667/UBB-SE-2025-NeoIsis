@@ -1,0 +1,74 @@
+# Visual Studio and JetBrains Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build and output directories
+bin/
+obj/
+Debug/
+Release/
+TestResults/
+
+# NuGet packages
+*.nupkg
+packages/
+!packages/repositories.config
+
+# Logs and database
+*.log
+*.tlog
+*.cache
+*.pdb
+*.db
+*.db-shm
+*.db-wal
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.swo
+*.sln*
+*.csproj.user
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+
+# Publish artifacts
+publish/
+out/
+app.publish/
+
+# Rider settings
+.idea/
+*.dotCover
+*.dotSettings*
+
+# Resharper
+_ReSharper*/
+
+# Windows-specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# IIS settings
+.vscode/
+*.vspscc
+*.vssscc
+
+# Ignore Rider & VS Code Workspace
+*.code-workspace
+.vscode/
+
+# Node dependencies (if using npm for frontend)
+node_modules/
+package-lock.json
+yarn.lock
