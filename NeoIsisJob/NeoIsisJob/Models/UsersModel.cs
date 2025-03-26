@@ -8,9 +8,6 @@
 
         private UsersModel() { }
 
-        public UsersModel(int id)
-        {
-            Id = id;
-        }
+        public UsersModel(int id) { Id = id; }
     }
 }

@@ -1,46 +1,61 @@
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+using NeoIsisJob.Repos;
+using NeoIsisJob.Servs;
 using NeoIsisJob.Data;
-using NeoIsisJob.Models;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using NeoIsisJob.ViewModels;
+using System.Runtime.CompilerServices;
 
 namespace NeoIsisJob
 {
-    /// <summary>
-    /// An empty window that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainWindow : Window
     {
-        DatabaseHelper db = new DatabaseHelper();
+        private readonly DatabaseHelper _dbHelper;
+        private readonly UserViewModel _userViewModel;
+        private readonly UserService _userService;
+        private readonly UserRepo _userRepo;
 
         public MainWindow()
         {
             this.InitializeComponent();
+            _dbHelper = new DatabaseHelper();
+            // Initialize UserRepo
+            _userRepo = new UserRepo(_dbHelper);
+            // Initialize UserService
+            _userService = new UserService(_userRepo);
+            // Initialize UserViewModel
+            _userViewModel = new UserViewModel(_userService);
+            LoadUsers();
         }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
+        // Fetch users from view model and display them
+        private void LoadUsers()
         {
-            db.OpenConnection();
+            // Get all users from the view model
+            _userViewModel.RefreshUsers();
+            var users = _userViewModel.Users;
+
+            // Bind the users to the ListView
+            UsersListView.ItemsSource = users;
         }
 
-        private void myTesting_Click(object sender, RoutedEventArgs e)
+
+        private void AddUser_Click(object sender, RoutedEventArgs e)
         {
-            db.CloseConnection();
+            _userViewModel.AddUser();
+            LoadUsers();
+        }
+
+        private void GetUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(UserIdTextBox.Text, out int userId)) { _userViewModel.GetUserById(userId); }
+            LoadUsers();
+        }
+
+        private void DeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (int.TryParse(UserIdTextBox.Text, out int userId)) { _userViewModel.DeleteUser(userId); }
+            LoadUsers();
         }
     }
 }
