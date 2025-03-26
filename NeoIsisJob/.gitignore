@@ -589,4 +589,18 @@ obj/
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
+# Ignore compiled files
+bin/
+obj/
+
+# Ignore the packages folder (if it exists)
+packages/
+
+# Ignore user-specific files (IDE settings)
+.vs/
+*.user
+*.userosscache
+*.suo
+*.vsscc
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,csharp,dotnetcore

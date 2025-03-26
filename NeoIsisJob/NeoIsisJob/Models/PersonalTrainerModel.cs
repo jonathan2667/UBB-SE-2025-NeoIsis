@@ -9,26 +9,10 @@ namespace NeoIsisJob.Models
         private string _lastName;
         private DateTime _worksSince;
 
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-        public string FirstName
-        {
-            get { return _firstName; }
-            set { _firstName = value; }
-        }
-        public string LastName
-        {
-            get { return _lastName; }
-            set { _lastName = value; }
-        }
-        public DateTime WorksSince
-        {
-            get { return _worksSince; }
-            set { _worksSince = value; }
-        }
+        public int Id { get => _id; set => _id = value; }
+        public string FirstName { get => _firstName; set => _firstName = value; }
+        public string LastName { get => _lastName; set => _lastName = value; }
+        public DateTime WorksSince { get => _worksSince; set => _worksSince = value; }
 
         private PersonalTrainerModel() { }
 

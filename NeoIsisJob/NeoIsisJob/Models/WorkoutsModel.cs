@@ -1,30 +1,18 @@
 ﻿namespace NeoIsisJob.Models
 {
-    public class WorkoutModel
+    public class WorkoutsModel
     {
         private int _id;
         private string _name;
         private int _workoutTypeId;
 
-        public int Id
-        {
-            get { return _id; }
-            set { _id = value; }
-        }
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-        public int WorkoutTypeId
-        {
-            get { return _workoutTypeId; }
-            set { _workoutTypeId = value; }
-        }
+        public int Id { get => _id; set => _id = value; }
+        public string Name { get => _name; set => _name = value; }
+        public int WorkoutTypeId { get => _workoutTypeId; set => _workoutTypeId = value; }
 
-        private WorkoutModel() { }
+        private WorkoutsModel() { }
 
-        public WorkoutModel(string name, int workoutTypeId)
+        public WorkoutsModel(string name, int workoutTypeId)
         {
             Name = name;
             WorkoutTypeId = workoutTypeId;

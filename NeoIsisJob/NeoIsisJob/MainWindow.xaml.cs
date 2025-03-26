@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -10,6 +11,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using NeoIsisJob.Data;
 using NeoIsisJob.Models;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -24,7 +26,8 @@ namespace NeoIsisJob
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        ExercisesModel e = new ExercisesModel("test", "test", "test");
+        DatabaseHelper db = new DatabaseHelper();
+
         public MainWindow()
         {
             this.InitializeComponent();
@@ -32,12 +35,12 @@ namespace NeoIsisJob
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            myButton.Content = "ok";
+            db.OpenConnection();
         }
 
         private void myTesting_Click(object sender, RoutedEventArgs e)
         {
-            testingButton.Content = "mata2";
+            db.CloseConnection();
         }
     }
 }

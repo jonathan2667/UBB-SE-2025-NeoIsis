@@ -5,22 +5,10 @@
         private int _userId;
         private int _muscleGroupId;
         private int _rank;
-        
-        public int UserId
-        {
-            get { return _userId; }
-            set { _userId = value; }
-        }
-        public int MuscleGroupId
-        {
-            get { return _muscleGroupId; }
-            set { _muscleGroupId = value; }
-        }
-        public int Rank
-        {
-            get { return _rank; }
-            set { _rank = value; }
-        }
+
+        public int UserId { get => _userId; set => _userId = value; }
+        public int MuscleGroupId { get => _muscleGroupId; set => _muscleGroupId = value; }
+        public int Rank { get => _rank; set => _rank = value; }
 
         private RankingModel() { }
 
