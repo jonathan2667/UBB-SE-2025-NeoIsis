@@ -2,7 +2,12 @@
 {
     public class UserModel
     {
-        public int Id { get; private set; }
+        private int _id;
+        public int Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
 
         private UserModel() { }
 

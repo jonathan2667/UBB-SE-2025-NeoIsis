@@ -4,9 +4,25 @@ namespace NeoIsisJob.Models
 {
     public class UserWorkoutModel
     {
-        public int UserId { get; private set; }
-        public int WorkoutId { get; private set; }
-        public DateTime Date { get; private set; }
+        private int _userId;
+        private int _workoutId;
+        private DateTime _date;
+
+        public int UserId
+        {
+            get { return _userId; }
+            set { _userId = value; }
+        }
+        public int WorkoutId
+        {
+            get { return _workoutId; }
+            set { _workoutId = value; }
+        }
+        public DateTime Date
+        {
+            get { return _date; }
+            set { _date = value; }
+        }
 
         private UserWorkoutModel() { }
 

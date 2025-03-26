@@ -2,10 +2,31 @@
 {
     public class ExercisesModel
     {
-        public int Id { get; private set; }
-        public string Name { get; private set; }
-        public string Description { get; private set; }
-        public string Difficulty { get; private set; }
+        private int _id;
+        private string _name;
+        private string _description;
+        private string _difficulty;
+
+        public int Id 
+        {
+            get { return _id; } 
+            set { _id = value; } 
+        }
+        public string Name 
+        { 
+            get { return _name; }
+            set { _name = value; }
+        }
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+        public string Difficulty
+        {
+            get { return _difficulty; }
+            set { _difficulty = value; }
+        }
 
         private ExercisesModel() { }
 

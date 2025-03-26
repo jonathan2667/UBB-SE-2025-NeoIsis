@@ -4,9 +4,26 @@ namespace NeoIsisJob.Models
 {
     public class UserClassModel
     {
-        public int UserId { get; private set; }
-        public int ClassId { get; private set; }
-        public DateTime EnrollmentDate { get; private set; }
+        private int _userId;
+        private int _classId;
+        private DateTime _enrollmentDate;
+
+        public int UserId
+        {
+            get { return _userId; }
+            set { _userId = value; }
+        }
+
+        public int ClassId
+        {
+            get { return _classId; }
+            set { _classId = value; }
+        }
+        public DateTime EnrollmentDate
+        {
+            get { return _enrollmentDate; }
+            set { _enrollmentDate = value; }
+        }
 
         private UserClassModel() { }
 
