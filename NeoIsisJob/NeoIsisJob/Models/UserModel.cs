@@ -1,13 +1,13 @@
 ﻿namespace NeoIsisJob.Models
 {
-    public class UsersModel
+    public class UserModel
     {
         private int _id;
 
         public int Id { get => _id; set => _id = value; }
 
-        private UsersModel() { }
+        public UserModel() { }
 
-        public UsersModel(int id) { Id = id; }
+        public UserModel(int id) { Id = id; }
     }
 }

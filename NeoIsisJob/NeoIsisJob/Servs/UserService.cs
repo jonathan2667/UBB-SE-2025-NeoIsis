@@ -13,10 +13,10 @@ namespace NeoIsisJob.Servs
 
         public int RegisterNewUser() { return _userRepo.InsertUser(); }
 
-        public UsersModel GetUser(int id) { return _userRepo.GetUserById(id); }
+        public UserModel GetUser(int id) { return _userRepo.GetUserById(id); }
 
         public bool RemoveUser(int id) { return _userRepo.DeleteUserById(id); }
 
-        public List<UsersModel> GetAllUsers() { return _userRepo.GetAllUsers(); }
+        public List<UserModel> GetAllUsers() { return _userRepo.GetAllUsers(); }
     }
 }

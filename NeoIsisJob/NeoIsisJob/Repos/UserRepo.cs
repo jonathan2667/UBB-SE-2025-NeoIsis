@@ -16,7 +16,7 @@ namespace NeoIsisJob.Repos
 
         public UserRepo(DatabaseHelper dbHelper)  { _dbHelper = dbHelper; }
 
-        public UsersModel GetUserById(int id)
+        public UserModel GetUserById(int id)
         {
             using (SqlConnection connection = _dbHelper.GetConnection())
             {
@@ -34,11 +34,11 @@ namespace NeoIsisJob.Repos
                 // if user found return user
                 if (reader.Read())
                 {
-                    return new UsersModel(Convert.ToInt32(reader["UID"]));
+                    return new UserModel(Convert.ToInt32(reader["UID"]));
                 }
 
                 // if no user found return null
-                return null;
+                return new UserModel();
             }
         }
 
@@ -80,9 +80,9 @@ namespace NeoIsisJob.Repos
             }
         }
 
-        public List<UsersModel> GetAllUsers()
+        public List<UserModel> GetAllUsers()
         {
-            List<UsersModel> users = new List<UsersModel>();
+            List<UserModel> users = new List<UserModel>();
 
             using (SqlConnection connection = _dbHelper.GetConnection())
             {
@@ -101,7 +101,7 @@ namespace NeoIsisJob.Repos
                     // add all users to list
                     while (reader.Read())
                     {
-                        users.Add(new UsersModel(Convert.ToInt32(reader["UID"])));
+                        users.Add(new UserModel(Convert.ToInt32(reader["UID"])));
                     }
                 }
                 catch (SqlException sqlEx)
