@@ -24,6 +24,7 @@ namespace NeoIsisJob
     /// </summary>
     public sealed partial class MainWindow : Window
     {
+        ExercisesModel e = new ExercisesModel("test", "test", "test");
         public MainWindow()
         {
             this.InitializeComponent();
