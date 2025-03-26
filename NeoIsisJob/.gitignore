@@ -5,6 +5,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.vsconfig
 
 # Build and output directories
 bin/
@@ -26,6 +27,11 @@ packages/
 *.db
 *.db-shm
 *.db-wal
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+*.vsidx
 
 # Temporary files
 *.tmp
@@ -38,6 +44,7 @@ packages/
 *.sqlite3
 *.mdf
 *.ldf
+*.json
 
 # Publish artifacts
 publish/
@@ -72,3 +79,26 @@ $RECYCLE.BIN/
 node_modules/
 package-lock.json
 yarn.lock
+
+# JetBrains Rider Caches
+.idea/.idea.cache
+.idea/.idea.locks
+
+# Additional database and IDE related files
+*.suo
+*.user
+*.suo
+
+# DotNet-related files
+appsettings.Development.json
+appsettings.Production.json
+
+# Ignore .NET specific files
+*.assets.cache
+*.dll
+*.exe
+*.pdb
+*.app
+*.lib
+*.dylib
+*.so

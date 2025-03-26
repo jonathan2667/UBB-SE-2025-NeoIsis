@@ -24,18 +24,14 @@ namespace NeoIsisJob
     /// </summary>
     public sealed partial class MainWindow : Window
     {
-        private UsersModel userModel;
         public MainWindow()
         {
             this.InitializeComponent();
-            userModel = new UsersModel();
-            userModel.Id = 1;
         }
 
         private void myButton_Click(object sender, RoutedEventArgs e)
         {
-            myButton.Content = userModel.Id.ToString();
-            Console.WriteLine(userModel.Id);
+            myButton.Content = "ok";
         }
 
         private void myTesting_Click(object sender, RoutedEventArgs e)
