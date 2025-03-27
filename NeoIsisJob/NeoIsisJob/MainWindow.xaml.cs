@@ -6,64 +6,23 @@ using NeoIsisJob.Data;
 using NeoIsisJob.ViewModels;
 using System.Runtime.CompilerServices;
 using NeoIsisJob.Views;
+using Microsoft.UI.Xaml.Controls;
 
 namespace NeoIsisJob
 {
     public sealed partial class MainWindow : Window
     {
-        private readonly DatabaseHelper _dbHelper;
-        private readonly UserViewModel _userViewModel;
-        private readonly UserService _userService;
-        private readonly UserRepo _userRepo;
+        //instance for singleton
+        public static MainWindow Instance { get; private set; }
 
         public MainWindow()
         {
             this.InitializeComponent();
-            //these are the dependencies
-            _dbHelper = new DatabaseHelper();
-            // Initialize UserRepo
-            _userRepo = new UserRepo(_dbHelper);
-            // Initialize UserService
-            _userService = new UserService(_userRepo);
-            // Initialize UserViewModel
-            _userViewModel = new UserViewModel(_userService);
-            LoadUsers();
+            Instance = this;
+
+            //go directly to the main page
+            MainFrame.Navigate(typeof(MainPage));
         }
 
-        // Fetch users from view model and display them
-        private void LoadUsers()
-        {
-            // Get all users from the view model
-            _userViewModel.RefreshUsers();
-            var users = _userViewModel.Users;
-
-            // Bind the users to the ListView
-            UsersListView.ItemsSource = users;
-        }
-
-
-        private void AddUser_Click(object sender, RoutedEventArgs e)
-        {
-            _userViewModel.AddUser();
-            LoadUsers();
-        }
-
-        private void GetUser_Click(object sender, RoutedEventArgs e)
-        {
-            if (int.TryParse(UserIdTextBox.Text, out int userId)) { _userViewModel.GetUserById(userId); }
-            LoadUsers();
-        }
-
-        private void DeleteUser_Click(object sender, RoutedEventArgs e)
-        {
-            if (int.TryParse(UserIdTextBox.Text, out int userId)) { _userViewModel.DeleteUser(userId); }
-            LoadUsers();
-        }
-
-        //for navigating to the workout page
-        private void GoToWorkoutPage(object sender, RoutedEventArgs e)
-        {
-            MainFrame.Navigate(typeof(WorkoutPage));
-        }
     }
 }
