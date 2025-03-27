@@ -21,6 +21,10 @@
     <None Remove="View\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Views\CalendarPage.xaml" />
+    <None Remove="Views\ClassPage.xaml" />
+    <None Remove="Views\MainPage.xaml" />
+    <None Remove="Views\RankingPage.xaml" />
     <None Remove="Views\WorkoutPage.xaml" />
   </ItemGroup>
 
@@ -52,9 +56,32 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
   <ItemGroup>
+    <Page Update="Views\RankingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\ClassPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\CalendarPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="Views\WorkoutPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Calendar\" />
   </ItemGroup>
 
   <!--

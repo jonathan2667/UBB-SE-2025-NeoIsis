@@ -21,28 +21,36 @@ namespace NeoIsisJob.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class WorkoutPage : Page
+    public sealed partial class MainPage : Page
     {
-        public WorkoutPage()
+        public MainPage()
         {
             this.InitializeComponent();
-            Loaded += WorkoutPage_Loaded;
         }
 
-        private void GoBack_Click(object sender, RoutedEventArgs e)
+        public void GoToMainPage_Tap(object sender, RoutedEventArgs e)
         {
-            if(Frame.CanGoBack)
-                Frame.GoBack();
+            //this.Frame.Navigate(typeof(MainPage));
         }
 
-        private void WorkoutPage_Loaded(object sender, RoutedEventArgs e)
+        public void GoToWorkoutPage_Tap(object sender, RoutedEventArgs e)
         {
-            // Ensure full size inside the parent frame
-            if (Parent is FrameworkElement parentElement)
-            {
-                Width = parentElement.ActualWidth;
-                Height = parentElement.ActualHeight;
-            }
+            this.Frame.Navigate(typeof(WorkoutPage));
+        }
+
+        public void GoToCalendarPage_Tap(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(CalendarPage));
+        }
+
+        public void GoToClassPage_Tap(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(ClassPage));
+        }
+
+        public void GoToRankingPage_Tap(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(RankingPage));
         }
     }
 }
