@@ -25,5 +25,11 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <!--for navigating to workout page-->
+        <Frame x:Name="MainFrame"/>
+        <Button Content="Go to Workout Page" Click="GoToWorkoutPage" Margin="10"/>
+        
     </StackPanel>
+   
 </Window>

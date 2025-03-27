@@ -5,6 +5,7 @@ using NeoIsisJob.Servs;
 using NeoIsisJob.Data;
 using NeoIsisJob.ViewModels;
 using System.Runtime.CompilerServices;
+using NeoIsisJob.Views;
 
 namespace NeoIsisJob
 {
@@ -18,6 +19,7 @@ namespace NeoIsisJob
         public MainWindow()
         {
             this.InitializeComponent();
+            //these are the dependencies
             _dbHelper = new DatabaseHelper();
             // Initialize UserRepo
             _userRepo = new UserRepo(_dbHelper);
@@ -56,6 +58,12 @@ namespace NeoIsisJob
         {
             if (int.TryParse(UserIdTextBox.Text, out int userId)) { _userViewModel.DeleteUser(userId); }
             LoadUsers();
+        }
+
+        //for navigating to the workout page
+        private void GoToWorkoutPage(object sender, RoutedEventArgs e)
+        {
+            MainFrame.Navigate(typeof(WorkoutPage));
         }
     }
 }
