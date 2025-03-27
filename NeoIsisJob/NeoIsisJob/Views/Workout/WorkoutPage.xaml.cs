@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using NeoIsisJob.ViewModels.Workout;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +24,16 @@ namespace NeoIsisJob.Views
     /// </summary>
     public sealed partial class WorkoutPage : Page
     {
+        private WorkoutViewModel _workoutViewModel;
+
+        public WorkoutViewModel ViewModel { get; set; }
+
         public WorkoutPage()
         {
             this.InitializeComponent();
+            ViewModel = new WorkoutViewModel();
+            this.DataContext = ViewModel;
+            //this.WorkoutGrid.ItemsSource = ViewModel.Workouts;
         }
 
         public void GoToMainPage_Tap(object sender, RoutedEventArgs e)
