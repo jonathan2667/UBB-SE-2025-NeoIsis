@@ -14,7 +14,7 @@ namespace NeoIsisJob.Models
         public string LastName { get => _lastName; set => _lastName = value; }
         public DateTime WorksSince { get => _worksSince; set => _worksSince = value; }
 
-        private PersonalTrainerModel() { }
+        public PersonalTrainerModel() { }
 
         public PersonalTrainerModel(string firstName, string lastName, DateTime worksSince)
         {

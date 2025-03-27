@@ -12,7 +12,7 @@ namespace NeoIsisJob.Models
         public int ClassId { get => _classId; set => _classId = value; }
         public DateTime EnrollmentDate { get => _enrollmentDate; set => _enrollmentDate = value; }
 
-        private UserClassModel() { }
+        public UserClassModel() { }
 
         public UserClassModel(int userId, int classId, DateTime enrollmentDate)
         {
