@@ -603,4 +603,11 @@ packages/
 *.suo
 *.vsscc
 
+# Ignore Visual Studio cache and temporary files
+.vs/
+**/.suo
+**/.dtbcache.v2
+**/DocumentLayout.backup.json
+
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,csharp,dotnetcore
