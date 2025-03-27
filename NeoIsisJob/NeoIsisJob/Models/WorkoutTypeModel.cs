@@ -10,8 +10,9 @@
 
         public WorkoutTypeModel() { }
 
-        public WorkoutTypeModel(string name)
+        public WorkoutTypeModel(int id, string name)
         {
+            Id = id;
             Name = name;
         }
     }

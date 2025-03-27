@@ -1,6 +1,6 @@
 ﻿namespace NeoIsisJob.Models
 {
-    public class WorkoutsModel
+    public class WorkoutModel
     {
         private int _id;
         private string _name;
@@ -10,10 +10,11 @@
         public string Name { get => _name; set => _name = value; }
         public int WorkoutTypeId { get => _workoutTypeId; set => _workoutTypeId = value; }
 
-        private WorkoutsModel() { }
+        public WorkoutModel() { }
 
-        public WorkoutsModel(string name, int workoutTypeId)
+        public WorkoutModel(int id, string name, int workoutTypeId)
         {
+            Id = id;
             Name = name;
             WorkoutTypeId = workoutTypeId;
         }
