@@ -105,3 +105,9 @@ CREATE TABLE UserClasses (
 	[Date] DATE
 	PRIMARY KEY ([UID], CID, [Date])
 )
+
+INSERT INTO WorkoutTypes([Name])
+VALUES ('super')
+
+INSERT INTO Workouts([Name], WTID)
+VALUES ('workout1', 1), ('workout2', 1), ('workout3', 1), ('workout4', 1), ('workout5', 1)
