@@ -14,7 +14,7 @@
         public int ClassTypeId { get => _classTypeId; set => _classTypeId = value; }
         public int PersonalTrainerId { get => _personalTrainerId; set => _personalTrainerId = value; }
 
-        private ClassModel() { }
+        public ClassModel() { }
 
         public ClassModel(string name, string description, int classTypeId, int personalTrainerId)
         {
