@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|d:\\users\\george\\documents\\github-personalprojects\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\views\\calendar\\calendarpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\views\\calendar\\calendarpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|d:\\users\\george\\documents\\github-personalprojects\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\views\\workoutpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\views\\workoutpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -17,10 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|d:\\users\\george\\documents\\github-personalprojects\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\views\\classpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\views\\classpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|d:\\users\\george\\documents\\github-personalprojects\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\views\\calendar\\calendarpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|solutionrelative:neoisisjob\\views\\calendar\\calendarpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{707B7E28-1836-4A43-AB8C-2E1274FCEDE4}|NeoIsisJob\\NeoIsisJob.csproj|d:\\users\\george\\documents\\github-personalprojects\\ubb-se-2025-neoisis\\neoisisjob\\neoisisjob\\views\\rankingpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -50,7 +50,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 195,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
@@ -67,13 +67,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "RankingPage.xaml",
               "DocumentMoniker": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\RankingPage.xaml",
               "RelativeDocumentMoniker": "NeoIsisJob\\Views\\RankingPage.xaml",
-              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\RankingPage.xaml",
-              "RelativeToolTip": "NeoIsisJob\\Views\\RankingPage.xaml",
-              "ViewState": "AgIAAAIAAAAAAAAAAAAswA0AAACLAAAAAAAAAA==",
+              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\RankingPage.xaml*",
+              "RelativeToolTip": "NeoIsisJob\\Views\\RankingPage.xaml*",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAswA0AAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-27T12:30:33.422Z",
               "EditorCaption": ""
@@ -93,13 +93,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "ClassPage.xaml",
               "DocumentMoniker": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\ClassPage.xaml",
               "RelativeDocumentMoniker": "NeoIsisJob\\Views\\ClassPage.xaml",
-              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\ClassPage.xaml",
-              "RelativeToolTip": "NeoIsisJob\\Views\\ClassPage.xaml",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAswA0AAACLAAAAAAAAAA==",
+              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\ClassPage.xaml*",
+              "RelativeToolTip": "NeoIsisJob\\Views\\ClassPage.xaml*",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAswA0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-27T12:29:00.721Z",
               "EditorCaption": ""
@@ -119,13 +119,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "CalendarPage.xaml",
               "DocumentMoniker": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\Calendar\\CalendarPage.xaml",
               "RelativeDocumentMoniker": "NeoIsisJob\\Views\\Calendar\\CalendarPage.xaml",
-              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\Calendar\\CalendarPage.xaml",
-              "RelativeToolTip": "NeoIsisJob\\Views\\Calendar\\CalendarPage.xaml",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAACLAAAAAAAAAA==",
+              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\Calendar\\CalendarPage.xaml*",
+              "RelativeToolTip": "NeoIsisJob\\Views\\Calendar\\CalendarPage.xaml*",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-27T12:24:23.056Z",
               "EditorCaption": ""
@@ -145,13 +145,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MainPage.xaml",
               "DocumentMoniker": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\MainPage.xaml",
               "RelativeDocumentMoniker": "NeoIsisJob\\Views\\MainPage.xaml",
-              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\MainPage.xaml",
-              "RelativeToolTip": "NeoIsisJob\\Views\\MainPage.xaml",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAACLAAAAAAAAAA==",
+              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\MainPage.xaml*",
+              "RelativeToolTip": "NeoIsisJob\\Views\\MainPage.xaml*",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-27T12:01:54.223Z",
               "EditorCaption": ""
@@ -171,13 +171,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "WorkoutPage.xaml",
               "DocumentMoniker": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\WorkoutPage.xaml",
               "RelativeDocumentMoniker": "NeoIsisJob\\Views\\WorkoutPage.xaml",
-              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\WorkoutPage.xaml",
-              "RelativeToolTip": "NeoIsisJob\\Views\\WorkoutPage.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAJAAAAAAAAAA==",
+              "ToolTip": "D:\\Users\\George\\Documents\\GitHub-PersonalProjects\\UBB-SE-2025-NeoIsis\\NeoIsisJob\\NeoIsisJob\\Views\\WorkoutPage.xaml*",
+              "RelativeToolTip": "NeoIsisJob\\Views\\WorkoutPage.xaml*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-03-27T10:35:50.064Z",
               "EditorCaption": ""

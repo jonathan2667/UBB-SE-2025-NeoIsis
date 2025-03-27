@@ -52,5 +52,7 @@ namespace NeoIsisJob.Views
         {
             this.Frame.Navigate(typeof(RankingPage));
         }
+
+
     }
 }
