@@ -26,6 +26,7 @@
     <None Remove="Views\MainPage.xaml" />
     <None Remove="Views\RankingPage.xaml" />
     <None Remove="Views\WorkoutPage.xaml" />
+    <None Remove="Views\Workout\SelectedWorkoutPage.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -82,6 +83,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Calendar\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Workout\SelectedWorkoutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--
