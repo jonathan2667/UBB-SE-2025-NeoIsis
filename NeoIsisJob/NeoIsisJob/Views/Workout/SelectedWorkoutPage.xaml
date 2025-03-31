@@ -9,7 +9,31 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid Padding="20">
+        <StackPanel Spacing="10">
 
+            <!-- Selected Workout Title -->
+            <TextBlock Text="{Binding SelectedWorkout.Name}" 
+                       FontSize="24" 
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"/>
+
+            <!-- List of Complete Workouts -->
+            <ListView ItemsSource="{Binding CompleteWorkouts}" Margin="0,10,0,0">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Gray" BorderThickness="1" Padding="10" CornerRadius="5">
+                            <StackPanel>
+                                <TextBlock Text="{Binding ExerciseId}" FontSize="18" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Sets}" FontSize="14" Foreground="Gray"/>
+                                <TextBlock Text="{Binding RepsPerSet}" FontSize="14" Foreground="Gray"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackPanel>
     </Grid>
+
 </Page>
