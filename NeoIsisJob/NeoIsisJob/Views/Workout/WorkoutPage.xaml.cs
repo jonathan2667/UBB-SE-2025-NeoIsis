@@ -14,6 +14,8 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using NeoIsisJob.ViewModels.Workout;
 using NeoIsisJob.Models;
+using NeoIsisJob.Views.Workout;
+using Microsoft.Extensions.DependencyInjection;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -60,6 +62,25 @@ namespace NeoIsisJob.Views
         public void GoToRankingPage_Tap(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(RankingPage));
+        }
+
+        public void GoToSelectedWorkoutPage_Click(object sender, ItemClickEventArgs e)
+        {
+            ////send the card's workout model object to the new page
+            //if(e.ClickedItem is WorkoutModel selectedWorkout)
+            //{
+            //    this.Frame.Navigate(typeof(SelectedWorkoutPage), selectedWorkout);
+            //}
+
+            if(e.ClickedItem is WorkoutModel selectedWorkout)
+            {
+                //get the singleton registered in app and set its workout to the selected one
+                SelectedWorkoutViewModel selectedWorkoutViewModel = App.Services.GetService<SelectedWorkoutViewModel>();
+                selectedWorkoutViewModel.SelectedWorkout = selectedWorkout;
+
+                //now navigate to the selected workout page
+                this.Frame.Navigate(typeof(SelectedWorkoutPage));
+            }
         }
 
         //handler for checking a box
