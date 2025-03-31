@@ -21,50 +21,35 @@
             <Frame x:Name="contentFrame"/>
         </NavigationView>
 
-        <!-- Main Content -->
-        <StackPanel Margin="10,60,10,10" Spacing="10">
-            
-            <!-- Buttons -->
-            <StackPanel Orientation="Horizontal" Spacing="10">
+        <!-- Main Content Grid -->
+        <Grid Margin="10,60,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Buttons -->
+                <RowDefinition Height="*"/>
+                <!-- Workout Cards -->
+            </Grid.RowDefinitions>
+
+            <!-- Filter & Create Buttons -->
+            <StackPanel Grid.Row="0" Spacing="10" Margin="10">
                 <Button Content="Filter" Width="100"/>
                 <Button Content="Create" Width="100"/>
             </StackPanel>
 
-            <!-- Workout Type Checkboxes - they update dynamically  -->
-            <StackPanel>
-                <TextBlock Text="Select Workout Types:" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
-                <!--every checkbox is bound to one workout type-->
-                <ItemsControl ItemsSource="{Binding WorkoutTypes}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" Spacing="10"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <CheckBox Content="{Binding Name}" FontSize="14"
-                                      Click="WorkoutTypeCheckBox_Click"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </StackPanel>
-
             <!-- Workout Grid -->
-            <GridView x:Name="WorkoutGrid" ItemsSource="{Binding Workouts}" Margin="10">
+            <GridView Grid.Row="1" x:Name="WorkoutGrid" ItemsSource="{Binding Workouts}" Margin="10">
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Width="150" Height="200" Background="White" Padding="10" CornerRadius="10">
+                            <!--<Image Source="Assets/workout_placeholder.png" Width="130" Height="100" Stretch="UniformToFill"/>-->
                             <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
-                            <StackPanel Orientation="Horizontal">
-                                <Button Content="Delete"/>
-                                <Button Content="Edit"/>
-                            </StackPanel>
+                            <!--<Button Content="Edit" Click="EditWorkout_Click"/>-->
+                            <Button Content="Edit" />
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-
-        </StackPanel>
+        </Grid>
     </Grid>
 
 </Page>
