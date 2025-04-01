@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace NeoIsisJob.ViewModels.Workout
 {
@@ -27,6 +28,7 @@ namespace NeoIsisJob.ViewModels.Workout
             { 
                 _selectedWorkout = value;
                 //signal that the property has changed
+                Debug.WriteLine($"SelectedWorkout set to: {_selectedWorkout?.Name}"); // Debug message
                 OnPropertyChanged();
 
                 //update the collection
@@ -70,6 +72,32 @@ namespace NeoIsisJob.ViewModels.Workout
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void UpdateWorkoutName(string newName)
+        {
+            try
+            {
+                if (_selectedWorkout == null || string.IsNullOrWhiteSpace(newName))
+                {
+                    throw new InvalidOperationException("Workout cannot be null and name cannot be empty or null.");
+                }
+
+                _selectedWorkout.Name = newName;
+                this._workoutService.UpdateWorkout(_selectedWorkout);
+
+                // Notify the UI about the change
+                OnPropertyChanged(nameof(SelectedWorkout));
+
+                // Reload the CompleteWorkouts collection if necessary
+                IList<CompleteWorkoutModel> complWorkouts = FilledCompleteWorkoutsWithExercies(this._completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this._selectedWorkout.Id));
+                CompleteWorkouts = new ObservableCollection<CompleteWorkoutModel>(complWorkouts);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred while updating the workout: {ex.Message}", ex);
+            }
         }
     }
 }
