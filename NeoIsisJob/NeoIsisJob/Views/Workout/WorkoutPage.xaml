@@ -28,7 +28,7 @@
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <!--<Button Content="Filter" Width="100"/>-->
-                <Button Content="Create" Width="100"/>
+                <Button Content="Create" Width="100" Click="CreateButton_Click"/>
             </StackPanel>
 
             <!-- Workout Type Checkboxes - they update dynamically  -->

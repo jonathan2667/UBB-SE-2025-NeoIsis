@@ -77,6 +77,13 @@ namespace NeoIsisJob.Views
             }
         }
 
+        //handler for create button -> go to create workout page
+        public void CreateButton_Click(object sender, RoutedEventArgs e)
+        {
+            //for now
+            this.Frame.Navigate (typeof(CreateWorkoutPage));
+        }
+
         //handler for checking a box
         private void WorkoutTypeCheckBox_Click(object sender, RoutedEventArgs e)
         {

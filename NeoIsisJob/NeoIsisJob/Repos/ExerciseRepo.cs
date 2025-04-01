@@ -18,6 +18,34 @@ namespace NeoIsisJob.Repos
             this._databaseHelper = new DatabaseHelper();
         }
 
+        public IList<ExercisesModel> GetAllExercises()
+        {
+            IList<ExercisesModel> exercises = new List<ExercisesModel>();
+
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            {
+                connection.Open();
+
+                String query = "SELECT * FROM Exercises";
+                SqlCommand command = new SqlCommand(query, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    ExercisesModel exercise = new ExercisesModel(
+                        Convert.ToInt32(reader["EID"]),
+                        Convert.ToString(reader["Name"]),
+                        Convert.ToString(reader["Description"]),
+                        Convert.ToInt32(reader["Difficulty"]),
+                        Convert.ToInt32(reader["MGID"])
+                    );
+                    exercises.Add(exercise);
+                }
+            }
+
+            return exercises;
+        }
+
         public ExercisesModel GetExerciseById(int eid)
         {
             //return it as null if not found

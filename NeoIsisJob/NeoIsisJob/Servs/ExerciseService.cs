@@ -21,5 +21,10 @@ namespace NeoIsisJob.Servs
         {
             return this._exerciseRepo.GetExerciseById(eid);
         }
+
+        public IList<ExercisesModel> GetAllExercises()
+        {
+            return this._exerciseRepo.GetAllExercises();
+        }
     }
 }

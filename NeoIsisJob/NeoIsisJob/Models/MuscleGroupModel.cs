@@ -10,8 +10,9 @@
 
         private MuscleGroupModel() { }
 
-        public MuscleGroupModel(string name)
+        public MuscleGroupModel(int id, string name)
         {
+            Id = id;
             Name = name;
         }
     }
