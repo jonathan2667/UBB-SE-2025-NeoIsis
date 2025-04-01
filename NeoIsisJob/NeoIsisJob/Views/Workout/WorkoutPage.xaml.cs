@@ -66,12 +66,6 @@ namespace NeoIsisJob.Views
 
         public void GoToSelectedWorkoutPage_Click(object sender, ItemClickEventArgs e)
         {
-            ////send the card's workout model object to the new page
-            //if(e.ClickedItem is WorkoutModel selectedWorkout)
-            //{
-            //    this.Frame.Navigate(typeof(SelectedWorkoutPage), selectedWorkout);
-            //}
-
             if(e.ClickedItem is WorkoutModel selectedWorkout)
             {
                 //get the singleton registered in app and set its workout to the selected one

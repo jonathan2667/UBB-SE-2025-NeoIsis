@@ -16,6 +16,7 @@ namespace NeoIsisJob.ViewModels.Workout
     {
         private readonly WorkoutService _workoutService;
         private readonly WorkoutTypeService _workoutTypeService;
+        private readonly CompleteWorkoutService _completeWorkoutService;
         private ObservableCollection<WorkoutModel> _workouts;
         private ObservableCollection<WorkoutTypeModel> _workoutTypes;
         private WorkoutTypeModel _selectedWorkoutType;
@@ -58,15 +59,20 @@ namespace NeoIsisJob.ViewModels.Workout
 
         public ICommand LoadWorkoutTypesCommand { get; }
 
+        public ICommand DeleteWorkoutCommand { get; }
+
         public WorkoutViewModel()
         {
             this._workoutService = new WorkoutService();
             this._workoutTypeService = new WorkoutTypeService();
+            this._completeWorkoutService = new CompleteWorkoutService();
             Workouts = new ObservableCollection<WorkoutModel>();
             WorkoutTypes = new ObservableCollection<WorkoutTypeModel>();
 
-            // Command to load workouts --- FOR NOW IT IS COMMENTED!
+            // Commands
             //LoadWorkoutsCommand = new RelayCommand(LoadWorkouts);
+            DeleteWorkoutCommand = new RelayCommand<int>(DeleteWorkout);
+
 
             // Load workouts when viewmodel is created
             LoadWorkouts();
@@ -76,11 +82,6 @@ namespace NeoIsisJob.ViewModels.Workout
         private void LoadWorkouts()
         {
             Workouts.Clear();
-
-            //for debugging
-            //var allWorkouts = _workoutService.GetAllWorkouts();
-
-            //System.Diagnostics.Debug.WriteLine($"Workout count: {allWorkouts.Count}");
 
             foreach (var workout in this._workoutService.GetAllWorkouts())
             {
@@ -119,6 +120,16 @@ namespace NeoIsisJob.ViewModels.Workout
                     Workouts.Add(workout);
                 }
             }
+        }
+
+        public void DeleteWorkout(int wid)
+        {
+            //delete the entries from complete workouts then delete the workout
+            this._completeWorkoutService.DeleteCompleteWorkoutsByWid(wid);
+            this._workoutService.DeleteWorkout(wid);
+
+            //after deletion, load the workouts again
+            LoadWorkouts();
         }
 
         // INotifyPropertyChanged implementation

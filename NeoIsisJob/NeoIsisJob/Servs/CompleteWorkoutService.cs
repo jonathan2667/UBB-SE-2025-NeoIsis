@@ -2,6 +2,7 @@
 using NeoIsisJob.Repos;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,6 +35,11 @@ namespace NeoIsisJob.Servs
             }
 
             return completeWorkouts;
+        }
+
+        public void DeleteCompleteWorkoutsByWid(int wid)
+        {
+            this._completeWorkoutRepo.DeleteCompleteWorkoutsByWid(wid);
         }
     }
 }
