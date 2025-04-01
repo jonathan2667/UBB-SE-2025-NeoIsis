@@ -39,6 +39,21 @@ namespace NeoIsisJob.Repos
             return completeWorkouts;
         }
 
+        //deletes all entries from CompleteWorkouts table which have the specified WID
+        public void DeleteCompleteWorkoutsByWid(int wid)
+        {
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            {
+                connection.Open();
+
+                String deleteCommand = "DELETE FROM CompleteWorkouts WHERE WID=@wid";
+                SqlCommand command = new SqlCommand(deleteCommand, connection);
+                command.Parameters.AddWithValue("@wid", wid);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         //TODO -> implement the rest of CRUD
     }
 }

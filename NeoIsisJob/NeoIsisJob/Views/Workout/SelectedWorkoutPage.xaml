@@ -12,23 +12,53 @@
     <Grid Padding="20">
         <StackPanel Spacing="10">
 
-            <!-- Selected Workout Title -->
-            <TextBlock Text="{Binding SelectedWorkout.Name}" 
-                       FontSize="24" 
-                       FontWeight="Bold"
-                       HorizontalAlignment="Center"/>
+            <!-- Header with Back Button and Title -->
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <!--button will stay on left-->
+                    <ColumnDefinition Width="Auto"/>
+                    <!--the workout name will occupy the remaining space-->
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-            <!-- List of Complete Workouts -->
-            <ListView ItemsSource="{Binding CompleteWorkouts}" Margin="0,10,0,0">
+                <Button Content="Back" HorizontalAlignment="Left" Grid.Column="0" Click="BackButton_Click"/>
+
+                <TextBlock Text="{Binding SelectedWorkout.Name}" 
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Grid.Column="1"/>
+            </Grid>
+
+            <!-- Table Headers -->
+            <Grid Margin="0,10,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Exercise Name" FontWeight="Bold" Grid.Column="0"/>
+                <TextBlock Text="Sets" FontWeight="Bold" Grid.Column="1"/>
+                <TextBlock Text="Reps Per Set" FontWeight="Bold" Grid.Column="2"/>
+            </Grid>
+
+            <!-- Table Content -->
+            <ListView ItemsSource="{Binding CompleteWorkouts}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="Gray" BorderThickness="1" Padding="10" CornerRadius="5">
-                            <StackPanel>
-                                <TextBlock Text="{Binding ExerciseId}" FontSize="18" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding Sets}" FontSize="14" Foreground="Gray"/>
-                                <TextBlock Text="{Binding RepsPerSet}" FontSize="14" Foreground="Gray"/>
-                            </StackPanel>
-                        </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding Exercise.Name}" Grid.Column="0"/>
+                            <TextBlock Text="{Binding Sets}" Grid.Column="1"/>
+                            <TextBlock Text="{Binding RepsPerSet}" Grid.Column="2"/>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

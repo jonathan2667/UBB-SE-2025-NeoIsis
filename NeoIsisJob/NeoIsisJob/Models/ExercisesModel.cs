@@ -14,10 +14,11 @@
         public int Difficulty { get => _difficulty; set => _difficulty = value; }
         public int MuscleGroupId { get => _muscleGroupId; set => _muscleGroupId = value; }
 
-        private ExercisesModel() { }
+        public ExercisesModel() { }
 
-        public ExercisesModel(string name, string description, int difficulty, int muscleGroupId)
+        public ExercisesModel(int id, string name, string description, int difficulty, int muscleGroupId)
         {
+            Id = id;
             Name = name;
             Description = description;
             Difficulty = difficulty;

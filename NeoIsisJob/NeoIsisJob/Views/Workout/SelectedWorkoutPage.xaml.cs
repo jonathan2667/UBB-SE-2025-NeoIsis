@@ -38,6 +38,13 @@ namespace NeoIsisJob.Views.Workout
             this.DataContext = this.ViewModel;
         }
 
-
+        public void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            //if CanGoBack is true -> navigate back
+            if(this.Frame.CanGoBack)
+            {
+                this.Frame.GoBack();
+            }
+        }
     }
 }
