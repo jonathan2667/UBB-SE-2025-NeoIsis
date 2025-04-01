@@ -41,7 +41,7 @@ namespace NeoIsisJob.Servs
             this._workoutTypeRepo.DeleteWorkoutType(wtid);
         }
 
-        public WorkoutTypeModel GetWorkoutType(int wtid) 
+        public WorkoutTypeModel GetWorkoutTypeById(int wtid) 
         {
             return this._workoutTypeRepo.GetWorkoutTypeById(wtid);
         }

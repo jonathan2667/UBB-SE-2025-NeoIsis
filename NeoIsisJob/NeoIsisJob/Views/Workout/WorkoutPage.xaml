@@ -25,7 +25,9 @@
         <!-- Main Content -->
         <StackPanel Margin="10,60,10,10" Spacing="10">
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <Button Content="Create" Width="100"/>
+                <!--<Button Content="Filter" Width="100"/>-->
+                <Button Content="Create" Width="100" Click="CreateButton_Click"/>
+
             </StackPanel>
 
             <StackPanel>
