@@ -147,12 +147,15 @@ namespace NeoIsisJob.Views
             {
                 if (DataContext is WorkoutViewModel viewModel)
                 {
-                    // Set the SelectedWorkout in the SelectedWorkoutViewModel
+                    // Set the selected workout in the ViewModel
                     viewModel.SelectedWorkout = workout;
-                }
 
-                // Open the popup
-                EditWorkoutPopup.IsOpen = true;
+                    // Pre-fill the TextBox with the current workout name
+                    WorkoutNameTextBox.Text = workout.Name;
+
+                    // Open the popup
+                    EditWorkoutPopup.IsOpen = true;
+                }
             }
         }
 
@@ -165,24 +168,26 @@ namespace NeoIsisJob.Views
                 {
                     if (DataContext is WorkoutViewModel viewModel)
                     {
-                        viewModel.UpdateWorkoutName(newName); // Call the method on WorkoutViewModel
+                        viewModel.UpdateWorkoutName(newName);
                     }
 
+                    // Close the popup
                     EditWorkoutPopup.IsOpen = false;
                 }
                 else
                 {
-                    Debug.WriteLine("Workout name cannot be empty");
+                    throw new InvalidOperationException("Workout name cannot be empty or null.");
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error updating workout name: {ex.Message}");
+                throw new Exception("Error updating workout name.", ex);
             }
         }
 
         private void CancelEditWorkoutButton_Click(object sender, RoutedEventArgs e)
         {
+            // Close the popup without making changes
             EditWorkoutPopup.IsOpen = false;
         }
     }
