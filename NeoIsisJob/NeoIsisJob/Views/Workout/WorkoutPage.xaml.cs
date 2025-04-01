@@ -197,5 +197,29 @@ namespace NeoIsisJob.Views
             // Close the popup without making changes
             EditWorkoutPopup.IsOpen = false;
         }
+
+        private void DeleteWorkoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Ensure the sender is a Button
+            if (sender is Button button && button.Tag is int workoutId)
+            {
+                Debug.WriteLine($"Delete button clicked for Workout ID: {workoutId}");
+
+                // Access the ViewModel
+                if (DataContext is WorkoutViewModel viewModel)
+                {
+                    // Call the delete method in the ViewModel
+                    viewModel.DeleteWorkout(workoutId);
+                }
+                else
+                {
+                    Debug.WriteLine("ViewModel is null.");
+                }
+            }
+            else
+            {
+                Debug.WriteLine("Sender is not a Button or Tag is not an integer.");
+            }
+        }
     }
 }

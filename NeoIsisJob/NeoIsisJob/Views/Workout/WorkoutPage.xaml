@@ -54,8 +54,8 @@
                             <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button Content="Delete" 
-                                    Command="{Binding ElementName=This, Path=DataContext.DeleteWorkoutCommand}"
-                                    CommandParameter="{Binding Id}"/>
+                                    Click="DeleteWorkoutButton_Click"
+                                    Tag="{Binding Id}" />           
                                 <Button Content="Edit" Click="EditWorkoutButton_Click"/>
                             </StackPanel>
                         </StackPanel>

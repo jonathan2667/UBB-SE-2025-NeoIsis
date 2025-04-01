@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 namespace NeoIsisJob.ViewModels.Workout
 {
@@ -35,6 +36,8 @@ namespace NeoIsisJob.ViewModels.Workout
             // Load workouts and workout types
             LoadWorkouts();
             LoadWorkoutTypes();
+
+            Debug.WriteLine("WorkoutViewModel initialized.");
         }
 
         public ObservableCollection<WorkoutModel> Workouts
@@ -108,11 +111,28 @@ namespace NeoIsisJob.ViewModels.Workout
             }
         }
 
-        public void DeleteWorkout(int wid)
+        public void DeleteWorkout(int workoutId)
         {
-            this._completeWorkoutService.DeleteCompleteWorkoutsByWid(wid);
-            this._workoutService.DeleteWorkout(wid);
-            LoadWorkouts();
+            Debug.WriteLine($"DeleteWorkout called with Workout ID: {workoutId}");
+
+            // Find the workout to delete
+            var workoutToDelete = Workouts.FirstOrDefault(w => w.Id == workoutId);
+            if (workoutToDelete != null)
+            {
+                // Remove the workout from the collection
+                Workouts.Remove(workoutToDelete);
+                Debug.WriteLine($"Workout deleted: {workoutToDelete.Name} (Id: {workoutToDelete.Id})");
+
+                // Optionally, call a service to delete the workout from the database
+                _workoutService.DeleteWorkout(workoutId);
+            }
+            else
+            {
+                Debug.WriteLine($"Workout with ID {workoutId} not found.");
+            }
+
+            // Log the updated Workouts collection
+            Debug.WriteLine($"Workouts after deletion: {string.Join(", ", Workouts.Select(w => w.Name))}");
         }
 
         // Expose SelectedWorkout from SelectedWorkoutViewModel
