@@ -12,6 +12,22 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="ViewModel\**" />
+    <Compile Remove="View\**" />
+    <EmbeddedResource Remove="ViewModel\**" />
+    <EmbeddedResource Remove="View\**" />
+    <None Remove="ViewModel\**" />
+    <None Remove="View\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Views\CalendarPage.xaml" />
+    <None Remove="Views\ClassPage.xaml" />
+    <None Remove="Views\MainPage.xaml" />
+    <None Remove="Views\RankingPage.xaml" />
+    <None Remove="Views\WorkoutPage.xaml" />
+    <None Remove="Views\Workout\SelectedWorkoutPage.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -36,12 +52,47 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.3" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModel\" />
-    <Folder Include="View\" />
+    <Page Update="Views\RankingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\ClassPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\CalendarPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\WorkoutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Calendar\" />
+    <Folder Include="Views\Class\" />
+    <Folder Include="Views\Main\" />
+    <Folder Include="Views\Workout\" />
+    <Folder Include="Views\Ranking\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Views\Workout\SelectedWorkoutPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--
