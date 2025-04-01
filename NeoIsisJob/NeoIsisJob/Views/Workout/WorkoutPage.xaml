@@ -30,6 +30,7 @@
 
             </StackPanel>
 
+            <!-- Workout types -->
             <StackPanel>
                 <TextBlock Text="Select Workout Types:" FontSize="16" FontWeight="Bold" Margin="0,0,0,5"/>
                 <ItemsControl ItemsSource="{Binding WorkoutTypes}">
@@ -47,6 +48,7 @@
                 </ItemsControl>
             </StackPanel>
 
+            <!-- Workouts -->
             <GridView x:Name="WorkoutGrid" ItemsSource="{Binding Workouts}" Margin="10" IsItemClickEnabled="True" ItemClick="GoToSelectedWorkoutPage_Click">
                 <GridView.ItemTemplate >
                     <DataTemplate>
@@ -54,8 +56,8 @@
                             <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button Content="Delete" 
-                                    Click="DeleteWorkoutButton_Click"
-                                    Tag="{Binding Id}" />           
+                                        Command="{Binding ElementName=This, Path=DataContext.DeleteWorkoutCommand}"
+                                        CommandParameter="{Binding Id}"/>           
                                 <Button Content="Edit" Click="EditWorkoutButton_Click"/>
                             </StackPanel>
                         </StackPanel>
@@ -65,7 +67,7 @@
         </StackPanel>
 
         <!-- True Popup for Editing -->
-        <Popup x:Name="EditWorkoutPopup" IsLightDismissEnabled="True">
+        <Popup x:Name="EditWorkoutPopup" IsLightDismissEnabled="True" IsOpen="{Binding IsEditPopupOpen, Mode=TwoWay}">
             <Grid Width="{Binding ElementName=RootGrid, Path=ActualWidth}" 
                   Height="{Binding ElementName=RootGrid, Path=ActualHeight}" 
                   Background="#80000000">
@@ -77,8 +79,11 @@
                         <TextBlock Text="Edit Workout" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" />
                         <TextBox x:Name="WorkoutNameTextBox" PlaceholderText="Enter new name" />
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
-                            <Button Content="Update" Click="UpdateWorkoutButton_Click" />
-                            <Button Content="Cancel" Click="CancelEditWorkoutButton_Click" />
+                            <Button Content="Update" 
+                                Command="{Binding ElementName=This, Path=DataContext.UpdateWorkoutCommand}"
+                                CommandParameter="{Binding Text, ElementName=WorkoutNameTextBox}"/>
+                            <Button Content="Cancel" 
+                                Command="{Binding ElementName=This, Path=DataContext.CloseEditPopupCommand}"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>
