@@ -7,11 +7,13 @@ using System.Windows.Input;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using NeoIsisJob.Commands;
 
 namespace NeoIsisJob.ViewModels.Workout
 {
     public class WorkoutViewModel : INotifyPropertyChanged
     {
+        // Add WorkoutService, WorkoutTypeService, and CompleteWorkoutService as fields
         private readonly WorkoutService _workoutService;
         private readonly WorkoutTypeService _workoutTypeService;
         private readonly CompleteWorkoutService _completeWorkoutService;
@@ -21,6 +23,11 @@ namespace NeoIsisJob.ViewModels.Workout
 
         // Add SelectedWorkoutViewModel as a property
         public SelectedWorkoutViewModel SelectedWorkoutViewModel { get; }
+
+        // Add commands for deleting, updating, and closing the edit popup
+        public ICommand DeleteWorkoutCommand { get; }
+        public ICommand UpdateWorkoutCommand { get; }
+        public ICommand CloseEditPopupCommand { get; }
 
         public WorkoutViewModel()
         {
@@ -33,13 +40,17 @@ namespace NeoIsisJob.ViewModels.Workout
             // Initialize SelectedWorkoutViewModel
             SelectedWorkoutViewModel = new SelectedWorkoutViewModel();
 
+            // Initialize commands
+            DeleteWorkoutCommand = new RelayCommand<int>(DeleteWorkout);
+            UpdateWorkoutCommand = new RelayCommand<string>(UpdateWorkout);
+            CloseEditPopupCommand = new RelayCommand(CloseEditPopup);
+
             // Load workouts and workout types
             LoadWorkouts();
             LoadWorkoutTypes();
-
-            Debug.WriteLine("WorkoutViewModel initialized.");
         }
 
+        // Add properties for Workouts, WorkoutTypes, and SelectedWorkoutType
         public ObservableCollection<WorkoutModel> Workouts
         {
             get => _workouts;
@@ -68,6 +79,24 @@ namespace NeoIsisJob.ViewModels.Workout
                 _selectedWorkoutType = value;
                 OnPropertyChanged();
                 ApplyWorkoutFilter();
+            }
+        }
+
+        // Expose SelectedWorkout from SelectedWorkoutViewModel
+        public WorkoutModel SelectedWorkout
+        {
+            get => SelectedWorkoutViewModel.SelectedWorkout;
+            set => SelectedWorkoutViewModel.SelectedWorkout = value;
+        }
+
+        private bool _isEditPopupOpen;
+        public bool IsEditPopupOpen
+        {
+            get => _isEditPopupOpen;
+            set
+            {
+                _isEditPopupOpen = value;
+                OnPropertyChanged();
             }
         }
 
@@ -111,43 +140,32 @@ namespace NeoIsisJob.ViewModels.Workout
             }
         }
 
-        public void DeleteWorkout(int workoutId)
+        public void DeleteWorkout(int wid)
         {
-            Debug.WriteLine($"DeleteWorkout called with Workout ID: {workoutId}");
+            // Delete the selected workout and its complete workouts
+            this._completeWorkoutService.DeleteCompleteWorkoutsByWid(wid);
+            this._workoutService.DeleteWorkout(wid);
 
-            // Find the workout to delete
-            var workoutToDelete = Workouts.FirstOrDefault(w => w.Id == workoutId);
-            if (workoutToDelete != null)
-            {
-                // Remove the workout from the collection
-                Workouts.Remove(workoutToDelete);
-                Debug.WriteLine($"Workout deleted: {workoutToDelete.Name} (Id: {workoutToDelete.Id})");
-
-                // Optionally, call a service to delete the workout from the database
-                _workoutService.DeleteWorkout(workoutId);
-            }
-            else
-            {
-                Debug.WriteLine($"Workout with ID {workoutId} not found.");
-            }
-
-            // Log the updated Workouts collection
-            Debug.WriteLine($"Workouts after deletion: {string.Join(", ", Workouts.Select(w => w.Name))}");
-        }
-
-        // Expose SelectedWorkout from SelectedWorkoutViewModel
-        public WorkoutModel SelectedWorkout
-        {
-            get => SelectedWorkoutViewModel.SelectedWorkout;
-            set => SelectedWorkoutViewModel.SelectedWorkout = value;
-        }
-
-        // Expose UpdateWorkoutName from SelectedWorkoutViewModel
-        public void UpdateWorkoutName(string newName)
-        {
-            SelectedWorkoutViewModel.UpdateWorkoutName(newName);
-            // Reload workouts after updating the name
+            // Loading workouts again
             LoadWorkouts();
+        }
+
+        public void UpdateWorkout(string newName)
+        {
+            // Update the selected workout's name
+            if (SelectedWorkout != null && !string.IsNullOrWhiteSpace(newName))
+            {
+                SelectedWorkout.Name = newName;
+                _workoutService.UpdateWorkout(SelectedWorkout);
+                LoadWorkouts();
+                IsEditPopupOpen = false;
+            }
+        }
+
+        private void CloseEditPopup()
+        {
+            // Close the edit popup
+            IsEditPopupOpen = false;
         }
 
         // INotifyPropertyChanged implementation
