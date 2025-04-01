@@ -16,6 +16,7 @@ using NeoIsisJob.ViewModels.Workout;
 using NeoIsisJob.Models;
 using NeoIsisJob.Views.Workout;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,6 +29,7 @@ namespace NeoIsisJob.Views
     public sealed partial class WorkoutPage : Page
     {
         private WorkoutViewModel _workoutViewModel;
+        private WorkoutModel _selectedWorkoutForEdit;
 
         public WorkoutViewModel ViewModel { get; set; }
 
@@ -36,7 +38,6 @@ namespace NeoIsisJob.Views
             this.InitializeComponent();
             ViewModel = new WorkoutViewModel();
             this.DataContext = ViewModel;
-            //this.WorkoutGrid.ItemsSource = ViewModel.Workouts;
         }
 
         public void GoToMainPage_Tap(object sender, RoutedEventArgs e)
@@ -138,6 +139,51 @@ namespace NeoIsisJob.Views
                     yield return childOfChild;
                 }
             }
+        }
+
+        private void EditWorkoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is WorkoutModel workout)
+            {
+                if (DataContext is WorkoutViewModel viewModel)
+                {
+                    // Set the SelectedWorkout in the SelectedWorkoutViewModel
+                    viewModel.SelectedWorkout = workout;
+                }
+
+                // Open the popup
+                EditWorkoutPopup.IsOpen = true;
+            }
+        }
+
+        private void UpdateWorkoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string newName = WorkoutNameTextBox.Text.Trim();
+                if (!string.IsNullOrEmpty(newName))
+                {
+                    if (DataContext is WorkoutViewModel viewModel)
+                    {
+                        viewModel.UpdateWorkoutName(newName); // Call the method on WorkoutViewModel
+                    }
+
+                    EditWorkoutPopup.IsOpen = false;
+                }
+                else
+                {
+                    Debug.WriteLine("Workout name cannot be empty");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error updating workout name: {ex.Message}");
+            }
+        }
+
+        private void CancelEditWorkoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            EditWorkoutPopup.IsOpen = false;
         }
     }
 }

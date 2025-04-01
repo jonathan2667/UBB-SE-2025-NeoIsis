@@ -51,21 +51,20 @@ namespace NeoIsisJob.Servs
             if (workout == null)
                 throw new ArgumentNullException(nameof(workout), "Workout cannot be null.");
 
-            //NAME HAS TO BE UNIQUE
             if (string.IsNullOrWhiteSpace(workout.Name))
-                throw new ArgumentException("Workout name cannot be empty or null.");
+                throw new ArgumentException("Workout name cannot be empty or null.", nameof(workout.Name));
 
             try
             {
                 this._workoutRepo.UpdateWorkout(workout);
             }
-            catch (SqlException ex) when (ex.Number == 2627) // SQL Server unique constraint violation
+            catch (Exception ex) when (ex.Message.Contains("A workout with this name already exists"))
             {
-                throw new Exception("A workout with this name already exists.");
+                throw new Exception("A workout with this name already exists. Please choose a different name.");
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while inserting workout.", ex);
+                throw new Exception($"An error occurred while updating the workout: {ex.Message}", ex);
             }
         }
 

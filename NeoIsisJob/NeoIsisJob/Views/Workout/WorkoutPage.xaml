@@ -61,12 +61,26 @@
                                 <Button Content="Delete" 
                                         Command="{Binding ElementName=This, Path=DataContext.DeleteWorkoutCommand}"
                                         CommandParameter="{Binding Id}"/>
-                                <Button Content="Edit"/>
+                                <Button Content="Edit" Click="EditWorkoutButton_Click"/>
                             </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
+
+            <!-- Popup for editing workout name -->
+            <Popup x:Name="EditWorkoutPopup" IsLightDismissEnabled="True">
+                <Border Background="White" Padding="20" CornerRadius="10" Width="300">
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="Update Workout Name" FontSize="16" FontWeight="Bold"/>
+                        <TextBox x:Name="WorkoutNameTextBox" Text="{Binding SelectedWorkout.Name, Mode=TwoWay}" PlaceholderText="Enter new name"/>
+                        <StackPanel>
+                            <Button Content="Update" Click="UpdateWorkoutButton_Click"/>
+                            <Button Content="Cancel" Click="CancelEditWorkoutButton_Click"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Popup>
 
         </StackPanel>
     </Grid>
