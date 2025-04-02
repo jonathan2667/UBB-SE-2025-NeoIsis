@@ -43,6 +43,33 @@ namespace NeoIsisJob.Repos
             return new WorkoutModel();
         }
 
+        public WorkoutModel GetWorkoutByName(String name)
+        {
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            {
+                //open the connection
+                connection.Open();
+
+                //create the query
+                string query = "SELECT * FROM Workouts WHERE Name=@name";
+
+                //create the command now
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@name", name);
+                SqlDataReader reader = command.ExecuteReader();
+
+                //now check if the type exists -> if yes return it
+                if (reader.Read())
+                {
+                    //if ok return it
+                    return new WorkoutModel(Convert.ToInt32(reader["WID"]), Convert.ToString(reader["Name"]), Convert.ToInt32(reader["WTID"]));
+                }
+            }
+
+            //if not found -> return empty object
+            return new WorkoutModel();
+        }
+
         public void InsertWorkout(string name, int wtid)
         {
             using (SqlConnection connection = this._databaseHelper.GetConnection())

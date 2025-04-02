@@ -41,5 +41,10 @@ namespace NeoIsisJob.Servs
         {
             this._completeWorkoutRepo.DeleteCompleteWorkoutsByWid(wid);
         }
+
+        public void InsertCompleteWorkout(int wid, int eid, int sets, int repsPerSet)
+        {
+            this._completeWorkoutRepo.InsertCompleteWorkout(wid, eid, sets, repsPerSet);
+        }
     }
 }
