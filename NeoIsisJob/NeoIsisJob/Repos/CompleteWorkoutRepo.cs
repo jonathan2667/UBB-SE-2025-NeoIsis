@@ -54,6 +54,23 @@ namespace NeoIsisJob.Repos
             }
         }
 
+        public void InsertCompleteWorkout(int wid, int eid, int sets, int repsPerSet)
+        {
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            {
+                connection.Open();
+
+                String insertCommand = "INSERT INTO CompleteWorkouts(WID, EID, [Sets], RepsPerSet) VALUES (@wid, @eid, @sets, @repsPerSet)";
+                SqlCommand command = new SqlCommand(insertCommand, connection);
+                command.Parameters.AddWithValue("@wid", wid);
+                command.Parameters.AddWithValue("@eid", eid);
+                command.Parameters.AddWithValue("@sets", sets);
+                command.Parameters.AddWithValue("@repsPerSet", repsPerSet);
+
+                command.ExecuteNonQuery();
+            }
+        }
+
         //TODO -> implement the rest of CRUD
     }
 }

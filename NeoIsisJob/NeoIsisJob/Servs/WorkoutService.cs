@@ -21,6 +21,11 @@ namespace NeoIsisJob.Servs
             return this._workoutRepo.GetWorkoutById(wid);
         }
 
+        public WorkoutModel GetWorkoutByName(String name)
+        {
+            return this._workoutRepo.GetWorkoutByName(name);
+        }
+
         public void InsertWorkout(String name, int wtid)
         {
             //NAME HAS TO BE UNIQUE
