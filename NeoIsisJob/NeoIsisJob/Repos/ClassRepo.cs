@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,17 +16,17 @@ namespace NeoIsisJob.Repos
     {
         private readonly DatabaseHelper _dbHelper;
 
-        public ClassRepo(DatabaseHelper dbHelper) { _dbHelper = dbHelper; }
+        public ClassRepo() { this._dbHelper = new DatabaseHelper(); }
 
         public ClassModel GetClassModelById(int cid)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = this._dbHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
 
                 // Create a query
-                string query = "SELECT Cid, Name, Description, Ctid, Ptid FROM Class WHERE Cid = @cid";
+                string query = "SELECT CID, Name, Description, CTID, PTID FROM Classes WHERE Cid = @cid";
 
                 // Create a command
                 SqlCommand command = new SqlCommand(query, connection);
@@ -42,11 +43,11 @@ namespace NeoIsisJob.Repos
                     // Return the class model
                     return new ClassModel
                     {
-                        Id = (int)reader["Cid"],
+                        Id = (int)reader["CID"],
                         Name = reader["Name"].ToString() ?? string.Empty,
                         Description = reader["Description"].ToString() ?? string.Empty,
-                        ClassTypeId = (int)reader["Ctid"],
-                        PersonalTrainerId = (int)reader["Ptid"]
+                        ClassTypeId = (int)reader["CTID"],
+                        PersonalTrainerId = (int)reader["PTID"]
                     };
                 }
 
@@ -58,48 +59,50 @@ namespace NeoIsisJob.Repos
         public List<ClassModel> GetAllClassModel()
         {
             List<ClassModel> classes = new List<ClassModel>();
-
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            try
             {
-                // Open the connection
-                connection.Open();
-
-                // Create a query
-                string query = "SELECT Cid, Name, Description, Ctid, Ptid FROM Class";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Execute the command
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Read the data
-                while (reader.Read())
+                using (SqlConnection connection = this._dbHelper.GetConnection())
                 {
-                    classes.Add(new ClassModel
-                    {
-                        Id = (int)reader["Cid"],
-                        Name = reader["Name"].ToString() ?? string.Empty,
-                        Description = reader["Description"].ToString() ?? string.Empty,
-                        ClassTypeId = (int)reader["Ctid"],
-                        PersonalTrainerId = (int)reader["Ptid"]
-                    });
-                }
+                    // Open the connection
+                    connection.Open();
 
-                // Return the classes
-                return classes;
+                    // Create a query
+                    string query = "SELECT CID, Name, Description, CTID, PTID FROM Classes";
+
+                    // Create a command
+                    SqlCommand command = new SqlCommand(query, connection);
+
+                    // Execute the command
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    // Read the data
+                    while (reader.Read())
+                    {
+                        classes.Add(new ClassModel
+                        {
+                            Id = (int)reader["CID"],
+                            Name = reader["Name"].ToString() ?? string.Empty,
+                            Description = reader["Description"].ToString() ?? string.Empty,
+                            ClassTypeId = (int)reader["CTID"],
+                            PersonalTrainerId = (int)reader["PTID"]
+                        });
+                    }
+
+                    // Return the classes
+                    return classes;
+                }
+            }catch(Exception ex) { throw new Exception(ex.Message); }
             }
-        }
 
         public void AddClassModel(ClassModel classModel)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = this._dbHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
 
                 // Create a query
-                string query = "INSERT INTO Class (Name, Description, Ctid, Ptid) VALUES (@name, @description, @ctid, @ptid)";
+                string query = "INSERT INTO Classes (Name, Description, CTID, PTID) VALUES (@name, @description, @ctid, @ptid)";
 
                 // Create a command
                 SqlCommand command = new SqlCommand(query, connection);
@@ -117,7 +120,7 @@ namespace NeoIsisJob.Repos
 
         public void DeleteClassModel(int cid)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = this._dbHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();

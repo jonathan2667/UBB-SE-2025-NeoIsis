@@ -14,11 +14,11 @@ namespace NeoIsisJob.Servs
     {
         private readonly ClassRepo _classRepo;
 
-        public ClassService(ClassRepo classRepo) { _classRepo = classRepo; }
+        public ClassService() { this._classRepo = new ClassRepo(); }
 
         public List<ClassModel> GetAllClasses()
         {
-            return _classRepo.GetAllClassModel();
+            return this._classRepo.GetAllClassModel();
         }
     
         public ClassModel GetClassById(int cid)

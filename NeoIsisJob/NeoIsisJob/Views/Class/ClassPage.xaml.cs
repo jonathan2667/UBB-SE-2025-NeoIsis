@@ -12,6 +12,11 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using NeoIsisJob.ViewModels.Classes;
+using NeoIsisJob.ViewModels.Workout;
+using Microsoft.Extensions.DependencyInjection;
+using NeoIsisJob.Models;
+using NeoIsisJob.Views.Workout;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +28,15 @@ namespace NeoIsisJob.Views
     /// </summary>
     public sealed partial class ClassPage : Page
     {
+        private ClassesViewModel _classesViewModel;
+
+        public ClassesViewModel ViewModel { get; }
+
         public ClassPage()
         {
             this.InitializeComponent();
+            ViewModel = new ClassesViewModel();
+            this.DataContext = ViewModel;
         }
 
         public void GoToMainPage_Tap(object sender, RoutedEventArgs e)

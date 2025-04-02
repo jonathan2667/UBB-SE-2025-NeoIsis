@@ -118,5 +118,15 @@ VALUES ('upper'), ('lower')
 INSERT INTO Workouts([Name], WTID)
 VALUES ('workout1', 1), ('workout2', 1), ('workout3', 1), ('workout4', 1), ('workout5', 2)
 
+
 INSERT INTO CompleteWorkouts(WID, EID, [Sets], RepsPerSet)
 VALUES (1, 1, 4, 10), (1, 3, 4, 12), (2, 2, 5, 8)
+
+INSERT INTO ClassTypes([Name])
+VALUES ('dance'), ('fight'), ('stretch')
+
+INSERT INTO PersonalTrainers([FirstName], [LastName], WorksSince)
+VALUES ('Zelu', 'Popa', '2024-02-10'),('Rares', 'Racsan', '2024-03-11'), ('Mihai', 'Predescu', '2022-05-11')
+
+INSERT INTO Classes([Name], [Description], CTID, PTID)
+VALUES ('Samba', 'danceeee', 1, 1), ('Box', 'Guts', 2, 2), ('MMA', 'fightttt', 2, 2), ('Yoga', 'relax', 3, 3)
