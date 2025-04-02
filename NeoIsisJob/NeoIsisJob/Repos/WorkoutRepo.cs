@@ -3,6 +3,7 @@ using NeoIsisJob.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,16 +77,41 @@ namespace NeoIsisJob.Repos
 
         public void UpdateWorkout(WorkoutModel workout)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            if (workout == null)
+                throw new ArgumentNullException(nameof(workout), "Workout cannot be null.");
+
+            string checkQuery = "SELECT COUNT(*) FROM Workouts WHERE Name = @Name AND WID != @Id";
+            string updateQuery = "UPDATE Workouts SET Name = @Name WHERE WID = @Id";
+
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 connection.Open();
 
-                string updateStatement = "UPDATE Worokuts SET [Name]=@name, WTID=@wtid WHERE WID=@wid";
-                SqlCommand command = new SqlCommand(updateStatement, connection);
-                command.Parameters.AddWithValue("@name", workout.Name);
-                command.Parameters.AddWithValue("@wtid", workout.WorkoutTypeId);
-                command.Parameters.AddWithValue("@wid", workout.Id);
-                command.ExecuteNonQuery();
+                // Check for duplicate names
+                using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+                {
+                    checkCommand.Parameters.AddWithValue("@Name", workout.Name);
+                    checkCommand.Parameters.AddWithValue("@Id", workout.Id);
+
+                    int count = (int)checkCommand.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        throw new Exception("A workout with this name already exists.");
+                    }
+                }
+
+                // Perform the update
+                using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                {
+                    updateCommand.Parameters.AddWithValue("@Name", workout.Name);
+                    updateCommand.Parameters.AddWithValue("@Id", workout.Id);
+
+                    int rowsAffected = updateCommand.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new Exception("No workout was updated. Ensure the workout ID exists.");
+                    }
+                }
             }
         }
 

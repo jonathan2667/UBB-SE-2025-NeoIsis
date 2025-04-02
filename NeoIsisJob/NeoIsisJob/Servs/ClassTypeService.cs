@@ -14,7 +14,7 @@ namespace NeoIsisJob.Servs
     {
         private readonly ClassTypeRepo _classTypeRepo;
 
-        public ClassTypeService(ClassTypeRepo classTypeRepo) { _classTypeRepo = classTypeRepo; }
+        public ClassTypeService() { this._classTypeRepo = new ClassTypeRepo(); }
 
         public List<ClassTypeModel> GetAllClassTypes()
         {

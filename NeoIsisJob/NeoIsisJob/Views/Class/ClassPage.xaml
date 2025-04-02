@@ -10,8 +10,8 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
-        <NavigationView x:Name="nvSample" Header="Class" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False">
+        <!-- Nav bar -->
+        <NavigationView x:Name="nvSample" PaneDisplayMode="Top" IsBackButtonVisible="Collapsed" IsSettingsVisible="False">
             <NavigationView.MenuItems>
                 <NavigationViewItem  Content="Main" Tag="MainPage" Tapped="GoToMainPage_Tap" />
                 <NavigationViewItem  Content="Calendar" Tag="CalendarPage" Tapped="GoToCalendarPage_Tap" />
@@ -21,6 +21,21 @@
             </NavigationView.MenuItems>
             <Frame x:Name="contentFrame"/>
         </NavigationView>
+
+        <!-- Main Content -->
+        <StackPanel Margin="10,60,10,10" Spacing="10">
+            <GridView x:Name="ClassesGrid" ItemsSource="{Binding Classes}" Margin="10" IsItemClickEnabled="True">
+                <GridView.ItemTemplate >
+                    <DataTemplate>
+                        <StackPanel Width="342" Height="200" Background="White" Padding="10" CornerRadius="10">
+                            <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
+                            <StackPanel Orientation="Horizontal">
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </StackPanel>
 
     </Grid>
     

@@ -16,6 +16,7 @@ using NeoIsisJob.ViewModels.Workout;
 using NeoIsisJob.Models;
 using NeoIsisJob.Views.Workout;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -28,6 +29,7 @@ namespace NeoIsisJob.Views
     public sealed partial class WorkoutPage : Page
     {
         private WorkoutViewModel _workoutViewModel;
+        private WorkoutModel _selectedWorkoutForEdit;
 
         public WorkoutViewModel ViewModel { get; set; }
 
@@ -36,7 +38,6 @@ namespace NeoIsisJob.Views
             this.InitializeComponent();
             ViewModel = new WorkoutViewModel();
             this.DataContext = ViewModel;
-            //this.WorkoutGrid.ItemsSource = ViewModel.Workouts;
         }
 
         public void GoToMainPage_Tap(object sender, RoutedEventArgs e)
@@ -75,6 +76,13 @@ namespace NeoIsisJob.Views
                 //now navigate to the selected workout page
                 this.Frame.Navigate(typeof(SelectedWorkoutPage));
             }
+        }
+
+        //handler for create button -> go to create workout page
+        public void CreateButton_Click(object sender, RoutedEventArgs e)
+        {
+            //for now
+            this.Frame.Navigate (typeof(CreateWorkoutPage));
         }
 
         //handler for checking a box
@@ -136,6 +144,24 @@ namespace NeoIsisJob.Views
                 foreach (var childOfChild in FindVisualChildren<T>(child))
                 {
                     yield return childOfChild;
+                }
+            }
+        }
+
+        private void EditWorkoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is WorkoutModel workout)
+            {
+                if (DataContext is WorkoutViewModel viewModel)
+                {
+                    // Set the selected workout in the ViewModel
+                    viewModel.SelectedWorkout = workout;
+
+                    // Pre-fill the TextBox with the current workout name
+                    WorkoutNameTextBox.Text = workout.Name;
+
+                    // Open the popup
+                    EditWorkoutPopup.IsOpen = true;
                 }
             }
         }

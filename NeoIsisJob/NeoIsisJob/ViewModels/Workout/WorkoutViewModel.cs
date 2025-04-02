@@ -4,16 +4,16 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Microsoft.UI.Xaml;
-using NeoIsisJob.Commands;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
+using NeoIsisJob.Commands;
 
 namespace NeoIsisJob.ViewModels.Workout
 {
-    //INotifyPropertyChanged notifies the client that a property value has changed
     public class WorkoutViewModel : INotifyPropertyChanged
     {
+        // Add WorkoutService, WorkoutTypeService, and CompleteWorkoutService as fields
         private readonly WorkoutService _workoutService;
         private readonly WorkoutTypeService _workoutTypeService;
         private readonly CompleteWorkoutService _completeWorkoutService;
@@ -21,7 +21,36 @@ namespace NeoIsisJob.ViewModels.Workout
         private ObservableCollection<WorkoutTypeModel> _workoutTypes;
         private WorkoutTypeModel _selectedWorkoutType;
 
-        //Workouts property for the list -> when set it, signal that it changed
+        // Add SelectedWorkoutViewModel as a property
+        public SelectedWorkoutViewModel SelectedWorkoutViewModel { get; }
+
+        // Add commands for deleting, updating, and closing the edit popup
+        public ICommand DeleteWorkoutCommand { get; }
+        public ICommand UpdateWorkoutCommand { get; }
+        public ICommand CloseEditPopupCommand { get; }
+
+        public WorkoutViewModel()
+        {
+            this._workoutService = new WorkoutService();
+            this._workoutTypeService = new WorkoutTypeService();
+            this._completeWorkoutService = new CompleteWorkoutService();
+            Workouts = new ObservableCollection<WorkoutModel>();
+            WorkoutTypes = new ObservableCollection<WorkoutTypeModel>();
+
+            // Initialize SelectedWorkoutViewModel
+            SelectedWorkoutViewModel = new SelectedWorkoutViewModel();
+
+            // Initialize commands
+            DeleteWorkoutCommand = new RelayCommand<int>(DeleteWorkout);
+            UpdateWorkoutCommand = new RelayCommand<string>(UpdateWorkout);
+            CloseEditPopupCommand = new RelayCommand(CloseEditPopup);
+
+            // Load workouts and workout types
+            LoadWorkouts();
+            LoadWorkoutTypes();
+        }
+
+        // Add properties for Workouts, WorkoutTypes, and SelectedWorkoutType
         public ObservableCollection<WorkoutModel> Workouts
         {
             get => _workouts;
@@ -47,36 +76,28 @@ namespace NeoIsisJob.ViewModels.Workout
             get => _selectedWorkoutType;
             set
             {
-                //when setting, call the function too to update the displayed list
                 _selectedWorkoutType = value;
                 OnPropertyChanged();
-                //apply the filter when changed
                 ApplyWorkoutFilter();
             }
         }
 
-        public ICommand LoadWorkoutsCommand { get; }
-
-        public ICommand LoadWorkoutTypesCommand { get; }
-
-        public ICommand DeleteWorkoutCommand { get; }
-
-        public WorkoutViewModel()
+        // Expose SelectedWorkout from SelectedWorkoutViewModel
+        public WorkoutModel SelectedWorkout
         {
-            this._workoutService = new WorkoutService();
-            this._workoutTypeService = new WorkoutTypeService();
-            this._completeWorkoutService = new CompleteWorkoutService();
-            Workouts = new ObservableCollection<WorkoutModel>();
-            WorkoutTypes = new ObservableCollection<WorkoutTypeModel>();
+            get => SelectedWorkoutViewModel.SelectedWorkout;
+            set => SelectedWorkoutViewModel.SelectedWorkout = value;
+        }
 
-            // Commands
-            //LoadWorkoutsCommand = new RelayCommand(LoadWorkouts);
-            DeleteWorkoutCommand = new RelayCommand<int>(DeleteWorkout);
-
-
-            // Load workouts when viewmodel is created
-            LoadWorkouts();
-            LoadWorkoutTypes();
+        private bool _isEditPopupOpen;
+        public bool IsEditPopupOpen
+        {
+            get => _isEditPopupOpen;
+            set
+            {
+                _isEditPopupOpen = value;
+                OnPropertyChanged();
+            }
         }
 
         private void LoadWorkouts()
@@ -103,16 +124,13 @@ namespace NeoIsisJob.ViewModels.Workout
             Workouts.Clear();
             IList<WorkoutModel> allWorkouts = this._workoutService.GetAllWorkouts();
 
-            //if a checkbox is selected
             if (SelectedWorkoutType != null)
             {
-                //filter the list
                 foreach (WorkoutModel workout in allWorkouts.Where(w => w.WorkoutTypeId == SelectedWorkoutType.Id))
                 {
                     Workouts.Add(workout);
                 }
             }
-            //if not
             else
             {
                 foreach (WorkoutModel workout in allWorkouts)
@@ -124,18 +142,35 @@ namespace NeoIsisJob.ViewModels.Workout
 
         public void DeleteWorkout(int wid)
         {
-            //delete the entries from complete workouts then delete the workout
+            // Delete the selected workout and its complete workouts
             this._completeWorkoutService.DeleteCompleteWorkoutsByWid(wid);
             this._workoutService.DeleteWorkout(wid);
 
-            //after deletion, load the workouts again
+            // Loading workouts again
             LoadWorkouts();
+        }
+
+        public void UpdateWorkout(string newName)
+        {
+            // Update the selected workout's name
+            if (SelectedWorkout != null && !string.IsNullOrWhiteSpace(newName))
+            {
+                SelectedWorkout.Name = newName;
+                _workoutService.UpdateWorkout(SelectedWorkout);
+                LoadWorkouts();
+                IsEditPopupOpen = false;
+            }
+        }
+
+        private void CloseEditPopup()
+        {
+            // Close the edit popup
+            IsEditPopupOpen = false;
         }
 
         // INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        //gets triggered every time a property changes
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

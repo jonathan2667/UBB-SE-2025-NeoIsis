@@ -16,8 +16,9 @@
 
         public ClassModel() { }
 
-        public ClassModel(string name, string description, int classTypeId, int personalTrainerId)
+        public ClassModel(int id, string name, string description, int classTypeId, int personalTrainerId)
         {
+            Id = id;
             Name = name;
             Description = description;
             ClassTypeId = classTypeId;
