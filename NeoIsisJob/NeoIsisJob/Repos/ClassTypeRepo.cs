@@ -38,7 +38,7 @@ namespace NeoIsisJob.Repos
                 // now check if the type exists -> if yes return it
                 if (reader.Read())
                 {
-                    return new ClassTypeModel(Convert.ToString(reader["Name"]) ?? string.Empty);
+                    return new ClassTypeModel(Convert.ToInt32(reader["WTID"]), Convert.ToString(reader["Name"]) ?? string.Empty);
                 }
 
                 // otherwise return empty instance
@@ -67,7 +67,7 @@ namespace NeoIsisJob.Repos
                 // now check if the type exists -> if yes return it
                 while (reader.Read())
                 {
-                    classTypes.Add(new ClassTypeModel(reader["Name"].ToString() ?? string.Empty) { Id = (int)reader["CTID"] });
+                    classTypes.Add(new ClassTypeModel(Convert.ToInt32(reader["CTID"]), Convert.ToString(reader["Name"]) ?? string.Empty));
                 }
             }
 
