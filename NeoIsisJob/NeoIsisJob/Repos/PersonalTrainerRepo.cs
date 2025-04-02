@@ -14,7 +14,7 @@ namespace NeoIsisJob.Repos
     {
         private readonly DatabaseHelper _dbHelper;
 
-        public PersonalTrainerRepo(DatabaseHelper dbHelper) { _dbHelper = dbHelper; }
+        public PersonalTrainerRepo() { this._dbHelper = new DatabaseHelper(); }
 
         public PersonalTrainerModel GetPersonalTrainerModelById(int ptid)
         {

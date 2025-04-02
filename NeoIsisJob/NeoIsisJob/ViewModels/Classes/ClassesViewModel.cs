@@ -18,8 +18,10 @@ namespace NeoIsisJob.ViewModels.Classes
     {
         private readonly ClassService _classService;
         private readonly ClassTypeService _classTypeService;
+        private readonly PersonalTrainerService _personalTrainerService;
         private ObservableCollection<ClassModel> _classes;
         private ObservableCollection<ClassTypeModel> _classTypes;
+        private ObservableCollection<PersonalTrainerModel> _personalTrainers;
         private ClassTypeModel _selectedClassType;
 
         public ICommand DeleteClassCommand { get; }
@@ -29,8 +31,10 @@ namespace NeoIsisJob.ViewModels.Classes
         {
             this._classService = new ClassService();
             this._classTypeService = new ClassTypeService();
+            this._personalTrainerService = new PersonalTrainerService();
             Classes = new ObservableCollection<ClassModel>();
             ClassTypes = new ObservableCollection<ClassTypeModel>();
+            PersonalTrainers = new ObservableCollection<PersonalTrainerModel>();
 
             LoadClasses();
             LoadClassTypes();
@@ -56,15 +60,35 @@ namespace NeoIsisJob.ViewModels.Classes
             }
         }
 
+        public ObservableCollection<PersonalTrainerModel> PersonalTrainers
+        {
+            get => _personalTrainers;
+            set
+            {
+                _personalTrainers = value;
+                OnPropertyChanged();
+            }
+        }
+
         private void LoadClasses()
         {
             Classes.Clear();
 
-            foreach (var classes in this._classService.GetAllClasses())
+            var trainersDict = _personalTrainerService.GetAllPersonalTrainers()
+                              .ToDictionary(t => t.Id);  // Convert to Dictionary for fast lookup
+
+            foreach (var classItem in _classService.GetAllClasses())
             {
-                Classes.Add(classes);
+                // Assign Personal Trainer to Class
+                if (trainersDict.TryGetValue(classItem.PersonalTrainerId, out var trainer))
+                {
+                    classItem.PersonalTrainer = trainer;
+                }
+
+                Classes.Add(classItem);
             }
         }
+
 
         private void LoadClassTypes()
         {

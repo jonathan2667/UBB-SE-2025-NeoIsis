@@ -14,7 +14,7 @@ namespace NeoIsisJob.Servs
     {
         private readonly PersonalTrainerRepo _personalTrainerRepo;
 
-        public PersonalTrainerService(PersonalTrainerRepo personalTrainerRepo) { _personalTrainerRepo = personalTrainerRepo; }
+        public PersonalTrainerService() { this._personalTrainerRepo = new PersonalTrainerRepo(); }
 
         public List<PersonalTrainerModel> GetAllPersonalTrainers()
         {
