@@ -16,8 +16,9 @@ namespace NeoIsisJob.Models
 
         public PersonalTrainerModel() { }
 
-        public PersonalTrainerModel(string firstName, string lastName, DateTime worksSince)
+        public PersonalTrainerModel(int id, string firstName, string lastName, DateTime worksSince)
         {
+            Id = id;
             FirstName = firstName;
             LastName = lastName;
             WorksSince = worksSince;
