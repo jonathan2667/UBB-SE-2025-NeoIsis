@@ -21,6 +21,14 @@
     <None Remove="View\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Ranks\Rank1.png" />
+    <None Remove="Assets\Ranks\Rank2.png" />
+    <None Remove="Assets\Ranks\Rank3.png" />
+    <None Remove="Assets\Ranks\Rank4.png" />
+    <None Remove="Assets\Ranks\Rank5.png" />
+    <None Remove="Assets\Ranks\Rank6.png" />
+    <None Remove="Assets\Ranks\Rank7.png" />
+    <None Remove="Assets\Ranks\Rank8.png" />
     <None Remove="Views\CalendarPage.xaml" />
     <None Remove="Views\ClassPage.xaml" />
     <None Remove="Views\MainPage.xaml" />
