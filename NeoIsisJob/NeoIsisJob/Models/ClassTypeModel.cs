@@ -9,8 +9,9 @@
 
         public ClassTypeModel() { }
 
-        public ClassTypeModel(string name)
+        public ClassTypeModel(int id, string name)
         {
+            Id = id;
             Name = name;
         }
     }
