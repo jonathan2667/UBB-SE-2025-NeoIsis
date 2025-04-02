@@ -13,7 +13,9 @@
         public string Description { get => _description; set => _description = value; }
         public int ClassTypeId { get => _classTypeId; set => _classTypeId = value; }
         public int PersonalTrainerId { get => _personalTrainerId; set => _personalTrainerId = value; }
+        public PersonalTrainerModel PersonalTrainer { get; set; }
 
+        public string TrainerFullName => PersonalTrainer != null ? $"{PersonalTrainer.LastName} {PersonalTrainer.FirstName}" :"No Trainer Assigned";
         public ClassModel() { }
 
         public ClassModel(int id, string name, string description, int classTypeId, int personalTrainerId)

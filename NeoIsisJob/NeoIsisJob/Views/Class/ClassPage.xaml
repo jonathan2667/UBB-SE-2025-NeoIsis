@@ -24,19 +24,21 @@
 
         <!-- Main Content -->
         <StackPanel Margin="10,60,10,10" Spacing="10">
-            <GridView x:Name="ClassesGrid" ItemsSource="{Binding Classes}" Margin="10" IsItemClickEnabled="True">
+            <GridView x:Name="ClassesGrid" ItemsSource="{Binding Classes}" Margin="10" IsItemClickEnabled="True" >
                 <GridView.ItemTemplate >
                     <DataTemplate>
                         <StackPanel Width="342" Height="200" Background="White" Padding="10" CornerRadius="10">
                             <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
-                            <StackPanel Orientation="Horizontal">
-                            </StackPanel>
+                            <TextBlock Text="{Binding TrainerFullName}" FontSize="14" Foreground="Gray"/>
+
+
+                            <StackPanel Orientation="Horizontal"></StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
         </StackPanel>
-
+        
     </Grid>
     
 </Page>
