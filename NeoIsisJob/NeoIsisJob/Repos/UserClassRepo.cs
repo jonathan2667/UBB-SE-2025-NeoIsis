@@ -14,7 +14,7 @@ namespace NeoIsisJob.Repos
     {
         private readonly DatabaseHelper _dbHelper;
 
-        public UserClassRepo(DatabaseHelper dbHelper) { _dbHelper = dbHelper; }
+        public UserClassRepo() { this._dbHelper = new DatabaseHelper(); }
 
         public UserClassModel GetUserClassModelById(int userId, int classId, DateTime enrollmentDate)
         {

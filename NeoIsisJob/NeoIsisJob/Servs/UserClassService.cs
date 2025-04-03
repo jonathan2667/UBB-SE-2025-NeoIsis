@@ -14,7 +14,7 @@ namespace NeoIsisJob.Servs
     {
         private readonly UserClassRepo _userClassRepo;
 
-        public UserClassService(UserClassRepo userClassRepo) { _userClassRepo = userClassRepo; }
+        public UserClassService() { this._userClassRepo = new UserClassRepo(); }
 
         public List<UserClassModel> GetAllUserClasses()
         {
