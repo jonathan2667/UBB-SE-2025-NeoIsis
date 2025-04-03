@@ -1,6 +1,7 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Servs;
 using NeoIsisJob.Repos;
+using NeoIsisJob.ViewModels.Classes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -10,6 +11,9 @@ using System.Linq;
 using System.Diagnostics;
 using NeoIsisJob.Commands;
 using System.Security.Claims;
+using NeoIsisJob.ViewModels.Workout;
+using System;
+using NeoIsisJob.Data;
 
 
 namespace NeoIsisJob.ViewModels.Classes
@@ -19,23 +23,30 @@ namespace NeoIsisJob.ViewModels.Classes
         private readonly ClassService _classService;
         private readonly ClassTypeService _classTypeService;
         private readonly PersonalTrainerService _personalTrainerService;
+        private readonly UserClassService _userClassService;
         private ObservableCollection<ClassModel> _classes;
         private ObservableCollection<ClassTypeModel> _classTypes;
         private ObservableCollection<PersonalTrainerModel> _personalTrainers;
+        private DateTimeOffset _selectedDate = DateTimeOffset.Now;
         private ClassTypeModel _selectedClassType;
 
-        public ICommand DeleteClassCommand { get; }
-        public ICommand UpdateClassCommand { get; }
-        public ICommand CloseEditPopupCommand { get; }
+        public SelectedClassViewModel SelectedClassViewModel { get; }
+        public ICommand CloseRegisterPopupCommand { get; }
+        public ICommand OpenRegisterPopupCommand { get; }
+        public ICommand ConfirmRegistrationCommand { get; }
         public ClassesViewModel()
         {
             this._classService = new ClassService();
             this._classTypeService = new ClassTypeService();
             this._personalTrainerService = new PersonalTrainerService();
+            this._userClassService = new UserClassService();
             Classes = new ObservableCollection<ClassModel>();
             ClassTypes = new ObservableCollection<ClassTypeModel>();
             PersonalTrainers = new ObservableCollection<PersonalTrainerModel>();
 
+            ConfirmRegistrationCommand = new RelayCommand(ConfirmRegistration);
+            CloseRegisterPopupCommand = new RelayCommand(CloseRegisterPopup);
+            OpenRegisterPopupCommand = new RelayCommand<ClassModel>(OpenRegisterPopup);
             LoadClasses();
             LoadClassTypes();
         }
@@ -70,12 +81,48 @@ namespace NeoIsisJob.ViewModels.Classes
             }
         }
 
+        private ClassModel _selectedClass;
+        public ClassModel SelectedClass
+        {
+            get => _selectedClass;
+            set
+            {
+                _selectedClass = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _isRegisterPopupOpen;
+        public bool IsRegisterPopupOpen
+        {
+            get => _isRegisterPopupOpen;
+            set
+            {
+                _isRegisterPopupOpen = value;
+                OnPropertyChanged();
+            }
+        }
+        public DateTimeOffset SelectedDate
+        {
+            get => _selectedDate;
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void OpenRegisterPopup(ClassModel classModel)
+        {
+            SelectedClass = classModel;
+            IsRegisterPopupOpen = true;
+        }
         private void LoadClasses()
         {
             Classes.Clear();
 
             var trainersDict = _personalTrainerService.GetAllPersonalTrainers()
-                              .ToDictionary(t => t.Id);  // Convert to Dictionary for fast lookup
+                              .ToDictionary(t => t.Id);  
 
             foreach (var classItem in _classService.GetAllClasses())
             {
@@ -97,6 +144,74 @@ namespace NeoIsisJob.ViewModels.Classes
             {
                 ClassTypes.Add(classType);
             }
+        }
+        private string _dateError;
+        public string DateError
+        {
+            get => _dateError;
+            set
+            {
+                _dateError = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private void ConfirmRegistration()
+        {
+            if (SelectedClass == null) return;
+
+            // Validate date is not in the past
+            if (SelectedDate.Date < DateTime.Today)
+            {
+                DateError = "Please choose a valid date (today or future)";
+                return;
+            }
+
+            try
+            {
+                int currentUserId = GetCurrentUserId();
+                var userClass = new UserClassModel
+                {
+                    UserId = currentUserId,
+                    ClassId = SelectedClass.Id,
+                    EnrollmentDate = SelectedDate.Date
+                };
+
+                _userClassService.AddUserClass(userClass);
+                DateError = ""; // Clear error if successful
+                Debug.WriteLine($"Successfully registered for class {SelectedClass.Name}");
+                IsRegisterPopupOpen = false;
+            }
+            catch (Exception ex)
+            {
+                DateError = $"Registration failed: {ex.Message}";
+                Debug.WriteLine(DateError);
+            }
+        }
+
+        private int _currentUserId = 1; 
+
+        public int CurrentUserId
+        {
+            get => _currentUserId;
+            set
+            {
+                _currentUserId = value;
+                OnPropertyChanged();
+            }
+        }
+        private int GetCurrentUserId()
+        {
+            if (_currentUserId <= 0)
+            {
+                throw new InvalidOperationException("No valid user is set");
+            }
+            return _currentUserId;
+        }
+        private void CloseRegisterPopup()
+        {
+            // Close the edit popup
+            IsRegisterPopupOpen = false;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
