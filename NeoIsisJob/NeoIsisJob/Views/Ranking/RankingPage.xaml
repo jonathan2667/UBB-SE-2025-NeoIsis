@@ -36,7 +36,8 @@
                 <Canvas HorizontalAlignment="Left" Grid.Column="0" Grid.Row="1">
                     <Path x:Name="Chest" Fill="Cyan" Stroke="Black" StrokeThickness="2"
             Data="m 702.67638,444.92626 c -0.35699,-1.33444 -0.65522,-8.8122 -0.66273,-16.61724 -0.0125,-12.99504 0.72791,-17.15423 2.53364,-14.2325 1.03649,1.67707 0.79592,28.07159 -0.28118,30.84974 l -0.94066,2.42626 z M 192.5,304.86081 c -18.25292,-2.31079 -28.95848,-8.01338 -34.24426,-18.24107 -2.56,-4.95345 -2.67219,-5.89926 -3.45432,-29.11974 -0.44461,-13.2 -1.22361,-26.7 -1.7311,-30 -0.633,-4.11608 -0.75487,1.53567 -0.38813,18 0.59689,26.79731 -0.049,32.666 -4.62264,42 -3.85139,7.86007 -7.93998,11.8993 -14.88589,14.70618 -5.27547,2.13185 -7.07729,2.28941 -25.67366,2.24505 -21.301117,-0.0508 -23.349086,-0.40724 -40.97979,-7.1322 C 61.030615,295.22511 58.873862,292.17809 52.137892,277 c -1.830656,-4.125 -4.811959,-10.65 -6.625116,-14.5 -3.419497,-7.26085 -7.82316,-20.30711 -9.035108,-26.76735 -1.24928,-6.65923 -0.256579,-8.02428 12.271367,-16.87414 16.518335,-11.66872 32.169488,-27.89152 38.036172,-39.42541 3.409869,-6.70379 3.467756,-6.71912 17.107933,-4.53028 10.78727,1.73104 12.67283,2.3423 16.98143,5.5051 2.66572,1.95682 9.28037,5.86333 14.69923,8.68112 8.87323,4.61407 10.35897,5.08127 14.94852,4.70067 2.94861,-0.24453 8.02084,-1.8169 12.03686,-3.73139 8.99378,-4.28745 29.7518,-11.61307 39.94082,-14.09534 10.66109,-2.59727 14.11559,-2.54978 15.59492,0.21438 2.15213,4.02129 15.74282,19.47334 23.60991,26.84347 4.28734,4.01652 13.12449,11.54576 19.63809,16.73163 8.52772,6.78943 11.70247,9.89336 11.34117,11.0882 -0.94522,3.12587 -8.7838,21.57451 -9.60985,22.61745 -0.45387,0.57304 -4.5203,9.36689 -9.0365,19.54189 -4.5162,10.175 -9.29946,19.9354 -10.62947,21.68978 -6.86734,9.05856 -27.35814,13.15245 -50.90827,10.17103 z m -61.91162,-3.23145 c 8.40992,-2.66237 11.50609,-5.39275 15.91162,-14.03182 l 4,-7.84384 0.31373,-26.62685 c 0.18588,-15.77645 -0.17275,-31.51683 -0.88007,-38.62685 -1.7437,-17.52752 -1.77082,-16.95212 0.81634,-17.31955 1.2375,-0.17575 2.25394,0.0493 2.25875,0.5 0.0608,5.69281 1.3167,26.75222 2.49395,41.81955 0.81648,10.45 1.42203,23.95 1.34566,30 -0.15801,12.51825 0.8503,15.94693 6.54267,22.24771 7.91334,8.75911 23.27697,12.66221 47.55341,12.08084 14.50576,-0.34738 15.96028,-0.56052 21.55261,-3.15832 3.29838,-1.53218 7.07139,-3.77229 8.38446,-4.97801 2.19461,-2.0152 10.95895,-19.26284 12.61009,-24.81583 0.38863,-1.30701 3.05732,-7.10139 5.93042,-12.87639 2.8731,-5.775 6.24189,-13.2 7.4862,-16.5 1.24431,-3.3 2.88349,-7.16817 3.64261,-8.59594 1.63421,-3.07362 1.49322,-3.23011 -13.64119,-15.14012 C 246.52786,209.594 231.09452,194.79704 223.77963,186 c -5.50177,-6.61654 -7.05407,-6.26758 -2.52773,0.56823 4.74917,7.17233 20.46893,22.58752 34.4981,33.8297 6.7375,5.39905 12.25,10.38092 12.25,11.07083 0,0.68992 -1.73876,5.02918 -3.8639,9.64282 -2.12515,4.61363 -7.82914,17.16342 -12.67553,27.88842 -4.84639,10.725 -9.922,21.01686 -11.27913,22.87081 -5.5411,7.56956 -21.64916,11.06545 -42.10011,9.13686 -22.0431,-2.07873 -32.18762,-6.92542 -36.67356,-17.52132 -1.30595,-3.08467 -1.75001,-7.71851 -1.96323,-20.48635 -0.15155,-9.075 -0.78321,-22.125 -1.40369,-29 -1.82133,-20.18034 -1.83881,-36.06805 -0.0409,-37.11242 0.825,-0.47922 8.025,-3.54769 16,-6.81883 15.60812,-6.40205 28.36873,-10.41103 36.75,-11.54568 4.895,-0.66269 6.4218,-1.68082 4.39707,-2.93217 -2.79497,-1.72739 -41.76526,9.63176 -49.7568,14.50322 -4.95231,3.01881 -11.5466,5.07998 -16.08778,5.02853 -4.70044,-0.0532 -16.45748,-5.49228 -27.30249,-12.63066 -5.50402,-3.62284 -7.94436,-4.52462 -15.92622,-5.8852 -13.585447,-2.31577 -14.843395,-2.20186 -16.87029,1.52765 -7.041584,12.95659 -24.1958,30.8364 -40.70349,42.42517 l -10,7.02023 -0.30794,4.78718 c -0.381062,5.92392 2.808408,17.34754 7.854714,28.13298 2.058678,4.4 6.058125,13.175 8.887661,19.5 2.829535,6.325 5.689324,12.19963 6.355087,13.05474 1.624187,2.08612 17.642075,7.751 26.818495,9.48463 9.922973,1.87466 35.408663,1.32872 42.480363,-0.91001 z M 87,299.44877 c -3.575,-0.76573 -10.287732,-2.84843 -14.917181,-4.62822 l -8.417182,-3.23598 -6.241502,-13.04228 C 51.185027,265.505 41.778358,240.66593 40.500385,233.85374 l -0.677399,-3.61084 11.714911,-8.35559 c 13.803311,-9.84513 30.969601,-27.19945 36.843907,-37.24747 4.3903,-7.50962 3.974678,-7.3777 16.677316,-5.29374 7.78684,1.27749 10.49824,2.60495 22.94088,11.23151 3.575,2.47857 8.525,5.0914 11,5.8063 3.02567,0.87395 4.89981,2.1131 5.72032,3.78218 2.07125,4.21333 3.16851,19.18269 3.46958,47.33391 0.32103,30.01667 -0.20729,33.6542 -6.2026,42.70546 -3.48492,5.26127 -8.55937,8.19622 -16.90874,9.77964 -7.57479,1.43653 -30.3665,1.11551 -38.07856,-0.53633 z m 65,-94.5321 c 0,-5.23518 -0.32614,-6.96828 -1.25,-6.64237 -0.6875,0.24252 -1.13564,1.29252 -0.99587,2.33333 0.13977,1.0408 0.53996,4.02987 0.88929,6.64237 0.34934,2.6125 0.79748,4.75 0.99587,4.75 0.19839,0 0.36071,-3.1875 0.36071,-7.08333 z"
-            Canvas.Left="50" Canvas.Top="70">
+            Canvas.Left="50" Canvas.Top="70"
+                          >
                         <Path.RenderTransform>
                             <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
                         </Path.RenderTransform>
@@ -82,44 +83,68 @@
                             <ScaleTransform ScaleX="0.4" ScaleY="0.4"/>
                         </Path.RenderTransform>
                     </Path>
-                </Canvas>
+            </Canvas>
 
-                <StackPanel Grid.Column="1" Grid.Row="1">
-                    <TextBlock Text="All Rankings Explained:" FontSize="25" FontWeight="Bold"></TextBlock>
-                    
-                    <StackPanel Orientation="Horizontal">
-                        <Image Source="/Assets/Ranks/Rank8.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Challenger" Margin="10,15,0,0"></TextBlock>
-                    </StackPanel>
+         <StackPanel Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="All Rankings Explained:" FontSize="25" FontWeight="Bold" Margin="0, 0, 0, 30"></TextBlock>
+               
+            <StackPanel Orientation="Horizontal">
+                 <Image Source="/Assets/Ranks/Rank8.png" Width="50" Height="50"></Image>
+                <TextBlock Text="Challenger" Foreground="Aquamarine" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="9500" Foreground="Aquamarine" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="10000" Foreground="Aquamarine" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
 
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Assets/Ranks/Rank7.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Grandmaster" Margin="10,15,0,0"></TextBlock>
-                </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Assets/Ranks/Rank7.png" Width="50" Height="50"></Image>
+                <TextBlock Text="Grandmaster" Foreground="OrangeRed" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="8500" Foreground="OrangeRed" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="9500" Foreground="OrangeRed" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
                 <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Ranks/Rank6.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Master" Margin="10,15,0,0"></TextBlock>
-                </StackPanel>
+                <TextBlock Text="Master" Foreground="DarkViolet" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="7000" Foreground="DarkViolet" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="8500" Foreground="DarkViolet" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
                 <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Ranks/Rank5.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Elite" Margin="10,15,0,0"></TextBlock>
-                </StackPanel>
+                <TextBlock Text="Elite" Foreground="DarkGreen" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="5000" Foreground="DarkGreen" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="7000" Foreground="DarkGreen" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
                 <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Ranks/Rank4.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Gold" Margin="10,15,0,0"></TextBlock>
-                </StackPanel>
+                <TextBlock Text="Gold" Foreground="Gold" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="3500" Foreground="Gold" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="5000" Foreground="Gold" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
                 <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Ranks/Rank3.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Silver" Margin="10,15,0,0"></TextBlock>
-                </StackPanel>
+                <TextBlock Text="Silver" Foreground="Silver" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="2250" Foreground="Silver" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="3500" Foreground="Silver" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
                 <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Ranks/Rank2.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Bronze" Margin="10,15,0,0"></TextBlock>
-                </StackPanel>
+                <TextBlock Text="Bronze" Foreground="SandyBrown" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="1000" Foreground="SandyBrown" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="2250" Foreground="SandyBrown" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
                 <StackPanel Orientation="Horizontal">
                 <Image Source="/Assets/Ranks/Rank1.png" Width="50" Height="50"></Image>
-                <TextBlock Text="Beginner" Margin="10,15,0,0"></TextBlock>
-                </StackPanel>
+                <TextBlock Text="Beginner" Foreground="DimGray" Width="150" Margin="10,15,0,0"></TextBlock>
+                <TextBlock Text="0" Foreground="DimGray" TextAlignment="Center" Width="50" Margin="25, 15, 0, 0"></TextBlock>
+                <TextBlock Text="-" Width="10" Margin="15, 15, 0, 0"></TextBlock>
+                <TextBlock Text="1000" Foreground="DimGray" TextAlignment="Center" Width="50" Margin="15, 15, 0, 0"></TextBlock>
+            </StackPanel>
         </StackPanel>
     </Grid>
     
