@@ -130,3 +130,17 @@ VALUES ('Zelu', 'Popa', '2024-02-10'),('Rares', 'Racsan', '2024-03-11'), ('Mihai
 
 INSERT INTO Classes([Name], [Description], CTID, PTID)
 VALUES ('Samba', 'danceeee', 1, 1), ('Box', 'Guts', 2, 2), ('MMA', 'fightttt', 2, 2), ('Yoga', 'relax', 3, 3)
+
+INSERT INTO [Users] DEFAULT VALUES;
+
+INSERT INTO [Users] DEFAULT VALUES;
+
+INSERT INTO UserWorkouts (UID, WID, [Date], Completed)  
+VALUES  
+    (1, 1, '2025-03-28', 1),   
+    (1, 2, '2025-03-29', 0), 
+	(2, 1, '2025-03-24', 1), 
+    (2, 2, '2025-03-25', 0),
+    (1, 3, '2025-03-30', 1),  
+    (1, 1, '2025-04-05', 1),   
+    (1, 4, '2025-04-06', 0); 

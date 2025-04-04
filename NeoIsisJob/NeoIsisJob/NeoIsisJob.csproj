@@ -92,7 +92,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Calendar\" />
     <Folder Include="Views\Class\" />
     <Folder Include="Views\Main\" />
     <Folder Include="Views\Ranking\" />
