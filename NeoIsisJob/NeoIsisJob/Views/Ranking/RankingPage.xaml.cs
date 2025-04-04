@@ -220,7 +220,7 @@ namespace NeoIsisJob.Views
             StackPanel rowStackPanel = new StackPanel { Orientation = Orientation.Horizontal };
 
             Image rankImage = new Image { Source = new BitmapImage(new Uri(this.BaseUri, imagePath)), Width = 150, Height = 150 };
-            TextBlock muscleGroupName = new TextBlock { Text = muscleGroup, FontSize = 25, Foreground = color };
+            TextBlock muscleGroupName = new TextBlock { Text = muscleGroup, FontSize = 25, Foreground = color, Margin = new Thickness(20, 60, 0, 10)};
             ProgressBar progressBar = new ProgressBar { Value = rank, Minimum = this._rankingsViewModel.GetRankLowerBound(rank), Maximum = this._rankingsViewModel.GetRankUpperBound(rank), Foreground = color};
             TextBlock nextRankBlock = new TextBlock { Text = "You require " + (this._rankingsViewModel.GetRankUpperBound(rank) - rank).ToString() + " points to reach the next ranking!"};
 
