@@ -14,11 +14,13 @@ using System.Security.Claims;
 using NeoIsisJob.ViewModels.Workout;
 using System;
 using NeoIsisJob.Data;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml;
 
 
 namespace NeoIsisJob.ViewModels.Classes
 {
-    public class ClassesViewModel: INotifyPropertyChanged
+    public class ClassesViewModel : INotifyPropertyChanged
     {
         private readonly ClassService _classService;
         private readonly ClassTypeService _classTypeService;
@@ -29,7 +31,7 @@ namespace NeoIsisJob.ViewModels.Classes
         private ObservableCollection<PersonalTrainerModel> _personalTrainers;
         private DateTimeOffset _selectedDate = DateTimeOffset.Now;
         private ClassTypeModel _selectedClassType;
-
+        public bool HasClasses => Classes?.Count > 0;
         public SelectedClassViewModel SelectedClassViewModel { get; }
         public ICommand CloseRegisterPopupCommand { get; }
         public ICommand OpenRegisterPopupCommand { get; }
@@ -58,6 +60,7 @@ namespace NeoIsisJob.ViewModels.Classes
             {
                 _classes = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasClasses));
             }
         }
 
@@ -122,7 +125,7 @@ namespace NeoIsisJob.ViewModels.Classes
             Classes.Clear();
 
             var trainersDict = _personalTrainerService.GetAllPersonalTrainers()
-                              .ToDictionary(t => t.Id);  
+                              .ToDictionary(t => t.Id);
 
             foreach (var classItem in _classService.GetAllClasses())
             {
@@ -189,7 +192,7 @@ namespace NeoIsisJob.ViewModels.Classes
             }
         }
 
-        private int _currentUserId = 1; 
+        private int _currentUserId = 1;
 
         public int CurrentUserId
         {

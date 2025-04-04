@@ -52,7 +52,7 @@
             <GridView x:Name="WorkoutGrid" ItemsSource="{Binding Workouts}" Margin="10" IsItemClickEnabled="True" ItemClick="GoToSelectedWorkoutPage_Click">
                 <GridView.ItemTemplate >
                     <DataTemplate>
-                        <StackPanel Width="150" Height="200" Background="White" Padding="10" CornerRadius="10">
+                        <StackPanel Width="342" Height="200" Background="White" Padding="10" CornerRadius="10">
                             <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Bold" Margin="0,5,0,0"/>
                             <StackPanel Orientation="Horizontal">
                                 <Button Content="Delete" 
