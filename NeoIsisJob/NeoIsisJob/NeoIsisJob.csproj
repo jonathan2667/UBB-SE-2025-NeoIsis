@@ -21,6 +21,7 @@
     <None Remove="View\**" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Ranks\coconut.jpeg" />
     <None Remove="Assets\Ranks\Rank1.png" />
     <None Remove="Assets\Ranks\Rank2.png" />
     <None Remove="Assets\Ranks\Rank3.png" />

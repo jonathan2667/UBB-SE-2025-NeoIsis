@@ -25,7 +25,7 @@ namespace NeoIsisJob.Repos
             using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 connection.Open();
-                String query = "Select * from Rankings where UID=@UID, MGID=@MGID";
+                String query = "Select * from Rankings where UID=@UID and MGID=@MGID";
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@UID", uid);
                 command.Parameters.AddWithValue("@MGID", mgid);
