@@ -130,26 +130,8 @@ How to Run the Project
 ----------------------
 1. Set Up the Database:
    - Ensure you have a SQL Server instance running.
-   - Create the Workouts table using the schema provided above.
 
-2. Configure the Connection String:
-   - Update the connection string in DataHelper.cs to point to your SQL Server instance and database.
-
-   Example:
-   public static string ConnectionString => "Server=localhost;Database=NeoIsisJobDB;User Id=sa;Password=YourPassword;";
-
-3. Run the Application:
+2. Run the Application:
    - Open the project in Visual Studio.
    - Build and run the application.
    - Navigate to the WorkoutPage to view and edit workouts.
-
-Contributing
-------------
-Contributions are welcome! Please follow these steps:
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Submit a pull request with a detailed description of your changes.
-
-License
--------
-This project is licensed under the MIT License. See the LICENSE file for details.
