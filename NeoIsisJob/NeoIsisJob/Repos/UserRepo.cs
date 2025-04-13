@@ -12,13 +12,13 @@ namespace NeoIsisJob.Repos
 {
     public class UserRepo
     {
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databaseHelper;
 
-        public UserRepo(DatabaseHelper dbHelper)  { _dbHelper = dbHelper; }
+        public UserRepo(DatabaseHelper dbHelper)  { _databaseHelper = dbHelper; }
 
-        public UserModel GetUserById(int id)
+        public UserModel GetUserById(int userId)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // open connection to database
                 connection.Open();
@@ -28,7 +28,7 @@ namespace NeoIsisJob.Repos
 
                 // create command and set parameters
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@Id", userId);
                 SqlDataReader reader = command.ExecuteReader();
 
                 // if user found return user
@@ -44,7 +44,7 @@ namespace NeoIsisJob.Repos
 
         public int InsertUser()
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // open connection to database
                 connection.Open();
@@ -61,9 +61,9 @@ namespace NeoIsisJob.Repos
             }
         }
 
-        public bool DeleteUserById(int id)
+        public bool DeleteUserById(int userId)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // open connection to database
                 connection.Open();
@@ -73,7 +73,7 @@ namespace NeoIsisJob.Repos
 
                 // create command and set parameters
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", id);
+                command.Parameters.AddWithValue("@Id", userId);
 
                 // execute command and return true if user deleted
                 return command.ExecuteNonQuery() > 0;
@@ -84,7 +84,7 @@ namespace NeoIsisJob.Repos
         {
             List<UserModel> users = new List<UserModel>();
 
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 try
                 {

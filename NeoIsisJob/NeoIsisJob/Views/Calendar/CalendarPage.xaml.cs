@@ -406,9 +406,13 @@ namespace NeoIsisJob.Views
                             {
                                 if (btnSender is Button clickedButton && clickedButton.Tag is int workoutId)
                                 {
-                                    // Remove existing workout first
-                                   
-                                    
+                                    // Check if workout already exists for this date
+                                    var existingWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
+                                    if (existingWorkout != null)
+                                    {
+                                        // If workout exists, update it instead of adding a new one
+                                        _calendarService.DeleteUserWorkout(ViewModel._userId, existingWorkout.WorkoutId, day.Date);
+                                    }
 
                                     // Add new workout
                                     var newWorkout = new UserWorkoutModel(
@@ -417,10 +421,10 @@ namespace NeoIsisJob.Views
                                         date: day.Date,
                                         completed: false
                                     );
-                                    ViewModel.AddUserWorkout(newWorkout);
-                                    dialog.Content = $"Workout changed to '{clickedButton.Content}' successfully.";
-                                    dialog.PrimaryButtonText = "Change Workout"; // Restore button
-                                    dialog.SecondaryButtonText = "Remove Workout";
+                                    _calendarService.AddUserWorkout(newWorkout);
+                                    ViewModel.UpdateCalendar(); // Force calendar update
+                                    dialog.Content = $"Workout '{clickedButton.Content}' added successfully.";
+                                    dialog.Hide(); // Close the dialog
                                 }
                             };
                             stackPanel.Children.Add(button);

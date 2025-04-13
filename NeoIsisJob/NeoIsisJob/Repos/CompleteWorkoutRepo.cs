@@ -40,7 +40,7 @@ namespace NeoIsisJob.Repos
         }
 
         //deletes all entries from CompleteWorkouts table which have the specified WID
-        public void DeleteCompleteWorkoutsByWid(int wid)
+        public void DeleteCompleteWorkoutsByWorkoutId(int workoutId)
         {
             using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
@@ -48,13 +48,13 @@ namespace NeoIsisJob.Repos
 
                 String deleteCommand = "DELETE FROM CompleteWorkouts WHERE WID=@wid";
                 SqlCommand command = new SqlCommand(deleteCommand, connection);
-                command.Parameters.AddWithValue("@wid", wid);
+                command.Parameters.AddWithValue("@wid", workoutId);
 
                 command.ExecuteNonQuery();
             }
         }
 
-        public void InsertCompleteWorkout(int wid, int eid, int sets, int repsPerSet)
+        public void InsertCompleteWorkout(int workoutId, int exerciseId, int sets, int repetitionsPerSet)
         {
             using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
@@ -62,10 +62,10 @@ namespace NeoIsisJob.Repos
 
                 String insertCommand = "INSERT INTO CompleteWorkouts(WID, EID, [Sets], RepsPerSet) VALUES (@wid, @eid, @sets, @repsPerSet)";
                 SqlCommand command = new SqlCommand(insertCommand, connection);
-                command.Parameters.AddWithValue("@wid", wid);
-                command.Parameters.AddWithValue("@eid", eid);
+                command.Parameters.AddWithValue("@wid", workoutId);
+                command.Parameters.AddWithValue("@eid", exerciseId);
                 command.Parameters.AddWithValue("@sets", sets);
-                command.Parameters.AddWithValue("@repsPerSet", repsPerSet);
+                command.Parameters.AddWithValue("@repsPerSet", repetitionsPerSet);
 
                 command.ExecuteNonQuery();
             }

@@ -14,13 +14,13 @@ namespace NeoIsisJob.Repos
 {
     public class ClassRepo
     {
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databaseHelper;
 
-        public ClassRepo() { this._dbHelper = new DatabaseHelper(); }
+        public ClassRepo() { this._databaseHelper = new DatabaseHelper(); }
 
-        public ClassModel GetClassModelById(int cid)
+        public ClassModel GetClassModelById(int classId)
         {
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -32,7 +32,7 @@ namespace NeoIsisJob.Repos
                 SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameter
-                command.Parameters.AddWithValue("@cid", cid);
+                command.Parameters.AddWithValue("@cid", classId);
 
                 // Execute the command
                 SqlDataReader reader = command.ExecuteReader();
@@ -61,7 +61,7 @@ namespace NeoIsisJob.Repos
             List<ClassModel> classes = new List<ClassModel>();
             try
             {
-                using (SqlConnection connection = this._dbHelper.GetConnection())
+                using (SqlConnection connection = this._databaseHelper.GetConnection())
                 {
                     // Open the connection
                     connection.Open();
@@ -96,7 +96,7 @@ namespace NeoIsisJob.Repos
 
         public void AddClassModel(ClassModel classModel)
         {
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -118,9 +118,9 @@ namespace NeoIsisJob.Repos
             }
         }
 
-        public void DeleteClassModel(int cid)
+        public void DeleteClassModel(int classId)
         {
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -132,7 +132,7 @@ namespace NeoIsisJob.Repos
                 SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameter
-                command.Parameters.AddWithValue("@cid", cid);
+                command.Parameters.AddWithValue("@cid", classId);
 
                 // Execute the command
                 command.ExecuteNonQuery();

@@ -12,13 +12,13 @@ namespace NeoIsisJob.Repos
 {
     public class WorkoutTypeRepo
     {
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databaseHelper;
 
-        public WorkoutTypeRepo() { this._dbHelper = new DatabaseHelper(); }
+        public WorkoutTypeRepo() { this._databaseHelper = new DatabaseHelper(); }
 
-        public WorkoutTypeModel GetWorkoutTypeById(int wtid)
+        public WorkoutTypeModel GetWorkoutTypeById(int workoutTypeId)
         {
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 //open the connection
                 connection.Open();
@@ -28,7 +28,7 @@ namespace NeoIsisJob.Repos
 
                 //create the command now
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@wtid", wtid);
+                command.Parameters.AddWithValue("@wtid", workoutTypeId);
                 SqlDataReader reader = command.ExecuteReader();
 
                 //now check if the type exists -> if yes return it
@@ -42,10 +42,10 @@ namespace NeoIsisJob.Repos
             return new WorkoutTypeModel();
         }
 
-        public void InsertWorkoutType(String name)
+        public void InsertWorkoutType(String workoutTypeName)
         {
             //use the setup connection
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 //open the connection
                 connection.Open();
@@ -55,16 +55,16 @@ namespace NeoIsisJob.Repos
 
                 //now create the command and set the parameters
                 SqlCommand command = new SqlCommand(insertStatement, connection);
-                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@name", workoutTypeName);
 
                 command.ExecuteNonQuery();
             }
         }
 
-        public void DeleteWorkoutType(int wtid)
+        public void DeleteWorkoutType(int workoutTypeId)
         {
             //use the setup connection
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 //open the connection
                 connection.Open();
@@ -74,7 +74,7 @@ namespace NeoIsisJob.Repos
 
                 //now create the command and set the parameters
                 SqlCommand command = new SqlCommand(deleteStatement, connection);
-                command.Parameters.AddWithValue("@wtid", wtid);
+                command.Parameters.AddWithValue("@wtid", workoutTypeId);
 
                 command.ExecuteNonQuery();
             }
@@ -85,7 +85,7 @@ namespace NeoIsisJob.Repos
 
             List<WorkoutTypeModel> workoutTypes = new List<WorkoutTypeModel>();
 
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
                 //open the connection
                 connection.Open();
@@ -102,10 +102,10 @@ namespace NeoIsisJob.Repos
                 {
                     // Ensure data is not null before accessing it
                     string name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : "Unknown";
-                    int wtid = Convert.ToInt32(reader["WTID"]);
+                    int workoutTypeId = Convert.ToInt32(reader["WTID"]);
 
                     // Create WorkoutTypeModel and add to the list
-                    workoutTypes.Add(new WorkoutTypeModel(wtid, name));
+                    workoutTypes.Add(new WorkoutTypeModel(workoutTypeId, name));
                 }
             }
 

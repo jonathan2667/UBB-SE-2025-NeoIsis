@@ -12,28 +12,28 @@ namespace NeoIsisJob.Servs
 {
     public class ClassService
     {
-        private readonly ClassRepo _classRepo;
+        private readonly ClassRepo _classRepository;
 
-        public ClassService() { this._classRepo = new ClassRepo(); }
+        public ClassService() { this._classRepository = new ClassRepo(); }
 
         public List<ClassModel> GetAllClasses()
         {
-            return this._classRepo.GetAllClassModel();
+            return this._classRepository.GetAllClassModel();
         }
     
-        public ClassModel GetClassById(int cid)
+        public ClassModel GetClassById(int classId)
         {
-            return _classRepo.GetClassModelById(cid);
+            return _classRepository.GetClassModelById(classId);
         }
 
         public void AddClass(ClassModel classModel)
         {
-            _classRepo.AddClassModel(classModel);
+            _classRepository.AddClassModel(classModel);
         }
 
-        public void DeleteClass(int cid)
+        public void DeleteClass(int classId)
         {
-            _classRepo.DeleteClassModel(cid);
+            _classRepository.DeleteClassModel(classId);
         }
 
         // In case you guys need to update a class

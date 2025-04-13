@@ -26,9 +26,9 @@ namespace NeoIsisJob.ViewModels.Rankings
             this._rankingsService = new RankingsService();
         }
 
-        public RankingModel GetRankingByMGID(int mgid)
+        public RankingModel GetRankingByMGID(int muscleGroupid)
         {
-            RankingModel ranking = this._rankingsService.GetRankingByFullID(this._user_id, mgid);
+            RankingModel ranking = this._rankingsService.GetRankingByFullID(this._user_id, muscleGroupid);
             
             return ranking;
             

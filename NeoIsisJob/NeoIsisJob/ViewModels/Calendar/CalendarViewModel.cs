@@ -19,7 +19,12 @@ namespace NeoIsisJob.ViewModels.Calendar
         private string _yearText;
         private string _monthText;
         private ObservableCollection<CalendarDay> _calendarDays;
+
         private readonly ICalendarService _calendarService;
+
+        //public readonly ICalendarRepository _calendarRepository;
+        private readonly DatabaseHelper _databaseHelper;
+
         public readonly int _userId;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -27,7 +32,10 @@ namespace NeoIsisJob.ViewModels.Calendar
         {
             _userId = userId;
             _currentDate = DateTime.Now;
+
             _calendarService = calendarService ?? new CalendarService();
+            //_calendarRepository = calendarRepository ?? new CalendarRepository();
+            _databaseHelper = new DatabaseHelper();
             CalendarDays = new ObservableCollection<CalendarDay>();
             PreviousMonthCommand = new RelayCommand(PreviousMonth);
             NextMonthCommand = new RelayCommand(NextMonth);
@@ -93,6 +101,8 @@ namespace NeoIsisJob.ViewModels.Calendar
         public void AddUserWorkout(UserWorkoutModel userWorkout)
         {
             _calendarService.AddUserWorkout(userWorkout);
+            
+            
             UpdateCalendar();
         }
 

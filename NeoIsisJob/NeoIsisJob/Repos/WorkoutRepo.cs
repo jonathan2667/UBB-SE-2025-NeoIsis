@@ -16,7 +16,7 @@ namespace NeoIsisJob.Repos
 
         public WorkoutRepo() { this._databaseHelper = new DatabaseHelper(); }
 
-        public WorkoutModel GetWorkoutById(int wid)
+        public WorkoutModel GetWorkoutById(int workoutId)
         {
             using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
@@ -28,7 +28,7 @@ namespace NeoIsisJob.Repos
 
                 //create the command now
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@wid", wid);
+                command.Parameters.AddWithValue("@wid", workoutId);
                 SqlDataReader reader = command.ExecuteReader();
 
                 //now check if the type exists -> if yes return it
@@ -43,7 +43,7 @@ namespace NeoIsisJob.Repos
             return new WorkoutModel();
         }
 
-        public WorkoutModel GetWorkoutByName(String name)
+        public WorkoutModel GetWorkoutByName(String workoutName)
         {
             using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
@@ -55,7 +55,7 @@ namespace NeoIsisJob.Repos
 
                 //create the command now
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@name", workoutName);
                 SqlDataReader reader = command.ExecuteReader();
 
                 //now check if the type exists -> if yes return it
@@ -70,7 +70,7 @@ namespace NeoIsisJob.Repos
             return new WorkoutModel();
         }
 
-        public void InsertWorkout(string name, int wtid)
+        public void InsertWorkout(string workoutName, int workoutTypeId)
         {
             using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
@@ -82,13 +82,13 @@ namespace NeoIsisJob.Repos
 
                 //create the command, add params and execute it
                 SqlCommand command = new SqlCommand(insertStatement, connection);
-                command.Parameters.AddWithValue("@name", name);
-                command.Parameters.AddWithValue("@wtid", wtid);
+                command.Parameters.AddWithValue("@name", workoutName);
+                command.Parameters.AddWithValue("@wtid", workoutTypeId);
                 command.ExecuteNonQuery();
             }
         }
    
-        public void DeleteWorkout(int wid)
+        public void DeleteWorkout(int workoutId)
         {
             using (SqlConnection connection = this._databaseHelper.GetConnection())
             {
@@ -97,7 +97,7 @@ namespace NeoIsisJob.Repos
                 string deleteStatement = "DELETE FROM Workouts WHERE WID=@wid";
 
                 SqlCommand command = new SqlCommand(deleteStatement, connection);
-                command.Parameters.AddWithValue("@wid", wid);
+                command.Parameters.AddWithValue("@wid", workoutId);
                 command.ExecuteNonQuery();
             }
         }

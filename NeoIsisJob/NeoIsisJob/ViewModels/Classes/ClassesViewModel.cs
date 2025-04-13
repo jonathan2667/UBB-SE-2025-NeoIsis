@@ -125,7 +125,7 @@ namespace NeoIsisJob.ViewModels.Classes
             Classes.Clear();
 
             var trainersDict = _personalTrainerService.GetAllPersonalTrainers()
-                              .ToDictionary(t => t.Id);
+                              .ToDictionary(personalTrainer => personalTrainer.Id);
 
             foreach (var classItem in _classService.GetAllClasses())
             {

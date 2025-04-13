@@ -12,13 +12,13 @@ namespace NeoIsisJob.Repos
 {
     public class PersonalTrainerRepo
     {
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databasebHelper;
 
-        public PersonalTrainerRepo() { this._dbHelper = new DatabaseHelper(); }
+        public PersonalTrainerRepo() { this._databasebHelper = new DatabaseHelper(); }
 
-        public PersonalTrainerModel GetPersonalTrainerModelById(int ptid)
+        public PersonalTrainerModel GetPersonalTrainerModelById(int personalTrainerId)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databasebHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -30,7 +30,7 @@ namespace NeoIsisJob.Repos
                 SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameter
-                command.Parameters.AddWithValue("@ptid", ptid);
+                command.Parameters.AddWithValue("@ptid", personalTrainerId);
 
                 // Read the data
                 SqlDataReader reader = command.ExecuteReader();
@@ -43,7 +43,7 @@ namespace NeoIsisJob.Repos
                         Id = (int)reader["PTID"],
                         LastName = reader["LastName"].ToString() ?? string.Empty,
                         FirstName = reader["FirstName"].ToString() ?? string.Empty,
-                        WorksSince = reader["WorksSince"] as DateTime? ?? SqlDateTime.MinValue.Value
+                        WorkStartDateTime = reader["WorksSince"] as DateTime? ?? SqlDateTime.MinValue.Value
                     };
                 }
 
@@ -56,7 +56,7 @@ namespace NeoIsisJob.Repos
         {
             List<PersonalTrainerModel> personalTrainers = new List<PersonalTrainerModel>();
 
-            using (SqlConnection connection = this._dbHelper.GetConnection())
+            using (SqlConnection connection = this._databasebHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -78,7 +78,7 @@ namespace NeoIsisJob.Repos
                         Id = (int)reader["PTID"],
                         LastName = reader["LastName"].ToString() ?? string.Empty,
                         FirstName = reader["FirstName"].ToString() ?? string.Empty,
-                        WorksSince = reader["WorksSince"] as DateTime? ?? SqlDateTime.MinValue.Value
+                        WorkStartDateTime = reader["WorksSince"] as DateTime? ?? SqlDateTime.MinValue.Value
                     });
                 }
 
@@ -89,7 +89,7 @@ namespace NeoIsisJob.Repos
 
         public void AddPersonalTrainerModel(PersonalTrainerModel personalTrainer)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databasebHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -103,16 +103,16 @@ namespace NeoIsisJob.Repos
                 // Add the parameters
                 command.Parameters.AddWithValue("@lastName", personalTrainer.LastName);
                 command.Parameters.AddWithValue("@firstName", personalTrainer.FirstName);
-                command.Parameters.AddWithValue("@worksSince", personalTrainer.WorksSince);
+                command.Parameters.AddWithValue("@worksSince", personalTrainer.WorkStartDateTime);
 
                 // Execute the query
                 command.ExecuteNonQuery();
             }
         }
 
-        public void DeletePersonalTrainerModel(int ptid)
+        public void DeletePersonalTrainerModel(int personalTrainerId)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databasebHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -124,7 +124,7 @@ namespace NeoIsisJob.Repos
                 SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameter
-                command.Parameters.AddWithValue("@ptid", ptid);
+                command.Parameters.AddWithValue("@ptid", personalTrainerId);
 
                 // Execute the query
                 command.ExecuteNonQuery();

@@ -12,15 +12,15 @@ namespace NeoIsisJob.Repos
 {
     public class UserClassRepo
     {
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databaseHelper;
 
-        public UserClassRepo() { this._dbHelper = new DatabaseHelper(); }
+        public UserClassRepo() { this._databaseHelper = new DatabaseHelper(); }
 
         public UserClassModel GetUserClassModelById(int userId, int classId, DateTime enrollmentDate)
         {
             UserClassModel userClass = new UserClassModel();
 
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -29,15 +29,15 @@ namespace NeoIsisJob.Repos
                 string query = "SELECT UID, CID, Date FROM UserClasses WHERE UID = @UID AND CID = @CID AND Date = @Date";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameters
-                cmd.Parameters.AddWithValue("@UID", userId);
-                cmd.Parameters.AddWithValue("@CID", classId);
-                cmd.Parameters.AddWithValue("@Date", enrollmentDate);
+                command.Parameters.AddWithValue("@UID", userId);
+                command.Parameters.AddWithValue("@CID", classId);
+                command.Parameters.AddWithValue("@Date", enrollmentDate);
 
                 // Execute the command
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader reader = command.ExecuteReader();
 
                 // Read the data
                 if (reader.Read())
@@ -59,7 +59,7 @@ namespace NeoIsisJob.Repos
         {
             List<UserClassModel> userClasses = new List<UserClassModel>();
 
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -68,10 +68,10 @@ namespace NeoIsisJob.Repos
                 string query = "SELECT UID, CID, Date FROM UserClasses";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Execute the command
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader reader = command.ExecuteReader();
 
                 // Read the data
                 while (reader.Read())
@@ -88,7 +88,7 @@ namespace NeoIsisJob.Repos
 
         public void AddUserClassModel(UserClassModel userClass)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -111,7 +111,7 @@ namespace NeoIsisJob.Repos
 
         public void DeleteUserClassModel(int userId, int classId, DateTime enrollmentDate)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -135,7 +135,7 @@ namespace NeoIsisJob.Repos
         public List<UserClassModel> GetUserClassModelByDate(DateTime date)
         {
             List<UserClassModel> userClasses = new List<UserClassModel>();
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -144,13 +144,13 @@ namespace NeoIsisJob.Repos
                 string query = "SELECT UID, CID, Date FROM UserClasses WHERE Date = @Date";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameters
-                cmd.Parameters.AddWithValue("@Date", date);
+                command.Parameters.AddWithValue("@Date", date);
 
                 // Execute the command
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader reader = command.ExecuteReader();
 
                 // Read the data
                 while (reader.Read())
