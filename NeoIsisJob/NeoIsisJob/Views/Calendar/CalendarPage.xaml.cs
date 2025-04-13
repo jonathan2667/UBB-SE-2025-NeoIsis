@@ -9,19 +9,22 @@ using Microsoft.UI.Xaml.Media;
 using NeoIsisJob.Data;
 using NeoIsisJob.Models;
 using NeoIsisJob.ViewModels.Calendar;
+using NeoIsisJob.Services;
 
 namespace NeoIsisJob.Views
 {
     public sealed partial class CalendarPage : Page
     {
         public CalendarViewModel ViewModel { get; private set; }
+        private readonly ICalendarService _calendarService;
 
         public CalendarPage()
         {
             this.InitializeComponent();
             // Assuming you have a way to get the userId, e.g., from app state or navigation
             int userId = 1; // Replace with actual user ID source
-            ViewModel = new CalendarViewModel(userId);
+            _calendarService = new CalendarService();
+            ViewModel = new CalendarViewModel(userId, _calendarService);
             this.DataContext = ViewModel;
             Loaded += CalendarPage_Loaded;
         }
@@ -144,8 +147,8 @@ namespace NeoIsisJob.Views
 
                 if (day.HasWorkout || day.HasClass)
                 {
-                    var userWorkout = ViewModel._calendarRepository.GetUserWorkout(ViewModel._userId, day.Date);
-                    string userClass = day.HasClass ? ViewModel._calendarRepository.GetUserClass(ViewModel._userId, day.Date) : null;
+                    var userWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
+                    string userClass = day.HasClass ? _calendarService.GetUserClass(ViewModel._userId, day.Date) : null;
 
                     if (userWorkout != null || userClass != null)
                     {
@@ -206,8 +209,8 @@ namespace NeoIsisJob.Views
 
                 if (day.HasWorkout || day.HasClass)
                 {
-                    var userWorkout = ViewModel._calendarRepository.GetUserWorkout(ViewModel._userId, day.Date);
-                    string userClass = day.HasClass ? ViewModel._calendarRepository.GetUserClass(ViewModel._userId, day.Date) : null;
+                    var userWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
+                    string userClass = day.HasClass ? _calendarService.GetUserClass(ViewModel._userId, day.Date) : null;
 
                     if (userWorkout != null || userClass != null)
                     {
@@ -240,7 +243,7 @@ namespace NeoIsisJob.Views
                                 args.Cancel = true; // Keep dialog open
 
                                 // Fetch workout list
-                                List<WorkoutModel> workouts = ViewModel._calendarRepository.GetWorkouts();
+                                List<WorkoutModel> workouts = _calendarService.GetWorkouts();
                                 System.Diagnostics.Debug.WriteLine("Workout List:");
                                 if (workouts.Count > 0)
                                 {
@@ -269,10 +272,10 @@ namespace NeoIsisJob.Views
                                         if (btnSender is Button clickedButton && clickedButton.Tag is int workoutId)
                                         {
                                             // Remove existing workout first
-                                            var existingWorkout = ViewModel._calendarRepository.GetUserWorkout(ViewModel._userId, day.Date);
+                                            var existingWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
                                             if (existingWorkout != null)
                                             {
-                                                ViewModel.DeleteUserWorkout(existingWorkout.WorkoutId, day.Date);
+                                                _calendarService.DeleteUserWorkout(ViewModel._userId, existingWorkout.WorkoutId, day.Date);
                                             }
 
                                             // Add new workout
@@ -316,13 +319,10 @@ namespace NeoIsisJob.Views
                         {
                             if (day.HasWorkout && day.Date >= DateTime.Now.Date)
                             {
-                                var workout = ViewModel._calendarRepository.GetUserWorkout(ViewModel._userId, day.Date);
-                                if (workout != null)
-                                {
-                                    ViewModel.DeleteUserWorkout(workout.WorkoutId, day.Date);
-                                    dialog.Content = "Workout removed successfully.";
-                                    dialog.SecondaryButtonText = null;
-                                }
+                                args.Cancel = true; // Keep dialog open
+                                _calendarService.RemoveWorkout(ViewModel._userId, day);
+                                ViewModel.UpdateCalendar(); // Force calendar update
+                                dialog.Hide(); // Close the dialog
                             }
                         };
                     }
@@ -378,7 +378,7 @@ namespace NeoIsisJob.Views
                         args.Cancel = true; // Key fix: Keeps dialog open
 
                         // Fetch workout list
-                        List<WorkoutModel> workouts = ViewModel._calendarRepository.GetWorkouts(); // Ensure this method exists
+                        List<WorkoutModel> workouts = _calendarService.GetWorkouts(); // Ensure this method exists
                         System.Diagnostics.Debug.WriteLine("Workout List:");
                         if (workouts.Count > 0)
                         {
