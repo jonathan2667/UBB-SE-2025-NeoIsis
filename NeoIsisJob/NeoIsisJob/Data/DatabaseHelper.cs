@@ -12,7 +12,6 @@ namespace NeoIsisJob.Data
         public DatabaseHelper()
         {
             connectionString = @"Server=localhost;Database=Workout;Integrated Security=True;TrustServerCertificate=True;";
-            //connectionString = @"Data Source=DESKTOP-DCVLDLM\\SQLEXPRESS;Initial Catalog=facultate;Integrated Security=True;TrustServerCertificate=True";
         }
 
         // Provide an open connection to be used in repositories
