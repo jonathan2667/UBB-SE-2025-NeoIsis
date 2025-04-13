@@ -12,29 +12,29 @@ namespace NeoIsisJob.Servs
 {
     public class WorkoutService
     {
-        private readonly WorkoutRepo _workoutRepo;
+        private readonly WorkoutRepo _workoutRepository;
 
-        public WorkoutService() { this._workoutRepo = new WorkoutRepo(); }
+        public WorkoutService() { this._workoutRepository = new WorkoutRepo(); }
 
-        public WorkoutModel GetWorkout(int wid)
+        public WorkoutModel GetWorkout(int workoutId)
         {
-            return this._workoutRepo.GetWorkoutById(wid);
+            return this._workoutRepository.GetWorkoutById(workoutId);
         }
 
-        public WorkoutModel GetWorkoutByName(String name)
+        public WorkoutModel GetWorkoutByName(String workoutName)
         {
-            return this._workoutRepo.GetWorkoutByName(name);
+            return this._workoutRepository.GetWorkoutByName(workoutName);
         }
 
-        public void InsertWorkout(String name, int wtid)
+        public void InsertWorkout(String workoutName, int workoutTypeId)
         {
             //NAME HAS TO BE UNIQUE
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(workoutName))
                 throw new ArgumentException("Workout name cannot be empty or null.");
 
             try
             {
-                this._workoutRepo.InsertWorkout(name, wtid);
+                this._workoutRepository.InsertWorkout(workoutName, workoutTypeId);
             }
             catch (SqlException ex) when (ex.Number == 2627) // SQL Server unique constraint violation
             {
@@ -46,9 +46,9 @@ namespace NeoIsisJob.Servs
             }
         }
 
-        public void DeleteWorkout(int wtid)
+        public void DeleteWorkout(int workoutId)
         {
-            this._workoutRepo.DeleteWorkout(wtid);
+            this._workoutRepository.DeleteWorkout(workoutId);
         }
 
         public void UpdateWorkout(WorkoutModel workout)
@@ -61,7 +61,7 @@ namespace NeoIsisJob.Servs
 
             try
             {
-                this._workoutRepo.UpdateWorkout(workout);
+                this._workoutRepository.UpdateWorkout(workout);
             }
             catch (Exception ex) when (ex.Message.Contains("A workout with this name already exists"))
             {
@@ -75,7 +75,7 @@ namespace NeoIsisJob.Servs
 
         public IList<WorkoutModel> GetAllWorkouts()
         {
-            return this._workoutRepo.GetAllWorkouts();
+            return this._workoutRepository.GetAllWorkouts();
         }
     }
 }

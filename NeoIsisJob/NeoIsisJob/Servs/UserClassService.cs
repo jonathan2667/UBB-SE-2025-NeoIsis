@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repos;
+using Windows.System;
 
 // please add validation for the input parameters
 
@@ -12,28 +13,28 @@ namespace NeoIsisJob.Servs
 {
     public class UserClassService
     {
-        private readonly UserClassRepo _userClassRepo;
+        private readonly UserClassRepo _userClassRepository;
 
-        public UserClassService() { this._userClassRepo = new UserClassRepo(); }
+        public UserClassService() { this._userClassRepository = new UserClassRepo(); }
 
         public List<UserClassModel> GetAllUserClasses()
         {
-            return _userClassRepo.GetAllUserClassModel();
+            return _userClassRepository.GetAllUserClassModel();
         }
 
-        public UserClassModel GetUserClassById(int ucid, int cid, DateTime date)
+        public UserClassModel GetUserClassById(int userId, int classId, DateTime date)
         {
-            return _userClassRepo.GetUserClassModelById(ucid, cid, date);
+            return _userClassRepository.GetUserClassModelById(userId, classId, date);
         }
 
         public void AddUserClass(UserClassModel userClassModel)
         {
-            _userClassRepo.AddUserClassModel(userClassModel);
+            _userClassRepository.AddUserClassModel(userClassModel);
         }
 
-        public void DeleteUserClass(int ucid, int cid, DateTime date)
+        public void DeleteUserClass(int userId, int classId, DateTime date)
         {
-            _userClassRepo.DeleteUserClassModel(ucid, cid, date);
+            _userClassRepository.DeleteUserClassModel(userId, classId, date);
         }
 
         // In case you guys need to update a user class

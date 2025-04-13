@@ -10,16 +10,16 @@ namespace NeoIsisJob.Servs
 {
     public class MuscleGroupService
     {
-        private readonly MuscleGroupRepo _muscleGroupRepo;
+        private readonly MuscleGroupRepo _muscleGroupRepository;
 
         public MuscleGroupService()
         {
-            this._muscleGroupRepo = new MuscleGroupRepo();
+            this._muscleGroupRepository = new MuscleGroupRepo();
         }
 
-        public MuscleGroupModel GetMuscleGroupById(int mgid)
+        public MuscleGroupModel GetMuscleGroupById(int muscleGroupId)
         {
-            return this._muscleGroupRepo.GetMuscleGroupById(mgid);
+            return this._muscleGroupRepository.GetMuscleGroupById(muscleGroupId);
         }
 
 

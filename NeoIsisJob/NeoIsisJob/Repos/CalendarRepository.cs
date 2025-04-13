@@ -4,6 +4,7 @@ using NeoIsisJob.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.ComponentModel.Design;
 
 namespace NeoIsisJob.Repos
 {
@@ -18,117 +19,125 @@ namespace NeoIsisJob.Repos
 
     public class CalendarRepository : ICalendarRepository
     {
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databaseHelper;
+        private const int FirstDayOfMonth = 1;
+        private const int StartEndMonthDifference = 1;
+        private const int StartEndDayDifference = -1;
 
         public CalendarRepository()
         {
-            _dbHelper = new DatabaseHelper();
+            _databaseHelper = new DatabaseHelper();
         }
 
         public List<CalendarDay> GetCalendarDaysForMonth(int userId, DateTime month)
         {
             var calendarDays = new List<CalendarDay>();
-            DateTime firstDay = new DateTime(month.Year, month.Month, 1);
+            DateTime firstDay = new DateTime(month.Year, month.Month, FirstDayOfMonth);
             int daysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
 
-            using (var conn = _dbHelper.GetConnection())
+            using (var databaseConnection = _databaseHelper.GetConnection())
             {
-                conn.Open();
+                databaseConnection.Open();
                 string query = @"
-            SELECT Date, WID, Completed 
-            FROM UserWorkouts 
-            WHERE UID = @UserId 
-            AND Date >= @StartDate 
-            AND Date <= @EndDate";
+                SELECT Date, WID, Completed 
+                FROM UserWorkouts 
+                WHERE UID = @UserId 
+                AND Date >= @StartDate 
+                AND Date <= @EndDate";
+                int UserWorkoutsDateColumn = 0;
+                int UserWorkoutsCompletedColumn = 2;
+
                 var workoutDays = new Dictionary<DateTime, (bool HasWorkout, bool Completed)>();
 
-                using (var cmd = new SqlCommand(query, conn))
+                using (var command = new SqlCommand(query, databaseConnection))
                 {
-                    cmd.Parameters.AddWithValue("@UserId", userId);
-                    cmd.Parameters.AddWithValue("@StartDate", firstDay);
-                    cmd.Parameters.AddWithValue("@EndDate", firstDay.AddMonths(1).AddDays(-1));
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.Parameters.AddWithValue("@StartDate", firstDay);
+                    command.Parameters.AddWithValue("@EndDate", firstDay.AddMonths(StartEndMonthDifference).AddDays(StartEndDayDifference));
 
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            var date = reader.GetDateTime(0);
-                            workoutDays[date] = (true, reader.GetBoolean(2));
-                            System.Diagnostics.Debug.WriteLine($"Found workout: Date={date:yyyy-MM-dd}, Completed={reader.GetBoolean(2)}");
+                            var date = reader.GetDateTime(UserWorkoutsDateColumn);
+                            workoutDays[date] = (true, reader.GetBoolean(UserWorkoutsCompletedColumn));
+                            System.Diagnostics.Debug.WriteLine($"Found workout: Date={date:yyyy-MM-dd}, Completed={reader.GetBoolean(UserWorkoutsCompletedColumn)}");
                         }
                     }
                 }
+
+
                 string classQuery = @"
-            SELECT Date 
-            FROM UserClasses 
-            WHERE UID = @UserId 
-            AND Date >= @StartDate 
-            AND Date <= @EndDate";
+                SELECT Date 
+                FROM UserClasses 
+                WHERE UID = @UserId 
+                AND Date >= @StartDate 
+                AND Date <= @EndDate";
+                int UserClassesDateColumn = 0;
 
                 var classDays = new Dictionary<DateTime, bool>();  // Using HashSet for efficient lookup
-                using (var cmd = new SqlCommand(classQuery, conn))
+                using (var command = new SqlCommand(classQuery, databaseConnection))
                 {
-                    cmd.Parameters.AddWithValue("@UserId", userId);
-                    cmd.Parameters.AddWithValue("@StartDate", firstDay);
-                    cmd.Parameters.AddWithValue("@EndDate", firstDay.AddMonths(1).AddDays(-1));
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.Parameters.AddWithValue("@StartDate", firstDay);
+                    command.Parameters.AddWithValue("@EndDate", firstDay.AddMonths(StartEndMonthDifference).AddDays(StartEndDayDifference));
 
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            var date = reader.GetDateTime(0);
+                            var date = reader.GetDateTime(UserClassesDateColumn);
                             classDays[date] = (true);
                             System.Diagnostics.Debug.WriteLine($"Found class: Date={date:yyyy-MM-dd}");
                         }
                     }
                 }
-                for (int day = 1; day <= daysInMonth; day++)
-                        {
-                            var currentDate = new DateTime(month.Year, month.Month, day);
-                            bool hasWorkout = workoutDays.ContainsKey(currentDate);
-                            bool isCompleted = hasWorkout && workoutDays[currentDate].Completed;
-                            bool hasClass = classDays.ContainsKey(currentDate);
+                for (int day = FirstDayOfMonth; day <= daysInMonth; day++)
+                {
+                    var currentDate = new DateTime(month.Year, month.Month, day);
+                    bool hasWorkout = workoutDays.ContainsKey(currentDate);
+                    bool isCompleted = hasWorkout && workoutDays[currentDate].Completed;
+                    bool hasClass = classDays.ContainsKey(currentDate);
 
-                    calendarDays.Add(new CalendarDay
-                            {
-                                DayNumber = day,
-                                Date = currentDate,
-                                IsCurrentDay = currentDate.Date == DateTime.Now.Date,
-                                HasWorkout = hasWorkout,
-                                IsWorkoutCompleted = isCompleted,
-                                HasClass = hasClass
+                    calendarDays.Add(new CalendarDay {
+                        DayNumber = day,
+                        Date = currentDate,
+                        IsCurrentDay = currentDate.Date == DateTime.Now.Date,
+                        HasWorkout = hasWorkout,
+                        IsWorkoutCompleted = isCompleted,
+                        HasClass = hasClass
                     });
-                        }
-                    
-                
+                }                   
             }
             return calendarDays;
         }
 
         public UserWorkoutModel GetUserWorkout(int userId, DateTime date)
         {
-            using (var conn = _dbHelper.GetConnection())
+            using (var databaseConnection = _databaseHelper.GetConnection())
             {
-                conn.Open();
+                databaseConnection.Open();
                 string query = @"
                 SELECT WID, Completed 
                 FROM UserWorkouts 
                 WHERE UID = @UserId AND Date = @Date";
+                int WorkoutIDColumn = 0;
+                int CompletedColumn = 1;
 
-                using (var cmd = new SqlCommand(query, conn))
+                using (var command = new SqlCommand(query, databaseConnection))
                 {
-                    cmd.Parameters.AddWithValue("@UserId", userId);
-                    cmd.Parameters.AddWithValue("@Date", date.Date);
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.Parameters.AddWithValue("@Date", date.Date);
 
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
                             return new UserWorkoutModel(
                                 userId: userId,
-                                workoutId: reader.GetInt32(0),
+                                workoutId: reader.GetInt32(WorkoutIDColumn),
                                 date: date,
-                                completed: reader.GetBoolean(1)
+                                completed: reader.GetBoolean(CompletedColumn)
                             );
                         }
                         return null;
@@ -139,27 +148,28 @@ namespace NeoIsisJob.Repos
 
         public String GetUserClass(int userId, DateTime date)
         {
-            using (var conn = _dbHelper.GetConnection())
+            using (var databaseConnection = _databaseHelper.GetConnection())
             {
-                conn.Open();
+                databaseConnection.Open();
 
                 // Step 1: Query UserClasses to get CID
                 string classQuery = @"
-            SELECT CID
-            FROM UserClasses 
-            WHERE UID = @UserId AND Date = @Date";
+                SELECT CID
+                FROM UserClasses 
+                WHERE UID = @UserId AND Date = @Date";
+                int UserClassIDColumn = 0;
 
                 int? classId = null;
-                using (var cmd = new SqlCommand(classQuery, conn))
+                using (var command = new SqlCommand(classQuery, databaseConnection))
                 {
-                    cmd.Parameters.AddWithValue("@UserId", userId);
-                    cmd.Parameters.AddWithValue("@Date", date.Date);
+                    command.Parameters.AddWithValue("@UserId", userId);
+                    command.Parameters.AddWithValue("@Date", date.Date);
 
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            classId = reader.GetInt32(0); // Get CID
+                            classId = reader.GetInt32(UserClassIDColumn); // Get CID
                         }
                     }
                 }
@@ -172,21 +182,22 @@ namespace NeoIsisJob.Repos
 
                 // Step 2: Query Classes table using CID
                 string detailsQuery = @"
-            SELECT Name 
-            FROM Classes 
-            WHERE CID = @ClassId";
+                SELECT Name 
+                FROM Classes 
+                WHERE CID = @ClassId";
+                int ClassNameColumn = 0;
 
-                using (var cmd = new SqlCommand(detailsQuery, conn))
+                using (var command = new SqlCommand(detailsQuery, databaseConnection))
                 {
-                    cmd.Parameters.AddWithValue("@ClassId", classId.Value);
+                    command.Parameters.AddWithValue("@ClassId", classId.Value);
 
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
                         {
                             // Since UserClasses doesn't have Completed, we'll default it to false
                             // Adjust this if Classes has a relevant field
-                            return reader.GetString(0);
+                            return reader.GetString(ClassNameColumn);
                         }
                         return null; // Class not found in Classes table
                     }
@@ -196,21 +207,24 @@ namespace NeoIsisJob.Repos
 
         public List<WorkoutModel> GetWorkouts()
         {
-            using (var conn = _dbHelper.GetConnection())
+            using (var databaseConnection = _databaseHelper.GetConnection())
             {
-                conn.Open();
+                databaseConnection.Open();
                 string query = "SELECT WID, Name FROM Workouts";
-                using (var cmd = new SqlCommand(query, conn))
+                int WorkoutIDColumn = 0;
+                int WorkoutNameColumn = 1;
+
+                using (var command = new SqlCommand(query, databaseConnection))
                 {
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         var workouts = new List<WorkoutModel>();
                         while (reader.Read())
                         {
                             workouts.Add(new WorkoutModel
                             {
-                                Id = reader.GetInt32(0),
-                                Name = reader.GetString(1)
+                                Id = reader.GetInt32(WorkoutIDColumn),
+                                Name = reader.GetString(WorkoutNameColumn)
                             });
                         }
                         return workouts;

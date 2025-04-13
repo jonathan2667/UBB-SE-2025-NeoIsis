@@ -46,7 +46,7 @@ namespace NeoIsisJob.Repos
             return exercises;
         }
 
-        public ExercisesModel GetExerciseById(int eid)
+        public ExercisesModel GetExerciseById(int exerciseId)
         {
             //return it as null if not found
             ExercisesModel? exercise = null;
@@ -57,7 +57,7 @@ namespace NeoIsisJob.Repos
 
                 String query = "SELECT * FROM Exercises WHERE EID=@eid";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@eid", eid);
+                command.Parameters.AddWithValue("@eid", exerciseId);
                 SqlDataReader reader = command.ExecuteReader();
 
                 if(reader.Read())

@@ -19,7 +19,7 @@ namespace NeoIsisJob.Repos
         }
 
         //returns the found object is there, null otherwise
-        public MuscleGroupModel GetMuscleGroupById(int mgid)
+        public MuscleGroupModel GetMuscleGroupById(int muscleGroupId)
         {
             MuscleGroupModel muscleGroup = null;
 
@@ -29,7 +29,7 @@ namespace NeoIsisJob.Repos
 
                 String query = "SELECT * FROM MuscleGroups WHERE MGID=@mgid";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@mgid", mgid);
+                command.Parameters.AddWithValue("@mgid", muscleGroupId);
                 SqlDataReader reader = command.ExecuteReader();
 
                 if (reader.Read()) 

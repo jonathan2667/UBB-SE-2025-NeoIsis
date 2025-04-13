@@ -12,28 +12,28 @@ namespace NeoIsisJob.Servs
 {
     public class PersonalTrainerService
     {
-        private readonly PersonalTrainerRepo _personalTrainerRepo;
+        private readonly PersonalTrainerRepo _personalTrainerRepository;
 
-        public PersonalTrainerService() { this._personalTrainerRepo = new PersonalTrainerRepo(); }
+        public PersonalTrainerService() { this._personalTrainerRepository = new PersonalTrainerRepo(); }
 
         public List<PersonalTrainerModel> GetAllPersonalTrainers()
         {
-            return _personalTrainerRepo.GetAllPersonalTrainerModel();
+            return _personalTrainerRepository.GetAllPersonalTrainerModel();
         }
 
-        public PersonalTrainerModel GetPersonalTrainerById(int pid)
+        public PersonalTrainerModel GetPersonalTrainerById(int personalTrainerId)
         {
-            return _personalTrainerRepo.GetPersonalTrainerModelById(pid);
+            return _personalTrainerRepository.GetPersonalTrainerModelById(personalTrainerId);
         }
 
         public void AddPersonalTrainer(PersonalTrainerModel personalTrainerModel)
         {
-            _personalTrainerRepo.AddPersonalTrainerModel(personalTrainerModel);
+            _personalTrainerRepository.AddPersonalTrainerModel(personalTrainerModel);
         }
 
-        public void DeletePersonalTrainer(int pid)
+        public void DeletePersonalTrainer(int personalTrainerId)
         {
-            _personalTrainerRepo.DeletePersonalTrainerModel(pid);
+            _personalTrainerRepository.DeletePersonalTrainerModel(personalTrainerId);
         }
 
         // In case you guys need to update a personal trainer
