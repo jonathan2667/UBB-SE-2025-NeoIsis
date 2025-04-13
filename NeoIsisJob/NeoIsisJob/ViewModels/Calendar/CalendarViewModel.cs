@@ -22,7 +22,6 @@ namespace NeoIsisJob.ViewModels.Calendar
 
         private readonly ICalendarService _calendarService;
 
-        //public readonly ICalendarRepository _calendarRepository;
         private readonly DatabaseHelper _databaseHelper;
 
         public readonly int _userId;
@@ -34,7 +33,6 @@ namespace NeoIsisJob.ViewModels.Calendar
             _currentDate = DateTime.Now;
 
             _calendarService = calendarService ?? new CalendarService();
-            //_calendarRepository = calendarRepository ?? new CalendarRepository();
             _databaseHelper = new DatabaseHelper();
             CalendarDays = new ObservableCollection<CalendarDay>();
             PreviousMonthCommand = new RelayCommand(PreviousMonth);
