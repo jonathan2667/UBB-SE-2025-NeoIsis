@@ -2,23 +2,24 @@
 using NeoIsisJob.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Data.SqlClient;
 
 namespace NeoIsisJob.Repos
 {
     public class UserWorkoutRepo
     {
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databaseHelper;
 
-        public UserWorkoutRepo(DatabaseHelper dbHelper)
+        public UserWorkoutRepo(DatabaseHelper databaseHelper)
         {
-            _dbHelper = dbHelper;
+            _databaseHelper = databaseHelper;
         }
 
         public List<UserWorkoutModel> GetUserWorkoutModelByDate(DateTime date)
         {
             List<UserWorkoutModel> userWorkouts = new List<UserWorkoutModel>();
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -27,13 +28,13 @@ namespace NeoIsisJob.Repos
                 string query = "SELECT UID, WID, Date, Completed FROM UserWorkouts WHERE Date = @Date";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameters
-                cmd.Parameters.AddWithValue("@Date", date);
+                command.Parameters.AddWithValue("@Date", date);
 
                 // Execute the command
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader reader = command.ExecuteReader();
 
                 // Read the data
                 while (reader.Read())
@@ -53,7 +54,7 @@ namespace NeoIsisJob.Repos
         public UserWorkoutModel GetUserWorkoutModel(int userId, int workoutId, DateTime date)
         {
             UserWorkoutModel userWorkout = null;
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -62,15 +63,15 @@ namespace NeoIsisJob.Repos
                 string query = "SELECT UID, WID, Date, Completed FROM UserWorkouts WHERE UID = @UID AND WID = @WID AND Date = @Date";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameters
-                cmd.Parameters.AddWithValue("@UID", userId);
-                cmd.Parameters.AddWithValue("@WID", workoutId);
-                cmd.Parameters.AddWithValue("@Date", date);
+                command.Parameters.AddWithValue("@UID", userId);
+                command.Parameters.AddWithValue("@WID", workoutId);
+                command.Parameters.AddWithValue("@Date", date);
 
                 // Execute the command
-                SqlDataReader reader = cmd.ExecuteReader();
+                SqlDataReader reader = command.ExecuteReader();
 
                 // Read the data
                 if (reader.Read())
@@ -88,7 +89,7 @@ namespace NeoIsisJob.Repos
 
         public void AddUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -97,22 +98,22 @@ namespace NeoIsisJob.Repos
                 string query = "INSERT INTO UserWorkouts(UID, WID, Date, Completed) VALUES (@UID, @WID, @Date, @Completed)";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameters
-                cmd.Parameters.AddWithValue("@UID", userWorkout.UserId);
-                cmd.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
-                cmd.Parameters.AddWithValue("@Date", userWorkout.Date);
-                cmd.Parameters.AddWithValue("@Completed", userWorkout.Completed);
+                command.Parameters.AddWithValue("@UID", userWorkout.UserId);
+                command.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
+                command.Parameters.AddWithValue("@Date", userWorkout.Date);
+                command.Parameters.AddWithValue("@Completed", userWorkout.Completed);
 
                 // Execute the command
-                cmd.ExecuteNonQuery();
+                command.ExecuteNonQuery();
             }
         }
 
         public void UpdateUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -121,22 +122,22 @@ namespace NeoIsisJob.Repos
                 string query = "UPDATE UserWorkouts SET Completed = @Completed WHERE UID = @UID AND WID = @WID AND Date = @Date";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameters
-                cmd.Parameters.AddWithValue("@UID", userWorkout.UserId);
-                cmd.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
-                cmd.Parameters.AddWithValue("@Date", userWorkout.Date);
-                cmd.Parameters.AddWithValue("@Completed", userWorkout.Completed);
+                command.Parameters.AddWithValue("@UID", userWorkout.UserId);
+                command.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
+                command.Parameters.AddWithValue("@Date", userWorkout.Date);
+                command.Parameters.AddWithValue("@Completed", userWorkout.Completed);
 
                 // Execute the command
-                cmd.ExecuteNonQuery();
+                command.ExecuteNonQuery();
             }
         }
 
         public void DeleteUserWorkout(int userId, int workoutId, DateTime date)
         {
-            using (SqlConnection connection = _dbHelper.GetConnection())
+            using (SqlConnection connection = _databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -145,15 +146,15 @@ namespace NeoIsisJob.Repos
                 string query = "DELETE FROM UserWorkouts WHERE UID = @UID AND WID = @WID AND Date = @Date";
 
                 // Create a command
-                SqlCommand cmd = new SqlCommand(query, connection);
+                SqlCommand command = new SqlCommand(query, connection);
 
                 // Add the parameters
-                cmd.Parameters.AddWithValue("@UID", userId);
-                cmd.Parameters.AddWithValue("@WID", workoutId);
-                cmd.Parameters.AddWithValue("@Date", date);
+                command.Parameters.AddWithValue("@UID", userId);
+                command.Parameters.AddWithValue("@WID", workoutId);
+                command.Parameters.AddWithValue("@Date", date);
 
                 // Execute the command
-                cmd.ExecuteNonQuery();
+                command.ExecuteNonQuery();
             }
         }
     }

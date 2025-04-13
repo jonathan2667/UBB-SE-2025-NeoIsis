@@ -18,7 +18,7 @@ namespace NeoIsisJob.Repos
             this._databaseHelper = new DatabaseHelper();
         }
 
-        public RankingModel GetRankingByFullID(int uid, int mgid)
+        public RankingModel GetRankingByFullID(int userId, int muscleGroupId)
         {
             RankingModel ranking = null;
 
@@ -27,8 +27,8 @@ namespace NeoIsisJob.Repos
                 connection.Open();
                 String query = "Select * from Rankings where UID=@UID and MGID=@MGID";
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@UID", uid);
-                command.Parameters.AddWithValue("@MGID", mgid);
+                command.Parameters.AddWithValue("@UID", userId);
+                command.Parameters.AddWithValue("@MGID", muscleGroupId);
                 SqlDataReader reader = command.ExecuteReader();
 
                 if (reader.Read())
@@ -37,14 +37,14 @@ namespace NeoIsisJob.Repos
                         Convert.ToInt32(reader["UID"]),
                         Convert.ToInt32(reader["MGID"]),
                         Convert.ToInt32(reader["Rank"])
-                        );
+                    );
                 }
             }
 
             return ranking;
         }
 
-        public IList<RankingModel> GetAllRankingsByUID(int UID) 
+        public IList<RankingModel> GetAllRankingsByUserID(int userId) 
         {
             IList<RankingModel> rankings = new List<RankingModel>();
 
@@ -54,6 +54,7 @@ namespace NeoIsisJob.Repos
 
                 String query = "Select * from Rankings where UID=@UID";
                 SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@UID", userId);
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -62,7 +63,7 @@ namespace NeoIsisJob.Repos
                         Convert.ToInt32(reader["UID"]),
                         Convert.ToInt32(reader["MGID"]),
                         Convert.ToInt32(reader["Rank"])
-                        ));
+                    ));
                 }
             }
 

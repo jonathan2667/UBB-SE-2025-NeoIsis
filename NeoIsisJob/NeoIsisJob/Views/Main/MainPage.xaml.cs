@@ -82,7 +82,7 @@ namespace NeoIsisJob.Views
                                 _currentWorkoutExercises.Add(new ExerciseWithDetails
                                 {
                                     Name = exercise.Name,
-                                    Details = $"{completeWorkout.Sets} sets × {completeWorkout.RepsPerSet} reps"
+                                    Details = $"{completeWorkout.Sets} sets × {completeWorkout.RepetitionsPerSet} reps"
                                 });
                             }
                         }

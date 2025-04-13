@@ -10,21 +10,21 @@ namespace NeoIsisJob.Servs
 {
     class RankingsService
     {
-        private readonly RankingsRepo _rankingsRepo;
+        private readonly RankingsRepo _rankingsRepository;
 
         public RankingsService()
         {
-            this._rankingsRepo = new RankingsRepo();
+            this._rankingsRepository = new RankingsRepo();
         }
 
-        public IList<RankingModel> GetAllRankingsByUID(int uid)
+        public IList<RankingModel> GetAllRankingsByUserID(int userId)
         {
-            return this._rankingsRepo.GetAllRankingsByUID(uid);
+            return this._rankingsRepository.GetAllRankingsByUserID(userId);
         }
 
-        public RankingModel GetRankingByFullID(int uid, int mgid)
+        public RankingModel GetRankingByFullID(int userId, int muscleGroupId)
         {
-            return this._rankingsRepo.GetRankingByFullID(uid, mgid);
+            return this._rankingsRepository.GetRankingByFullID(userId, muscleGroupId);
         }
     }
 }

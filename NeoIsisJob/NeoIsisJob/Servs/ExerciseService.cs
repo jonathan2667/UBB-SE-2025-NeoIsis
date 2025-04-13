@@ -10,21 +10,21 @@ namespace NeoIsisJob.Servs
 {
     class ExerciseService
     {
-        private readonly ExerciseRepo _exerciseRepo;
+        private readonly ExerciseRepo _exerciseRepository;
 
         public ExerciseService()
         {
-            this._exerciseRepo = new ExerciseRepo();
+            this._exerciseRepository = new ExerciseRepo();
         }
 
-        public ExercisesModel GetExerciseById(int eid)
+        public ExercisesModel GetExerciseById(int exerciseId)
         {
-            return this._exerciseRepo.GetExerciseById(eid);
+            return this._exerciseRepository.GetExerciseById(exerciseId);
         }
 
         public IList<ExercisesModel> GetAllExercises()
         {
-            return this._exerciseRepo.GetAllExercises();
+            return this._exerciseRepository.GetAllExercises();
         }
     }
 }

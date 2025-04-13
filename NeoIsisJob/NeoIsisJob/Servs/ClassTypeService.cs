@@ -12,28 +12,28 @@ namespace NeoIsisJob.Servs
 {
     public class ClassTypeService
     {
-        private readonly ClassTypeRepo _classTypeRepo;
+        private readonly ClassTypeRepo _classTypeRepository;
 
-        public ClassTypeService() { this._classTypeRepo = new ClassTypeRepo(); }
+        public ClassTypeService() { this._classTypeRepository = new ClassTypeRepo(); }
 
         public List<ClassTypeModel> GetAllClassTypes()
         {
-            return _classTypeRepo.GetAllClassTypeModel();
+            return _classTypeRepository.GetAllClassTypeModel();
         }
 
-        public ClassTypeModel GetClassTypeById(int ctid)
+        public ClassTypeModel GetClassTypeById(int classTypeId)
         {
-            return _classTypeRepo.GetClassTypeModelById(ctid);
+            return _classTypeRepository.GetClassTypeModelById(classTypeId);
         }
 
         public void AddClassType(ClassTypeModel classTypeModel)
         {
-            _classTypeRepo.AddClassTypeModel(classTypeModel);
+            _classTypeRepository.AddClassTypeModel(classTypeModel);
         }
 
-        public void DeleteClassType(int ctid)
+        public void DeleteClassType(int classTypeId)
         {
-            _classTypeRepo.DeleteClassTypeModel(ctid);
+            _classTypeRepository.DeleteClassTypeModel(classTypeId);
         }
 
         // In case you guys need to update a class type

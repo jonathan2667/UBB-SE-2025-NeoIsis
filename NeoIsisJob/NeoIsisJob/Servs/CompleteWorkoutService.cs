@@ -11,25 +11,25 @@ namespace NeoIsisJob.Servs
 {
     public class CompleteWorkoutService
     {
-        private readonly CompleteWorkoutRepo _completeWorkoutRepo;
+        private readonly CompleteWorkoutRepo _completeWorkoutRepository;
 
         public CompleteWorkoutService()
         {
-            this._completeWorkoutRepo = new CompleteWorkoutRepo();
+            this._completeWorkoutRepository = new CompleteWorkoutRepo();
         }
 
         public IList<CompleteWorkoutModel> GetAllCompleteWorkouts()
         {
-            return this._completeWorkoutRepo.GetAllCompleteWorkouts();
+            return this._completeWorkoutRepository.GetAllCompleteWorkouts();
         }
 
-        public IList<CompleteWorkoutModel> GetCompleteWorkoutsByWorkoutId(int wid)
+        public IList<CompleteWorkoutModel> GetCompleteWorkoutsByWorkoutId(int workoutId)
         {
             //like filter in java
             //return (IList<CompleteWorkoutModel>)this._completeWorkoutRepo.GetAllCompleteWorkouts().Where(completeWorkout => completeWorkout.WorkoutId == wid);
 
             IList<CompleteWorkoutModel> completeWorkouts = new List<CompleteWorkoutModel>();
-            foreach (CompleteWorkoutModel completeWorkout in this._completeWorkoutRepo.GetAllCompleteWorkouts().Where(completeWorkout => completeWorkout.WorkoutId == wid))
+            foreach (CompleteWorkoutModel completeWorkout in this._completeWorkoutRepository.GetAllCompleteWorkouts().Where(completeWorkout => completeWorkout.WorkoutId == workoutId))
             {
                 completeWorkouts.Add(completeWorkout);
             }
@@ -37,14 +37,14 @@ namespace NeoIsisJob.Servs
             return completeWorkouts;
         }
 
-        public void DeleteCompleteWorkoutsByWid(int wid)
+        public void DeleteCompleteWorkoutsByWorkoutId(int workoutId)
         {
-            this._completeWorkoutRepo.DeleteCompleteWorkoutsByWid(wid);
+            this._completeWorkoutRepository.DeleteCompleteWorkoutsByWorkoutId(workoutId);
         }
 
-        public void InsertCompleteWorkout(int wid, int eid, int sets, int repsPerSet)
+        public void InsertCompleteWorkout(int workoutId, int exerciseId, int sets, int repetitionsPerSet)
         {
-            this._completeWorkoutRepo.InsertCompleteWorkout(wid, eid, sets, repsPerSet);
+            this._completeWorkoutRepository.InsertCompleteWorkout(workoutId, exerciseId, sets, repetitionsPerSet);
         }
     }
 }

@@ -7,16 +7,16 @@ namespace NeoIsisJob.Servs
 {
     public class UserService
     {
-        private readonly UserRepo _userRepo;
+        private readonly UserRepo _userRepository;
 
-        public UserService(UserRepo userRepo) { _userRepo = userRepo; }
+        public UserService(UserRepo userRepo) { _userRepository = userRepo; }
 
-        public int RegisterNewUser() { return _userRepo.InsertUser(); }
+        public int RegisterNewUser() { return _userRepository.InsertUser(); }
 
-        public UserModel GetUser(int id) { return _userRepo.GetUserById(id); }
+        public UserModel GetUser(int userId) { return _userRepository.GetUserById(userId); }
 
-        public bool RemoveUser(int id) { return _userRepo.DeleteUserById(id); }
+        public bool RemoveUser(int userId) { return _userRepository.DeleteUserById(userId); }
 
-        public List<UserModel> GetAllUsers() { return _userRepo.GetAllUsers(); }
+        public List<UserModel> GetAllUsers() { return _userRepository.GetAllUsers(); }
     }
 }

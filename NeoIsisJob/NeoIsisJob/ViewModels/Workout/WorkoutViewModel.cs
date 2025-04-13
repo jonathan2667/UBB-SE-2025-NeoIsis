@@ -140,11 +140,11 @@ namespace NeoIsisJob.ViewModels.Workout
             }
         }
 
-        public void DeleteWorkout(int wid)
+        public void DeleteWorkout(int workoutId)
         {
             // Delete the selected workout and its complete workouts
-            this._completeWorkoutService.DeleteCompleteWorkoutsByWid(wid);
-            this._workoutService.DeleteWorkout(wid);
+            this._completeWorkoutService.DeleteCompleteWorkoutsByWorkoutId(workoutId);
+            this._workoutService.DeleteWorkout(workoutId);
 
             // Loading workouts again
             LoadWorkouts();

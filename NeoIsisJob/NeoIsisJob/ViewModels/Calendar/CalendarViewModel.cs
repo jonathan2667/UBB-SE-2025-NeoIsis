@@ -20,7 +20,7 @@ namespace NeoIsisJob.ViewModels.Calendar
         private string _monthText;
         private ObservableCollection<CalendarDay> _calendarDays;
         public readonly ICalendarRepository _calendarRepository;
-        private readonly DatabaseHelper _dbHelper;
+        private readonly DatabaseHelper _databaseHelper;
         public readonly int _userId;
         public string WorkoutDaysCountText => $"Workout Days: {CalendarDays.Count(d => d.HasWorkout)}"; // New property
 
@@ -31,7 +31,7 @@ namespace NeoIsisJob.ViewModels.Calendar
             _userId = userId;
             _currentDate = DateTime.Now;
             _calendarRepository = calendarRepository ?? new CalendarRepository();
-            _dbHelper = new DatabaseHelper();
+            _databaseHelper = new DatabaseHelper();
             CalendarDays = new ObservableCollection<CalendarDay>();
             PreviousMonthCommand = new RelayCommand(PreviousMonth);
             NextMonthCommand = new RelayCommand(NextMonth);
@@ -166,7 +166,7 @@ namespace NeoIsisJob.ViewModels.Calendar
 
         public void AddUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (var conn = _dbHelper.GetConnection())
+            using (var conn = _databaseHelper.GetConnection())
             {
                 conn.Open();
                 string query = @"
@@ -187,7 +187,7 @@ namespace NeoIsisJob.ViewModels.Calendar
 
         public void UpdateUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (var conn = _dbHelper.GetConnection())
+            using (var conn = _databaseHelper.GetConnection())
             {
                 conn.Open();
                 string query = @"
@@ -209,7 +209,7 @@ namespace NeoIsisJob.ViewModels.Calendar
 
         public void DeleteUserWorkout(int workoutId, DateTime date)
         {
-            using (var conn = _dbHelper.GetConnection())
+            using (var conn = _databaseHelper.GetConnection())
             {
                 conn.Open();
                 string query = @"

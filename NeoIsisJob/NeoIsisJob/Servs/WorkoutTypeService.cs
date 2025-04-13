@@ -12,19 +12,19 @@ namespace NeoIsisJob.Servs
 {
     public class WorkoutTypeService
     {
-        private readonly WorkoutTypeRepo _workoutTypeRepo;
+        private readonly WorkoutTypeRepo _workoutTypeRepository;
 
-        public WorkoutTypeService() { this._workoutTypeRepo = new WorkoutTypeRepo(); }
+        public WorkoutTypeService() { this._workoutTypeRepository = new WorkoutTypeRepo(); }
 
-        public void InsertWorkoutType(String name) 
+        public void InsertWorkoutType(String workoutTypeName) 
         {
             //NAME HAS TO BE UNIQUE
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(workoutTypeName))
                 throw new ArgumentException("Workout type name cannot be empty or null.");
 
             try
             {
-                this._workoutTypeRepo.InsertWorkoutType(name);
+                this._workoutTypeRepository.InsertWorkoutType(workoutTypeName);
             }
             catch (SqlException ex) when (ex.Number == 2627) // SQL Server unique constraint violation
             {
@@ -36,19 +36,19 @@ namespace NeoIsisJob.Servs
             }
         }
 
-        public void DeleteWorkoutType(int wtid)
+        public void DeleteWorkoutType(int workoutTypeId)
         {
-            this._workoutTypeRepo.DeleteWorkoutType(wtid);
+            this._workoutTypeRepository.DeleteWorkoutType(workoutTypeId);
         }
 
-        public WorkoutTypeModel GetWorkoutTypeById(int wtid) 
+        public WorkoutTypeModel GetWorkoutTypeById(int workoutTypeId) 
         {
-            return this._workoutTypeRepo.GetWorkoutTypeById(wtid);
+            return this._workoutTypeRepository.GetWorkoutTypeById(workoutTypeId);
         }
 
         public IList<WorkoutTypeModel> GetAllWorkoutTypes()
         {
-            return this._workoutTypeRepo.GetAllWorkoutTypes();
+            return this._workoutTypeRepository.GetAllWorkoutTypes();
         }
     }
 }
