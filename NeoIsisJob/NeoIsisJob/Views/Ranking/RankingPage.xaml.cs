@@ -59,7 +59,7 @@ namespace NeoIsisJob.Views
 
         public void GoToRankingPage_Tap(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(RankingPage));
+            // Already on RankingPage
         }
 
         private void Page_Tapped(object sender, TappedRoutedEventArgs e)
@@ -72,157 +72,87 @@ namespace NeoIsisJob.Views
 
         private void Chest_Clicked(object sender, RoutedEventArgs e)
         {
-            var ranking = this._rankingsViewModel.GetRankingByMGID(1);
-            if (ranking != null)
-            {
-                this.LoadMuscleGroupPanel(ranking.Rank, "Chest");
-            }
+            LoadMuscleGroupPanel(1, "Chest");
         }
 
         private void Legs_Clicked(object sender, RoutedEventArgs e)
         {
-            var ranking = this._rankingsViewModel.GetRankingByMGID(2);
-            if (ranking != null)
-            {
-                this.LoadMuscleGroupPanel(ranking.Rank, "Legs");
-            }
+            LoadMuscleGroupPanel(2, "Legs");
         }
 
         private void Arms_Clicked(object sender, RoutedEventArgs e)
         {
-            var ranking = this._rankingsViewModel.GetRankingByMGID(3);
-            if (ranking != null)
-            {
-                this.LoadMuscleGroupPanel(ranking.Rank, "Arms");
-            }
+            LoadMuscleGroupPanel(3, "Arms");
         }
 
         private void Abs_Clicked(object sender, RoutedEventArgs e)
         {
-            var ranking = this._rankingsViewModel.GetRankingByMGID(4);
-            if (ranking != null)
-            {
-                this.LoadMuscleGroupPanel(ranking.Rank, "Abs");
-            }
+            LoadMuscleGroupPanel(4, "Abs");
         }
 
         private void Back_Clicked(object sender, RoutedEventArgs e)
         {
-            var ranking = this._rankingsViewModel.GetRankingByMGID(5);
-            if (ranking != null)
-            {
-                this.LoadMuscleGroupPanel(ranking.Rank, "Back");
-            }
+            LoadMuscleGroupPanel(5, "Back");
         }
 
-        private void LoadMuscleGroupPanel(int rank, String muscleGroup)
+        private void LoadMuscleGroupPanel(int muscleGroupId, string muscleGroupName)
         {
-            var rankingPanel = FindName("RankingPanel") as StackPanel;
-            if (rankingPanel != null)
+            var ranking = this._rankingsViewModel.GetRankingByMGID(muscleGroupId);
+            if (ranking != null)
             {
-                rankingPanel.Children.Clear();
-
-                SolidColorBrush rankcolor = this._rankingsViewModel.GetRankColor(rank);
-
-                rankingPanel.Children.Add(this.CreateMuscleGroupPanel(this._rankingsViewModel.GetRankIcon(rank), muscleGroup, rank, rankcolor));
-
+                var rankingPanel = FindName("RankingPanel") as StackPanel;
+                if (rankingPanel != null)
+                {
+                    rankingPanel.Children.Clear();
+                    var rankDef = _rankingsViewModel.GetRankDefinitionForPoints(ranking.Rank);
+                    rankingPanel.Children.Add(CreateMuscleGroupPanel(rankDef, muscleGroupName, ranking.Rank));
+                }
             }
         }
 
         private void LoadMuscleGroupColors()
         {
-            this.LoadChestColor();
-            this.LoadLegsColor();
-            this.LoadArmsColor();
-            this.LoadAbsColor();
-            this.LoadBackColor();
+            LoadMuscleGroupColor(1, "Chest");
+            LoadMuscleGroupColor(2, "Legs");
+            LoadMuscleGroupColor(3, "Arms");
+            LoadMuscleGroupColor(4, "Abs");
+            LoadMuscleGroupColor(5, "Back");
         }
 
-        private void LoadChestColor()
+        private void LoadMuscleGroupColor(int muscleGroupId, string muscleGroupName)
         {
-            var chestSVG = FindName("Chest") as Microsoft.UI.Xaml.Shapes.Path;
-
-            var ranking = this._rankingsViewModel.GetRankingByMGID(1); // chest has id 1 in db
-            if (chestSVG != null && ranking != null)
+            var svg = FindName(muscleGroupName) as Microsoft.UI.Xaml.Shapes.Path;
+            var ranking = this._rankingsViewModel.GetRankingByMGID(muscleGroupId);
+            if (svg != null && ranking != null)
             {
-               chestSVG.Fill = this._rankingsViewModel.GetRankColor(ranking.Rank);
-            }
-        }
-
-        private void LoadLegsColor()
-        {
-            var legsSVG = FindName("Legs") as Microsoft.UI.Xaml.Shapes.Path;
-
-            var ranking = this._rankingsViewModel.GetRankingByMGID(2); // legs has id 2 in db
-            if (legsSVG != null && ranking != null)
-            {
-                legsSVG.Fill = this._rankingsViewModel.GetRankColor(ranking.Rank);
-            }
-        }
-
-        private void LoadArmsColor()
-        {
-            var armsSVG = FindName("Arms") as Microsoft.UI.Xaml.Shapes.Path;
-
-            var ranking = this._rankingsViewModel.GetRankingByMGID(3); // arms has id 3 in db
-            if (armsSVG != null && ranking != null)
-            {
-                armsSVG.Fill = this._rankingsViewModel.GetRankColor(ranking.Rank);
-            }
-        }
-
-        private void LoadAbsColor()
-        {
-            var absSVG = FindName("Abs") as Microsoft.UI.Xaml.Shapes.Path;
-
-            var ranking = this._rankingsViewModel.GetRankingByMGID(4); // abs has id 4 in db
-            if (absSVG != null && ranking != null)
-            {
-                absSVG.Fill = this._rankingsViewModel.GetRankColor(ranking.Rank);
-            }
-        }
-
-        private void LoadBackColor()
-        {
-            var backSVG = FindName("Back") as Microsoft.UI.Xaml.Shapes.Path;
-
-            var ranking = this._rankingsViewModel.GetRankingByMGID(5); // back has id 5 in db
-            if (backSVG != null && ranking != null)
-            {
-                backSVG.Fill = this._rankingsViewModel.GetRankColor(ranking.Rank);
+                svg.Fill = this._rankingsViewModel.GetRankColor(ranking.Rank);
             }
         }
 
         private void LoadRankings()
         {
             var rankingPanel = FindName("RankingPanel") as StackPanel;
-
             if (rankingPanel != null)
             {
                 rankingPanel.Children.Clear();
+                rankingPanel.Children.Add(new TextBlock { Text = "All Rankings Explained:", FontSize = 25 });
 
-                rankingPanel.Children.Add(new TextBlock { Text = "All Rankings Explained:", FontSize = 25/*, FontWeight = "Bold", Margin = */  });
-
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank8.png", "Challenger", "9500", "10000", Colors.Aquamarine));
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank7.png", "Grandmaster", "8500", "9500", Colors.OrangeRed));
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank6.png", "Master", "7000", "8500", Colors.DarkViolet));
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank5.png", "Elite", "5000", "7000", Colors.DarkGreen));
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank4.png", "Gold", "3500", "5000", Colors.Gold));
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank3.png", "Silver", "2250", "3500", Colors.Silver));
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank2.png", "Bronze", "1000", "2250", Colors.SandyBrown));
-                rankingPanel.Children.Add(CreateRankItem("/Assets/Ranks/Rank1.png", "Beginner", "0", "1000", Colors.DimGray));
+                foreach (var rankDef in _rankingsViewModel.GetRankDefinitions())
+                {
+                    rankingPanel.Children.Add(CreateRankItem(rankDef));
+                }
             }
         }
 
-        private StackPanel CreateMuscleGroupPanel(string imagePath, string muscleGroup, int rank, SolidColorBrush color)
+        private StackPanel CreateMuscleGroupPanel(RankDefinition rankDef, string muscleGroup, int rank)
         {
             StackPanel stackPanel = new StackPanel();
             StackPanel rowStackPanel = new StackPanel { Orientation = Orientation.Horizontal };
 
-            Image rankImage = new Image { Source = new BitmapImage(new Uri(this.BaseUri, imagePath)), Width = 150, Height = 150 };
-            TextBlock muscleGroupName = new TextBlock { Text = muscleGroup, FontSize = 25, Foreground = color, Margin = new Thickness(20, 60, 0, 10)};
-            ProgressBar progressBar = new ProgressBar { Value = rank, Minimum = this._rankingsViewModel.GetRankLowerBound(rank), Maximum = this._rankingsViewModel.GetRankUpperBound(rank), Foreground = color};
-            TextBlock nextRankBlock = new TextBlock { Text = "You require " + (this._rankingsViewModel.GetRankUpperBound(rank) - rank).ToString() + " points to reach the next ranking!"};
+            Image rankImage = new Image { Source = new BitmapImage(new Uri(this.BaseUri, rankDef.ImagePath)), Width = 150, Height = 150 };
+            TextBlock muscleGroupName = new TextBlock { Text = muscleGroup, FontSize = 25, Foreground = new SolidColorBrush(rankDef.Color), Margin = new Thickness(20, 60, 0, 10)};
+            ProgressBar progressBar = new ProgressBar { Value = rank, Minimum = rankDef.MinPoints, Maximum = rankDef.MaxPoints, Foreground = new SolidColorBrush(rankDef.Color)};
+            TextBlock nextRankBlock = new TextBlock { Text = $"You require {_rankingsViewModel.GetNextRankPoints(rank)} points to reach the next ranking!"};
 
             rowStackPanel.Children.Add(rankImage);
             rowStackPanel.Children.Add(muscleGroupName);
@@ -234,15 +164,15 @@ namespace NeoIsisJob.Views
             return stackPanel;
         }
 
-        private StackPanel CreateRankItem(string imagePath, string rankName, string minScore, string maxScore, Windows.UI.Color color)
+        private StackPanel CreateRankItem(RankDefinition rankDef)
         {
             StackPanel stackPanel = new StackPanel { Orientation = Orientation.Horizontal };
 
-            Image rankImage = new Image { Source = new BitmapImage(new Uri(this.BaseUri, imagePath)), Width = 50, Height = 50 };
-            TextBlock rankText = new TextBlock { Text = rankName, Foreground = new SolidColorBrush(color), Width = 150, Margin = new Thickness(10, 15, 0, 0) };
-            TextBlock minText = new TextBlock { Text = minScore, Foreground = new SolidColorBrush(color), TextAlignment = TextAlignment.Center, Width = 50, Margin = new Thickness(25, 15, 0, 0) };
+            Image rankImage = new Image { Source = new BitmapImage(new Uri(this.BaseUri, rankDef.ImagePath)), Width = 50, Height = 50 };
+            TextBlock rankText = new TextBlock { Text = rankDef.Name, Foreground = new SolidColorBrush(rankDef.Color), Width = 150, Margin = new Thickness(10, 15, 0, 0) };
+            TextBlock minText = new TextBlock { Text = rankDef.MinPoints.ToString(), Foreground = new SolidColorBrush(rankDef.Color), TextAlignment = TextAlignment.Center, Width = 50, Margin = new Thickness(25, 15, 0, 0) };
             TextBlock dashText = new TextBlock { Text = "-", Width = 10, Margin = new Thickness(15, 15, 0, 0) };
-            TextBlock maxText = new TextBlock { Text = maxScore, Foreground = new SolidColorBrush(color), TextAlignment = TextAlignment.Center, Width = 50, Margin = new Thickness(15, 15, 0, 0) };
+            TextBlock maxText = new TextBlock { Text = rankDef.MaxPoints.ToString(), Foreground = new SolidColorBrush(rankDef.Color), TextAlignment = TextAlignment.Center, Width = 50, Margin = new Thickness(15, 15, 0, 0) };
 
             stackPanel.Children.Add(rankImage);
             stackPanel.Children.Add(rankText);
