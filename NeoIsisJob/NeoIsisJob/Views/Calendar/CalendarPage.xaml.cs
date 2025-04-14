@@ -9,7 +9,7 @@ using Microsoft.UI.Xaml.Media;
 using NeoIsisJob.Data;
 using NeoIsisJob.Models;
 using NeoIsisJob.ViewModels.Calendar;
-using NeoIsisJob.Services;
+using NeoIsisJob.Servs;
 
 namespace NeoIsisJob.Views
 {

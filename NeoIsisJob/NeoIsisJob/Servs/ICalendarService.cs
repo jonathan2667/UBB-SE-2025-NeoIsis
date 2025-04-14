@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using NeoIsisJob.Models;
 
-namespace NeoIsisJob.Services
+namespace NeoIsisJob.Servs
 {
     public interface ICalendarService
     {

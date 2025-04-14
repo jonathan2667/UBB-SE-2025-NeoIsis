@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace NeoIsisJob.Services
+namespace NeoIsisJob.Servs
 {
     public class CalendarService : ICalendarService
     {

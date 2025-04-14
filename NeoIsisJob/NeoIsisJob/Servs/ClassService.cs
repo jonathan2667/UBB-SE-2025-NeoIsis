@@ -70,9 +70,5 @@ namespace NeoIsisJob.Servs
                 return errorMessage;
             }
         }
-
-        // In case you guys need to update a class
-        // create a method here that calls the UpdateClassModel method from the ClassRepo + 
-        // create the UpdateClassModel method in the ClassRepo
     }
 }

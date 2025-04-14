@@ -9,7 +9,7 @@ using NeoIsisJob.Models;
 using NeoIsisJob.Data;
 using NeoIsisJob.Repos;
 using System.Linq;
-using NeoIsisJob.Services;
+using NeoIsisJob.Servs;
 
 namespace NeoIsisJob.ViewModels.Calendar
 {
