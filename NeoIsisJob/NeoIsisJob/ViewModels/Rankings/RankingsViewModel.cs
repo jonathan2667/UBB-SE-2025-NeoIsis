@@ -1,6 +1,5 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Servs;
-using NeoIsisJob.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,15 +23,15 @@ namespace NeoIsisJob.ViewModels.Rankings
         public string ImagePath { get; set; }
     }
 
-    class RankingsViewModel
+    public class RankingsViewModel
     {
-        private readonly RankingsService _rankingsService;
+        private readonly IRankingsService _rankingsService;
         private readonly int _user_id = 1; // !!!!!!!!!!!!!!! HARDCODED USER VALUE !!!!!!! CHANGE THIS FOR PROD !!!!!!!!
         private readonly List<RankDefinition> _rankDefinitions;
 
-        public RankingsViewModel()
+        public RankingsViewModel(IRankingsService rankingsService)
         {
-            this._rankingsService = new RankingsService();
+            this._rankingsService = rankingsService;
             this._rankDefinitions = InitializeRankDefinitions();
         }
 

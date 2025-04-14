@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace NeoIsisJob.Servs
 {
-    class RankingsService
+    public class RankingsService : IRankingsService
     {
-        private readonly RankingsRepo _rankingsRepository;
+        private readonly IRankingsRepository _rankingsRepository;
 
-        public RankingsService()
+        public RankingsService(IRankingsRepository rankingsRepository)
         {
-            this._rankingsRepository = new RankingsRepo();
+            this._rankingsRepository = rankingsRepository;
         }
 
         public IList<RankingModel> GetAllRankingsByUserID(int userId)

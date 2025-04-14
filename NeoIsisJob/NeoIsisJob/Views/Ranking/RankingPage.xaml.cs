@@ -15,6 +15,8 @@ using Microsoft.UI.Xaml.Navigation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI;
 using NeoIsisJob.ViewModels.Rankings;
+using NeoIsisJob;
+using Microsoft.Extensions.DependencyInjection;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,7 +34,7 @@ namespace NeoIsisJob.Views
         public RankingPage()
         {
             this.InitializeComponent();
-            this._rankingsViewModel = new RankingsViewModel();
+            this._rankingsViewModel = App.Services.GetRequiredService<RankingsViewModel>();
             this.LoadRankings();
             this.LoadMuscleGroupColors();
         }

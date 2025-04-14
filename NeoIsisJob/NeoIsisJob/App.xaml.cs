@@ -18,6 +18,9 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using NeoIsisJob.ViewModels.Workout;
+using NeoIsisJob.Repos;
+using NeoIsisJob.Servs;
+using NeoIsisJob.ViewModels.Rankings;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -57,8 +60,14 @@ namespace NeoIsisJob
         {
             ServiceCollection serviceCollection = new ServiceCollection();
 
-            //register the selected workout page view model as a singleton so it persists,
-            //just its workout property will be changed
+            // Register repositories
+            serviceCollection.AddSingleton<IRankingsRepository, RankingsRepo>();
+
+            // Register services
+            serviceCollection.AddSingleton<IRankingsService, RankingsService>();
+
+            // Register view models
+            serviceCollection.AddSingleton<RankingsViewModel>();
             serviceCollection.AddSingleton<SelectedWorkoutViewModel>();
 
             Services = serviceCollection.BuildServiceProvider();

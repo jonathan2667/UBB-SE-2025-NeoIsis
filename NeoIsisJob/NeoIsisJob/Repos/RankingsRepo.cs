@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NeoIsisJob.Repos
 {
-    class RankingsRepo
+    public class RankingsRepo : IRankingsRepository
     {
         private readonly DatabaseHelper _databaseHelper;
 
