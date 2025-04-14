@@ -12,13 +12,13 @@ namespace NeoIsisJob.Servs
 {
     public class CalendarService : ICalendarService
     {
-        private readonly DatabaseHelper _dbHelper;
         private readonly ICalendarRepository _calendarRepository;
+        private readonly UserWorkoutRepo _userWorkoutRepo;
 
-        public CalendarService(ICalendarRepository calendarRepository = null)
+        public CalendarService(ICalendarRepository calendarRepository = null, UserWorkoutRepo userWorkoutRepo = null)
         {
-            _dbHelper = new DatabaseHelper();
             _calendarRepository = calendarRepository ?? new CalendarRepository();
+            _userWorkoutRepo = userWorkoutRepo ?? new UserWorkoutRepo(new DatabaseHelper());
         }
 
         public List<CalendarDay> GetCalendarDaysForMonth(int userId, DateTime date)
@@ -97,133 +97,32 @@ namespace NeoIsisJob.Servs
 
         public void AddUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (var conn = _dbHelper.GetConnection())
-            {
-                conn.Open();
-                string query = @"
-                        INSERT INTO UserWorkouts (UID, WID, Date, Completed)
-                        VALUES (@UID, @WID, @Date, @Completed)";
-
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@UID", userWorkout.UserId);
-                    cmd.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
-                    cmd.Parameters.AddWithValue("@Date", userWorkout.Date.Date);
-                    cmd.Parameters.AddWithValue("@Completed", userWorkout.Completed);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            _userWorkoutRepo.AddUserWorkout(userWorkout);
         }
 
         public void UpdateUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (var conn = _dbHelper.GetConnection())
-            {
-                conn.Open();
-                string query = @"
-                        UPDATE UserWorkouts  
-                        SET Completed = @Completed
-                        WHERE UID = @UID AND WID = @WID AND Date = @Date";
-
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@UID", userWorkout.UserId);
-                    cmd.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
-                    cmd.Parameters.AddWithValue("@Date", userWorkout.Date.Date);
-                    cmd.Parameters.AddWithValue("@Completed", userWorkout.Completed);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            _userWorkoutRepo.UpdateUserWorkout(userWorkout);
         }
 
         public void DeleteUserWorkout(int userId, int workoutId, DateTime date)
         {
-            using (var conn = _dbHelper.GetConnection())
-            {
-                conn.Open();
-                string query = @"
-                        DELETE FROM UserWorkouts  
-                        WHERE UID = @UID AND WID = @WID AND Date = @Date";
-
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@UID", userId);
-                    cmd.Parameters.AddWithValue("@WID", workoutId);
-                    cmd.Parameters.AddWithValue("@Date", date.Date);
-                    cmd.ExecuteNonQuery();
-                }
-            }
+            _userWorkoutRepo.DeleteUserWorkout(userId, workoutId, date);
         }
 
         public UserWorkoutModel GetUserWorkout(int userId, DateTime date)
         {
-            using (var conn = _dbHelper.GetConnection())
-            {
-                conn.Open();
-                string query = @"SELECT UID, WID, Date, Completed FROM UserWorkouts WHERE UID = @UID AND Date = @Date";
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@UID", userId);
-                    cmd.Parameters.AddWithValue("@Date", date.Date);
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new UserWorkoutModel(
-                                (int)reader["UID"],
-                                (int)reader["WID"],
-                                (DateTime)reader["Date"],
-                                (bool)reader["Completed"]
-                            );
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
-                }
-            }
+            return _calendarRepository.GetUserWorkout(userId, date);
         }
 
         public string GetUserClass(int userId, DateTime date)
         {
-            using (var conn = _dbHelper.GetConnection())
-            {
-                conn.Open();
-                string query = @"SELECT ClassName FROM UserClasses WHERE UID = @UID AND Date = @Date";
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@UID", userId);
-                    cmd.Parameters.AddWithValue("@Date", date.Date);
-                    var result = cmd.ExecuteScalar();
-                    return result?.ToString();
-                }
-            }
+            return _calendarRepository.GetUserClass(userId, date);
         }
 
         public List<WorkoutModel> GetWorkouts()
         {
-            var workouts = new List<WorkoutModel>();
-            using (var conn = _dbHelper.GetConnection())
-            {
-                conn.Open();
-                string query = @"SELECT WID, Name FROM Workouts";
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            workouts.Add(new WorkoutModel
-                            {
-                                Id = (int)reader["WID"],
-                                Name = reader["Name"].ToString()
-                            });
-                        }
-                    }
-                }
-            }
-            return workouts;
+            return _calendarRepository.GetWorkouts();
         }
     }
 }
