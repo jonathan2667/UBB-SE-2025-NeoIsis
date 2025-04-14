@@ -140,6 +140,18 @@ namespace NeoIsisJob.ViewModels.Workout
             }
         }
 
+        public void ApplyWorkoutTypeFilter(WorkoutTypeModel selectedType, bool isChecked)
+        {
+            if (isChecked)
+            {
+                SelectedWorkoutType = selectedType;
+            }
+            else
+            {
+                SelectedWorkoutType = null;
+            }
+        }
+
         public void DeleteWorkout(int workoutId)
         {
             // Delete the selected workout and its complete workouts

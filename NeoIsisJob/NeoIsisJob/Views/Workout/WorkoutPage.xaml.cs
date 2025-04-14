@@ -47,7 +47,7 @@ namespace NeoIsisJob.Views
 
         public void GoToWorkoutPage_Tap(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(WorkoutPage));
+            // Already on WorkoutPage
         }
 
         public void GoToCalendarPage_Tap(object sender, RoutedEventArgs e)
@@ -69,82 +69,22 @@ namespace NeoIsisJob.Views
         {
             if(e.ClickedItem is WorkoutModel selectedWorkout)
             {
-                //get the singleton registered in app and set its workout to the selected one
                 SelectedWorkoutViewModel selectedWorkoutViewModel = App.Services.GetService<SelectedWorkoutViewModel>();
                 selectedWorkoutViewModel.SelectedWorkout = selectedWorkout;
-
-                //now navigate to the selected workout page
                 this.Frame.Navigate(typeof(SelectedWorkoutPage));
             }
         }
 
-        //handler for create button -> go to create workout page
         public void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            //for now
-            this.Frame.Navigate (typeof(CreateWorkoutPage));
+            this.Frame.Navigate(typeof(CreateWorkoutPage));
         }
 
-        //handler for checking a box
         private void WorkoutTypeCheckBox_Click(object sender, RoutedEventArgs e)
         {
-            //if the sender is a checkbox and its data is a workout type
             if (sender is CheckBox checkBox && checkBox.DataContext is WorkoutTypeModel selectedType)
             {
-                //var viewModel = DataContext as WorkoutViewModel;
-                if (this.ViewModel == null) return;
-
-                //if checked, filter workouts and disable other checkboxes
-                if (checkBox.IsChecked == true)
-                {
-                    //this triggers the list of workouts to change
-                    this.ViewModel.SelectedWorkoutType = selectedType;
-                    DisableOtherCheckBoxes(selectedType);
-                }
-                else
-                {
-                    //reset the filter
-                    this.ViewModel.SelectedWorkoutType = null;
-                    EnableAllCheckBoxes();
-                }
-            }
-        }
-
-        //disable all checkboxes except the selected one
-        private void DisableOtherCheckBoxes(WorkoutTypeModel selectedType)
-        {
-            foreach (CheckBox checkBox in FindVisualChildren<CheckBox>(this))
-            {
-                if (checkBox.DataContext is WorkoutTypeModel type && type != selectedType)
-                {
-                    checkBox.IsEnabled = false;
-                }
-            }
-        }
-
-        //re-enable all checkboxes when filter is removed
-        private void EnableAllCheckBoxes()
-        {
-            foreach (CheckBox checkBox in FindVisualChildren<CheckBox>(this))
-            {
-                checkBox.IsEnabled = true;
-            }
-        }
-
-        //finds all the checkboxes in the visual tree
-        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
-        {
-            if (depObj == null) yield break;
-
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
-            {
-                var child = VisualTreeHelper.GetChild(depObj, i);
-                if (child is T childItem) yield return childItem;
-
-                foreach (var childOfChild in FindVisualChildren<T>(child))
-                {
-                    yield return childOfChild;
-                }
+                ViewModel.ApplyWorkoutTypeFilter(selectedType, checkBox.IsChecked == true);
             }
         }
 
@@ -154,13 +94,8 @@ namespace NeoIsisJob.Views
             {
                 if (DataContext is WorkoutViewModel viewModel)
                 {
-                    // Set the selected workout in the ViewModel
                     viewModel.SelectedWorkout = workout;
-
-                    // Pre-fill the TextBox with the current workout name
                     WorkoutNameTextBox.Text = workout.Name;
-
-                    // Open the popup
                     EditWorkoutPopup.IsOpen = true;
                 }
             }
