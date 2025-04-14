@@ -164,7 +164,7 @@ namespace NeoIsisJob.Services
                 using (var cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@UID", userId);
-                    cmd.Parameters.AddWithValue("@Date", date);
+                    cmd.Parameters.AddWithValue("@Date", date.Date);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -194,7 +194,7 @@ namespace NeoIsisJob.Services
                 using (var cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@UID", userId);
-                    cmd.Parameters.AddWithValue("@Date", date);
+                    cmd.Parameters.AddWithValue("@Date", date.Date);
                     var result = cmd.ExecuteScalar();
                     return result?.ToString();
                 }
