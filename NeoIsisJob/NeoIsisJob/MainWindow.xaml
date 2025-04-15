@@ -5,7 +5,7 @@
     xmlns:local="using:NeoIsisJob.Models"
     Title="User Test">
 
-    <Grid RequestedTheme="Light">
+    <Grid>
         <!-- This Frame should take the full height -->
         <Frame x:Name="MainFrame"/>
     </Grid>
