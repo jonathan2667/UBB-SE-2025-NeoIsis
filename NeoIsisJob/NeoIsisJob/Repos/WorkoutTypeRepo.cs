@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using NeoIsisJob.Data;
 using NeoIsisJob.Models;
+using NeoIsisJob.Repos.Interfaces;
 
 namespace NeoIsisJob.Repos
 {
-    public class WorkoutTypeRepo
+    public class WorkoutTypeRepo : IWorkoutTypeRepository
     {
         private readonly DatabaseHelper _databaseHelper;
 

@@ -1,5 +1,6 @@
 ﻿using NeoIsisJob.Data;
 using NeoIsisJob.Models;
+using NeoIsisJob.Repos.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -7,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace NeoIsisJob.Repos
 {
-    public class UserWorkoutRepo
+    public class UserWorkoutRepo : IUserWorkoutRepository
     {
         private readonly DatabaseHelper _databaseHelper;
 

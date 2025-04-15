@@ -1,18 +1,25 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Repos;
+using NeoIsisJob.Repos.Interfaces;
+using NeoIsisJob.Servs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace NeoIsisJob.Servs
 {
-    public class UserWorkoutService
+    public class UserWorkoutService : IUserWorkoutService
     {
-        private readonly UserWorkoutRepo _userWorkoutRepository;
+        private readonly IUserWorkoutRepository _userWorkoutRepository;
 
         public UserWorkoutService()
         {
             _userWorkoutRepository = new UserWorkoutRepo(new Data.DatabaseHelper());
+        }
+
+        public UserWorkoutService(IUserWorkoutRepository userWorkoutRepository)
+        {
+            _userWorkoutRepository = userWorkoutRepository ?? throw new ArgumentNullException(nameof(userWorkoutRepository));
         }
 
         public UserWorkoutModel GetUserWorkoutForDate(int userId, DateTime date)

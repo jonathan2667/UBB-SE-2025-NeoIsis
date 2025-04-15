@@ -1,5 +1,7 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Repos;
+using NeoIsisJob.Repos.Interfaces;
+using NeoIsisJob.Servs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -9,13 +11,18 @@ using System.Threading.Tasks;
 
 namespace NeoIsisJob.Servs
 {
-    public class CompleteWorkoutService
+    public class CompleteWorkoutService : ICompleteWorkoutService
     {
-        private readonly CompleteWorkoutRepo _completeWorkoutRepository;
+        private readonly ICompleteWorkoutRepository _completeWorkoutRepository;
 
         public CompleteWorkoutService()
         {
             this._completeWorkoutRepository = new CompleteWorkoutRepo();
+        }
+
+        public CompleteWorkoutService(ICompleteWorkoutRepository completeWorkoutRepository)
+        {
+            this._completeWorkoutRepository = completeWorkoutRepository ?? throw new ArgumentNullException(nameof(completeWorkoutRepository));
         }
 
         public IList<CompleteWorkoutModel> GetAllCompleteWorkouts()

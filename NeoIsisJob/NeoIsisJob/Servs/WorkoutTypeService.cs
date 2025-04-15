@@ -1,5 +1,7 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Repos;
+using NeoIsisJob.Repos.Interfaces;
+using NeoIsisJob.Servs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,11 +12,19 @@ using System.Threading.Tasks;
 
 namespace NeoIsisJob.Servs
 {
-    public class WorkoutTypeService
+    public class WorkoutTypeService : IWorkoutTypeService
     {
-        private readonly WorkoutTypeRepo _workoutTypeRepository;
+        private readonly IWorkoutTypeRepository _workoutTypeRepository;
 
-        public WorkoutTypeService() { this._workoutTypeRepository = new WorkoutTypeRepo(); }
+        public WorkoutTypeService() 
+        { 
+            this._workoutTypeRepository = new WorkoutTypeRepo(); 
+        }
+
+        public WorkoutTypeService(IWorkoutTypeRepository workoutTypeRepository)
+        {
+            this._workoutTypeRepository = workoutTypeRepository ?? throw new ArgumentNullException(nameof(workoutTypeRepository));
+        }
 
         public void InsertWorkoutType(String workoutTypeName) 
         {
