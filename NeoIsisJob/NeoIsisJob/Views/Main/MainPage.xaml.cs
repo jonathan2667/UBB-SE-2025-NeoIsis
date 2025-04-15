@@ -1,7 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

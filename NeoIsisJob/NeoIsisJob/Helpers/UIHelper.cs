@@ -6,13 +6,13 @@ namespace NeoIsisJob.Helpers
 {
     public static class UIHelper
     {
-        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        public static IEnumerable<T> FindVisualChildren<T>(DependencyObject dependencyObject) where T : DependencyObject
         {
-            if (depObj == null) yield break;
+            if (dependencyObject == null) yield break;
 
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(dependencyObject); i++)
             {
-                var child = VisualTreeHelper.GetChild(depObj, i);
+                var child = VisualTreeHelper.GetChild(dependencyObject, i);
                 if (child is T childItem) yield return childItem;
 
                 foreach (var childOfChild in FindVisualChildren<T>(child))

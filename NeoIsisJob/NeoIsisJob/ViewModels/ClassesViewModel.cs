@@ -1,5 +1,5 @@
 using System;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Services.Interfaces;
 
 namespace NeoIsisJob.ViewModels
 {

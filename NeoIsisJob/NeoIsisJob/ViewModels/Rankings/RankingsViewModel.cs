@@ -1,5 +1,4 @@
 ﻿using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,22 +10,14 @@ using System.Collections.ObjectModel;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Windows.UI;
+using NeoIsisJob.Services.Interfaces;
 
 namespace NeoIsisJob.ViewModels.Rankings
 {
-    public class RankDefinition
-    {
-        public string Name { get; set; }
-        public int MinPoints { get; set; }
-        public int MaxPoints { get; set; }
-        public Windows.UI.Color Color { get; set; }
-        public string ImagePath { get; set; }
-    }
-
     public class RankingsViewModel
     {
         private readonly IRankingsService _rankingsService;
-        private readonly int _user_id = 1; // !!!!!!!!!!!!!!! HARDCODED USER VALUE !!!!!!! CHANGE THIS FOR PROD !!!!!!!!
+        private readonly int _userId = 1; // !!!!!!!!!!!!!!! HARDCODED USER VALUE !!!!!!! CHANGE THIS FOR PROD !!!!!!!!
         private readonly List<RankDefinition> _rankDefinitions;
 
         public RankingsViewModel(IRankingsService rankingsService)
@@ -63,38 +54,36 @@ namespace NeoIsisJob.ViewModels.Rankings
 
         public int GetNextRankPoints(int currentRank)
         {
-            var currentRankDef = GetRankDefinitionForPoints(currentRank);
-            var nextRank = _rankDefinitions.FirstOrDefault(r => r.MinPoints > currentRankDef.MinPoints);
-            return nextRank?.MinPoints - currentRank ?? 0;
+            return this._rankingsService.CalculatePointsToNextRank(currentRank, _rankDefinitions);
         }
 
         public RankingModel GetRankingByMGID(int muscleGroupid)
         {
-            return this._rankingsService.GetRankingByFullID(this._user_id, muscleGroupid);
+            return this._rankingsService.GetRankingByFullID(this._userId, muscleGroupid);
         }
 
         public SolidColorBrush GetRankColor(int rank)
         {
-            var rankDef = GetRankDefinitionForPoints(rank);
-            return new SolidColorBrush(rankDef.Color);
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return new SolidColorBrush(rankDefinition.Color);
         }
 
         public string GetRankIcon(int rank)
         {
-            var rankDef = GetRankDefinitionForPoints(rank);
-            return rankDef.ImagePath;
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return rankDefinition.ImagePath;
         }
 
         public int GetRankLowerBound(int rank)
         {
-            var rankDef = GetRankDefinitionForPoints(rank);
-            return rankDef.MinPoints;
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return rankDefinition.MinPoints;
         }
 
         public int GetRankUpperBound(int rank)
         {
-            var rankDef = GetRankDefinitionForPoints(rank);
-            return rankDef.MaxPoints;
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return rankDefinition.MaxPoints;
         }
     }
 }

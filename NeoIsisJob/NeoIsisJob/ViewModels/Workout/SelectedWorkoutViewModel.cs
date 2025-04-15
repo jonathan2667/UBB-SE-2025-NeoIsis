@@ -1,6 +1,6 @@
 ﻿using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
-using NeoIsisJob.Servs.Interfaces;
+using NeoIsisJob.Services;
+using NeoIsisJob.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,9 +35,9 @@ namespace NeoIsisJob.ViewModels.Workout
                 if (_selectedWorkout != null)
                 {
                     //update the collection
-                    IList<CompleteWorkoutModel> complWorkouts = FilledCompleteWorkoutsWithExercies(
+                    IList<CompleteWorkoutModel> completeWorkouts = FilledCompleteWorkoutsWithExercies(
                         this._completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this._selectedWorkout.Id));
-                    CompleteWorkouts = new ObservableCollection<CompleteWorkoutModel>(complWorkouts);
+                    CompleteWorkouts = new ObservableCollection<CompleteWorkoutModel>(completeWorkouts);
                 }
                 else
                 {

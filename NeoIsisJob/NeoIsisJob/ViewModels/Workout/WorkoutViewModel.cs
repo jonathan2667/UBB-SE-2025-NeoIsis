@@ -1,6 +1,6 @@
 ﻿using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
-using NeoIsisJob.Servs.Interfaces;
+using NeoIsisJob.Services;
+using NeoIsisJob.Services.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;

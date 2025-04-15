@@ -1,7 +1,7 @@
 using System;
 using Microsoft.UI.Xaml;
-using NeoIsisJob.Repos;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Repositories;
+using NeoIsisJob.Services;
 using NeoIsisJob.Data;
 using NeoIsisJob.ViewModels;
 using System.Runtime.CompilerServices;

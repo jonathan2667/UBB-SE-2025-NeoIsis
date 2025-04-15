@@ -1,5 +1,5 @@
 ﻿using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

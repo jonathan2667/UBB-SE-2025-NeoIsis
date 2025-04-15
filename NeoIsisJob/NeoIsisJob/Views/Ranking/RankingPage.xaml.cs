@@ -17,6 +17,7 @@ using Microsoft.UI;
 using NeoIsisJob.ViewModels.Rankings;
 using NeoIsisJob;
 using Microsoft.Extensions.DependencyInjection;
+using NeoIsisJob.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -33,7 +34,7 @@ namespace NeoIsisJob.Views
             this.InitializeComponent();
             this._rankingsViewModel = App.Services.GetRequiredService<RankingsViewModel>();
             this.LoadRankings();
-            this.LoadMuscleGroupColors();
+            this.LoadColorForMuscleGroup();
         }
 
         public void GoToMainPage_Tap(object sender, RoutedEventArgs e)
@@ -71,30 +72,30 @@ namespace NeoIsisJob.Views
 
         private void Chest_Clicked(object sender, RoutedEventArgs e)
         {
-            LoadMuscleGroupPanel(1, "Chest");
+            LoadRankingsForMuscleGroupPanel(1, "Chest");
         }
 
         private void Legs_Clicked(object sender, RoutedEventArgs e)
         {
-            LoadMuscleGroupPanel(2, "Legs");
+            LoadRankingsForMuscleGroupPanel(2, "Legs");
         }
 
         private void Arms_Clicked(object sender, RoutedEventArgs e)
         {
-            LoadMuscleGroupPanel(3, "Arms");
+            LoadRankingsForMuscleGroupPanel(3, "Arms");
         }
 
         private void Abs_Clicked(object sender, RoutedEventArgs e)
         {
-            LoadMuscleGroupPanel(4, "Abs");
+            LoadRankingsForMuscleGroupPanel(4, "Abs");
         }
 
         private void Back_Clicked(object sender, RoutedEventArgs e)
         {
-            LoadMuscleGroupPanel(5, "Back");
+            LoadRankingsForMuscleGroupPanel(5, "Back");
         }
 
-        private void LoadMuscleGroupPanel(int muscleGroupId, string muscleGroupName)
+        private void LoadRankingsForMuscleGroupPanel(int muscleGroupId, string muscleGroupName)
         {
             var ranking = this._rankingsViewModel.GetRankingByMGID(muscleGroupId);
             if (ranking != null)
@@ -109,7 +110,7 @@ namespace NeoIsisJob.Views
             }
         }
 
-        private void LoadMuscleGroupColors()
+        private void LoadColorForMuscleGroup()
         {
             LoadMuscleGroupColor(1, "Chest");
             LoadMuscleGroupColor(2, "Legs");
@@ -136,9 +137,9 @@ namespace NeoIsisJob.Views
                 rankingPanel.Children.Clear();
                 rankingPanel.Children.Add(new TextBlock { Text = "All Rankings Explained:", FontSize = 25 });
 
-                foreach (var rankDef in _rankingsViewModel.GetRankDefinitions())
+                foreach (var rankDefinition in _rankingsViewModel.GetRankDefinitions())
                 {
-                    rankingPanel.Children.Add(CreateRankItem(rankDef));
+                    rankingPanel.Children.Add(CreateRankItem(rankDefinition));
                 }
             }
         }

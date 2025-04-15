@@ -18,9 +18,11 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Microsoft.Extensions.DependencyInjection;
 using NeoIsisJob.ViewModels.Workout;
-using NeoIsisJob.Repos;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Repositories;
+using NeoIsisJob.Services;
 using NeoIsisJob.ViewModels.Rankings;
+using NeoIsisJob.Repositories.Interfaces;
+using NeoIsisJob.Services.Interfaces;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -61,7 +63,7 @@ namespace NeoIsisJob
             ServiceCollection serviceCollection = new ServiceCollection();
 
             // Register repositories
-            serviceCollection.AddSingleton<IRankingsRepository, RankingsRepo>();
+            serviceCollection.AddSingleton<IRankingsRepository, RankingsRepository>();
 
             // Register services
             serviceCollection.AddSingleton<IRankingsService, RankingsService>();
