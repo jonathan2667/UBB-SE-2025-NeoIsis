@@ -1,4 +1,6 @@
-﻿namespace NeoIsisJob.Models
+﻿using System;
+
+namespace NeoIsisJob.Models
 {
     public class WorkoutModel
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Services;
 
 namespace NeoIsisJob.ViewModels
 {
