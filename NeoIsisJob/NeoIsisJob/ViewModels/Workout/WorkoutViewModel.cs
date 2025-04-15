@@ -1,5 +1,6 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Servs;
+using NeoIsisJob.Servs.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -13,10 +14,11 @@ namespace NeoIsisJob.ViewModels.Workout
 {
     public class WorkoutViewModel : INotifyPropertyChanged
     {
-        // Add WorkoutService, WorkoutTypeService, and CompleteWorkoutService as fields
-        private readonly WorkoutService _workoutService;
-        private readonly WorkoutTypeService _workoutTypeService;
-        private readonly CompleteWorkoutService _completeWorkoutService;
+        // Use interfaces instead of concrete implementations
+        private readonly IWorkoutService _workoutService;
+        private readonly IWorkoutTypeService _workoutTypeService;
+        private readonly ICompleteWorkoutService _completeWorkoutService;
+        private readonly IExerciseService _exerciseService;
         private ObservableCollection<WorkoutModel> _workouts;
         private ObservableCollection<WorkoutTypeModel> _workoutTypes;
         private WorkoutTypeModel _selectedWorkoutType;
@@ -29,16 +31,35 @@ namespace NeoIsisJob.ViewModels.Workout
         public ICommand UpdateWorkoutCommand { get; }
         public ICommand CloseEditPopupCommand { get; }
 
-        public WorkoutViewModel()
+        // Default constructor for backward compatibility
+        public WorkoutViewModel() : this(
+            new WorkoutService(),
+            new WorkoutTypeService(),
+            new CompleteWorkoutService(),
+            new ExerciseService())
         {
-            this._workoutService = new WorkoutService();
-            this._workoutTypeService = new WorkoutTypeService();
-            this._completeWorkoutService = new CompleteWorkoutService();
+        }
+
+        // Constructor with dependency injection
+        public WorkoutViewModel(
+            IWorkoutService workoutService,
+            IWorkoutTypeService workoutTypeService,
+            ICompleteWorkoutService completeWorkoutService,
+            IExerciseService exerciseService)
+        {
+            this._workoutService = workoutService;
+            this._workoutTypeService = workoutTypeService;
+            this._completeWorkoutService = completeWorkoutService;
+            this._exerciseService = exerciseService;
+            
             Workouts = new ObservableCollection<WorkoutModel>();
             WorkoutTypes = new ObservableCollection<WorkoutTypeModel>();
 
-            // Initialize SelectedWorkoutViewModel
-            SelectedWorkoutViewModel = new SelectedWorkoutViewModel();
+            // Initialize SelectedWorkoutViewModel with dependencies
+            SelectedWorkoutViewModel = new SelectedWorkoutViewModel(
+                workoutService,
+                exerciseService,
+                completeWorkoutService);
 
             // Initialize commands
             DeleteWorkoutCommand = new RelayCommand<int>(DeleteWorkout);

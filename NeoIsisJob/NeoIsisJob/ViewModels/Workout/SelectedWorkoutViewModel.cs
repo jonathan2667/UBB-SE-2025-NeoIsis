@@ -1,5 +1,6 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Servs;
+using NeoIsisJob.Servs.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,10 +15,10 @@ namespace NeoIsisJob.ViewModels.Workout
 {
     public class SelectedWorkoutViewModel : INotifyPropertyChanged
     {
-        private readonly WorkoutService _workoutService;
+        private readonly IWorkoutService _workoutService;
         //for getting the exercise by id
-        private readonly ExerciseService _exerciseService;
-        private readonly CompleteWorkoutService _completeWorkoutService;
+        private readonly IExerciseService _exerciseService;
+        private readonly ICompleteWorkoutService _completeWorkoutService;
         private WorkoutModel _selectedWorkout;
         private ObservableCollection<CompleteWorkoutModel> _completeWorkouts;
 
@@ -31,9 +32,17 @@ namespace NeoIsisJob.ViewModels.Workout
                 Debug.WriteLine($"SelectedWorkout set to: {_selectedWorkout?.Name}"); // Debug message
                 OnPropertyChanged();
 
-                //update the collection
-                IList<CompleteWorkoutModel> complWorkouts = FilledCompleteWorkoutsWithExercies(this._completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this._selectedWorkout.Id));
-                CompleteWorkouts = new ObservableCollection<CompleteWorkoutModel>(complWorkouts);
+                if (_selectedWorkout != null)
+                {
+                    //update the collection
+                    IList<CompleteWorkoutModel> complWorkouts = FilledCompleteWorkoutsWithExercies(
+                        this._completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this._selectedWorkout.Id));
+                    CompleteWorkouts = new ObservableCollection<CompleteWorkoutModel>(complWorkouts);
+                }
+                else
+                {
+                    CompleteWorkouts.Clear();
+                }
             }
         }
 
@@ -47,11 +56,23 @@ namespace NeoIsisJob.ViewModels.Workout
             }
         }
 
-        public SelectedWorkoutViewModel()
+        // Default constructor for backward compatibility
+        public SelectedWorkoutViewModel() : this(
+            new WorkoutService(),
+            new ExerciseService(),
+            new CompleteWorkoutService())
         {
-            this._workoutService = new WorkoutService();
-            this._exerciseService = new ExerciseService();
-            this._completeWorkoutService = new CompleteWorkoutService();
+        }
+
+        // Constructor with dependency injection
+        public SelectedWorkoutViewModel(
+            IWorkoutService workoutService,
+            IExerciseService exerciseService,
+            ICompleteWorkoutService completeWorkoutService)
+        {
+            this._workoutService = workoutService;
+            this._exerciseService = exerciseService;
+            this._completeWorkoutService = completeWorkoutService;
             this._completeWorkouts = new ObservableCollection<CompleteWorkoutModel>();
         }
 

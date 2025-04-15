@@ -23,9 +23,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace NeoIsisJob.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class RankingPage : Page
     {
         // I am sorry for whoever has to work on this code in the future. Know that the failures of this code 
