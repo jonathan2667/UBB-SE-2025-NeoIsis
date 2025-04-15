@@ -85,6 +85,53 @@ namespace NeoIsisJob.Views
             if (sender is CheckBox checkBox && checkBox.DataContext is WorkoutTypeModel selectedType)
             {
                 ViewModel.ApplyWorkoutTypeFilter(selectedType, checkBox.IsChecked == true);
+
+                //if checked, filter workouts and disable other checkboxes
+                if (checkBox.IsChecked == true)
+                {
+                    DisableOtherCheckBoxes(selectedType);
+                }
+                else
+                {
+                    EnableAllCheckBoxes();
+                }
+            }
+        }
+        //disable all checkboxes except the selected one
+        private void DisableOtherCheckBoxes(WorkoutTypeModel selectedType)
+        {
+            foreach (CheckBox checkBox in FindVisualChildren<CheckBox>(this))
+            {
+                if (checkBox.DataContext is WorkoutTypeModel type && type != selectedType)
+                {
+                    checkBox.IsEnabled = false;
+                }
+            }
+        }
+
+        //re-enable all checkboxes when filter is removed
+        private void EnableAllCheckBoxes()
+        {
+            foreach (CheckBox checkBox in FindVisualChildren<CheckBox>(this))
+            {
+                checkBox.IsEnabled = true;
+            }
+        }
+
+        //finds all the checkboxes in the visual tree
+        private static IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj == null) yield break;
+
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = VisualTreeHelper.GetChild(depObj, i);
+                if (child is T childItem) yield return childItem;
+
+                foreach (var childOfChild in FindVisualChildren<T>(child))
+                {
+                    yield return childOfChild;
+                }
             }
         }
 
