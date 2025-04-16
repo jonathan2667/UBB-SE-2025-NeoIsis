@@ -1,4 +1,5 @@
 ﻿using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
 using System;
@@ -10,11 +11,16 @@ namespace NeoIsisJob.Repositories
 {
     public class UserWorkoutRepo : IUserWorkoutRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
-        public UserWorkoutRepo(DatabaseHelper databaseHelper)
+        public UserWorkoutRepo(IDatabaseHelper databaseHelper)
         {
             _databaseHelper = databaseHelper;
+        }
+
+        public UserWorkoutRepo()
+        {
+            _databaseHelper = new DatabaseHelper();
         }
 
         public List<UserWorkoutModel> GetUserWorkoutModelByDate(DateTime date)

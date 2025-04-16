@@ -1,4 +1,5 @@
-
+using NeoIsisJob.Data.Interfaces;
+using NeoIsisJob.Data;
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Repositories;
 using NeoIsisJob.Repositories.Interfaces;
