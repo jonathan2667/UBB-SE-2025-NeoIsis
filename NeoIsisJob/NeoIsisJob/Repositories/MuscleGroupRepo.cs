@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NeoIsisJob.Repositories.Interfaces;
+using NeoIsisJob.Data;
 
 namespace NeoIsisJob.Repositories
 {
+    public class MuscleGroupRepo : IMuscleGroupRepo
     {
         private readonly DatabaseHelper _databaseHelper;
 
