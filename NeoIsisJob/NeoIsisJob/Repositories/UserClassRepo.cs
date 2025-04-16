@@ -1,55 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Repositories
 {
     public class UserClassRepo
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
-        public UserClassRepo() { this._databaseHelper = new DatabaseHelper(); }
+        public UserClassRepo() 
+        {
+            _databaseHelper = new DatabaseHelper();
+        }
+
+        public UserClassRepo(IDatabaseHelper databaseHelper)
+        {
+            _databaseHelper = databaseHelper;
+        }
 
         public UserClassModel GetUserClassModelById(int userId, int classId, DateTime enrollmentDate)
         {
-            UserClassModel userClass = new UserClassModel();
+            string query = "SELECT UID, CID, Date FROM UserClasses WHERE UID = @UID AND CID = @CID AND Date = @Date";
 
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            var parameters = new SqlParameter[]
             {
-                // Open the connection
-                connection.Open();
+                new SqlParameter("@UID", userId),
+                new SqlParameter("@CID", classId),
+                new SqlParameter("@Date", enrollmentDate)
+            };
 
-                // Create a query
-                string query = "SELECT UID, CID, Date FROM UserClasses WHERE UID = @UID AND CID = @CID AND Date = @Date";
+            DataTable result = _databaseHelper.ExecuteReader(query, parameters);
 
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@UID", userId);
-                command.Parameters.AddWithValue("@CID", classId);
-                command.Parameters.AddWithValue("@Date", enrollmentDate);
-
-                // Execute the command
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Read the data
-                if (reader.Read())
-                {
-                    userClass = new UserClassModel(
-                        (int)reader["UID"],
-                        (int)reader["CID"],
-                        (DateTime)reader["Date"]
-                    );
-
-                    return userClass;
-                }
+            if (result.Rows.Count > 0)
+            {
+                var row = result.Rows[0];
+                return new UserClassModel(
+                    Convert.ToInt32(row["UID"]),
+                    Convert.ToInt32(row["CID"]),
+                    Convert.ToDateTime(row["Date"])
+                );
             }
 
             return new UserClassModel();
@@ -57,111 +50,72 @@ namespace NeoIsisJob.Repositories
 
         public List<UserClassModel> GetAllUserClassModel()
         {
+            string query = "SELECT UID, CID, Date FROM UserClasses";
+
+            DataTable result = _databaseHelper.ExecuteReader(query, null);
             List<UserClassModel> userClasses = new List<UserClassModel>();
 
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            foreach (DataRow row in result.Rows)
             {
-                // Open the connection
-                connection.Open();
-
-                // Create a query
-                string query = "SELECT UID, CID, Date FROM UserClasses";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Execute the command
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Read the data
-                while (reader.Read())
-                {
-                    userClasses.Add(new UserClassModel(
-                        (int)reader["UID"],
-                        (int)reader["CID"],
-                        (DateTime)reader["Date"]
-                    ));
-                }
+                userClasses.Add(new UserClassModel(
+                    Convert.ToInt32(row["UID"]),
+                    Convert.ToInt32(row["CID"]),
+                    Convert.ToDateTime(row["Date"])
+                ));
             }
+
             return userClasses;
         }
 
         public void AddUserClassModel(UserClassModel userClass)
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            string query = "INSERT INTO UserClasses (UID, CID, Date) VALUES (@UID, @CID, @Date)";
+
+            var parameters = new SqlParameter[]
             {
-                // Open the connection
-                connection.Open();
+                new SqlParameter("@UID", userClass.UserId),
+                new SqlParameter("@CID", userClass.ClassId),
+                new SqlParameter("@Date", userClass.EnrollmentDate)
+            };
 
-                // Create a query
-                string query = "INSERT INTO UserClasses (UID, CID, Date) VALUES (@UID, @CID, @Date)";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@UID", userClass.UserId);
-                command.Parameters.AddWithValue("@Date", userClass.EnrollmentDate);
-                command.Parameters.AddWithValue("@CID", userClass.ClassId);
-
-                // Execute the command
-                command.ExecuteNonQuery();
-            }
+            _databaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         public void DeleteUserClassModel(int userId, int classId, DateTime enrollmentDate)
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            string query = "DELETE FROM UserClasses WHERE UID = @UID AND CID = @CID AND Date = @Date";
+
+            var parameters = new SqlParameter[]
             {
-                // Open the connection
-                connection.Open();
+                new SqlParameter("@UID", userId),
+                new SqlParameter("@CID", classId),
+                new SqlParameter("@Date", enrollmentDate)
+            };
 
-                // Create a query
-                string query = "DELETE FROM UserClasses WHERE UID = @UID AND CID = @CID AND Date = @Date";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@UID", userId);
-                command.Parameters.AddWithValue("@CID", classId);
-                command.Parameters.AddWithValue("@Date", enrollmentDate);
-
-                // Execute the command
-                command.ExecuteNonQuery();
-            }
+            _databaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         public List<UserClassModel> GetUserClassModelByDate(DateTime date)
         {
-            List<UserClassModel> userClasses = new List<UserClassModel>();
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            string query = "SELECT UID, CID, Date FROM UserClasses WHERE Date = @Date";
+
+            var parameters = new SqlParameter[]
             {
-                // Open the connection
-                connection.Open();
+                new SqlParameter("@Date", date)
+            };
 
-                // Create a query
-                string query = "SELECT UID, CID, Date FROM UserClasses WHERE Date = @Date";
+            DataTable result = _databaseHelper.ExecuteReader(query, parameters);
+            List<UserClassModel> userClasses = new List<UserClassModel>();
 
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@Date", date);
-
-                // Execute the command
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Read the data
-                while (reader.Read())
-                {
-                    userClasses.Add(new UserClassModel(
-                        (int)reader["UID"],
-                        (int)reader["CID"],
-                        (DateTime)reader["Date"]
-                    ));
-                }
+            foreach (DataRow row in result.Rows)
+            {
+                userClasses.Add(new UserClassModel(
+                    Convert.ToInt32(row["UID"]),
+                    Convert.ToInt32(row["CID"]),
+                    Convert.ToDateTime(row["Date"])
+                ));
             }
+
             return userClasses;
         }
     }
