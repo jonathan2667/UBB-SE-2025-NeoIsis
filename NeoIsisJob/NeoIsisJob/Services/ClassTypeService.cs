@@ -48,5 +48,6 @@ namespace NeoIsisJob.Services
         // In case you guys need to update a class type
         // create a method here that calls the UpdateClassTypeModel method from the ClassTypeRepository +
         // create the UpdateClassTypeModel method in the ClassTypeRepository
+
     }
 }

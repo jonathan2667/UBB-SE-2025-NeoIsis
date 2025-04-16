@@ -10,7 +10,6 @@ using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
-    public class MuscleGroupRepo : IMuscleGroupRepo
     {
         private readonly DatabaseHelper _databaseHelper;
 

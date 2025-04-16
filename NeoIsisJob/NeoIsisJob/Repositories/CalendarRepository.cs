@@ -9,6 +9,7 @@ using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
+
     public class CalendarRepository : ICalendarRepository
     {
         private readonly DatabaseHelper _databaseHelper;
