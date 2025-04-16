@@ -1,78 +1,85 @@
-
-﻿using NeoIsisJob.Data;
+using NeoIsisJob.Data;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NeoIsisJob.Data.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
     public class CompleteWorkoutRepo : ICompleteWorkoutRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
-        public CompleteWorkoutRepo()
+        public CompleteWorkoutRepo(IDatabaseHelper databaseHelper)
         {
-            _databaseHelper = new DatabaseHelper();
+            _databaseHelper = databaseHelper;
         }
 
         public IList<CompleteWorkoutModel> GetAllCompleteWorkouts()
         {
             IList<CompleteWorkoutModel> completeWorkouts = new List<CompleteWorkoutModel>();
+            string query = "SELECT * FROM CompleteWorkouts";
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            try
             {
-                connection.Open();
-
-                String query = "SELECT * FROM CompleteWorkouts";
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while(reader.Read())
+                var dataTable = _databaseHelper.ExecuteReader(query, null);
+                foreach (System.Data.DataRow row in dataTable.Rows)
                 {
-                    completeWorkouts.Add(new CompleteWorkoutModel(Convert.ToInt32(reader["WID"]), Convert.ToInt32(reader["EID"]), Convert.ToInt32(reader["Sets"]), Convert.ToInt32(reader["RepsPerSet"])));
+                    completeWorkouts.Add(new CompleteWorkoutModel(
+                        Convert.ToInt32(row["WID"]),
+                        Convert.ToInt32(row["EID"]),
+                        Convert.ToInt32(row["Sets"]),
+                        Convert.ToInt32(row["RepsPerSet"])
+                    ));
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching complete workouts: " + ex.Message);
             }
 
             return completeWorkouts;
         }
 
-        //deletes all entries from CompleteWorkouts table which have the specified WID
         public void DeleteCompleteWorkoutsByWorkoutId(int workoutId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string deleteCommand = "DELETE FROM CompleteWorkouts WHERE WID=@wid";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                connection.Open();
+                new SqlParameter("@wid", workoutId)
+            };
 
-                String deleteCommand = "DELETE FROM CompleteWorkouts WHERE WID=@wid";
-                SqlCommand command = new SqlCommand(deleteCommand, connection);
-                command.Parameters.AddWithValue("@wid", workoutId);
-
-                command.ExecuteNonQuery();
+            try
+            {
+                _databaseHelper.ExecuteNonQuery(deleteCommand, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while deleting complete workouts: " + ex.Message);
             }
         }
 
         public void InsertCompleteWorkout(int workoutId, int exerciseId, int sets, int repetitionsPerSet)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string insertCommand = "INSERT INTO CompleteWorkouts(WID, EID, [Sets], RepsPerSet) VALUES (@wid, @eid, @sets, @repsPerSet)";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                connection.Open();
+                new SqlParameter("@wid", workoutId),
+                new SqlParameter("@eid", exerciseId),
+                new SqlParameter("@sets", sets),
+                new SqlParameter("@repsPerSet", repetitionsPerSet)
+            };
 
-                String insertCommand = "INSERT INTO CompleteWorkouts(WID, EID, [Sets], RepsPerSet) VALUES (@wid, @eid, @sets, @repsPerSet)";
-                SqlCommand command = new SqlCommand(insertCommand, connection);
-                command.Parameters.AddWithValue("@wid", workoutId);
-                command.Parameters.AddWithValue("@eid", exerciseId);
-                command.Parameters.AddWithValue("@sets", sets);
-                command.Parameters.AddWithValue("@repsPerSet", repetitionsPerSet);
-
-                command.ExecuteNonQuery();
+            try
+            {
+                _databaseHelper.ExecuteNonQuery(insertCommand, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while inserting complete workout: " + ex.Message);
             }
         }
-
-        //TODO -> implement the rest of CRUD
     }
 }

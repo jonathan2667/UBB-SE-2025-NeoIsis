@@ -5,10 +5,7 @@ using NeoIsisJob.Repositories.Interfaces;
 using NeoIsisJob.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeoIsisJob.Services
 {
@@ -16,15 +13,24 @@ namespace NeoIsisJob.Services
     {
         private readonly ICompleteWorkoutRepository _completeWorkoutRepository;
 
-        public CompleteWorkoutService()
+        // Constructor now takes IDatabaseHelper as a parameter for CompleteWorkoutRepo
+        public CompleteWorkoutService(IDatabaseHelper databaseHelper)
         {
-            this._completeWorkoutRepository = new CompleteWorkoutRepo();
+            // Injecting IDatabaseHelper into CompleteWorkoutRepo
+            this._completeWorkoutRepository = new CompleteWorkoutRepo(databaseHelper);
         }
 
+        // Second constructor allows dependency injection of ICompleteWorkoutRepository
         public CompleteWorkoutService(ICompleteWorkoutRepository completeWorkoutRepository)
         {
-            this._completeWorkoutRepository = completeWorkoutRepository; // ?? throw new ArgumentNullException(nameof(completeWorkoutRepository));
-            // Do not need that throw(dependency injection assures that we either have an instance or it throws if not)
+            this._completeWorkoutRepository = completeWorkoutRepository ?? throw new ArgumentNullException(nameof(completeWorkoutRepository));
+        }
+
+        // Default constructor to create CompleteWorkoutRepo with IDatabaseHelper (fallback)
+        public CompleteWorkoutService()
+        {
+            var databaseHelper = new DatabaseHelper(); // Fallback to DatabaseHelper if no DI is used
+            this._completeWorkoutRepository = new CompleteWorkoutRepo(databaseHelper);
         }
 
         public IList<CompleteWorkoutModel> GetAllCompleteWorkouts()
@@ -34,9 +40,6 @@ namespace NeoIsisJob.Services
 
         public IList<CompleteWorkoutModel> GetCompleteWorkoutsByWorkoutId(int workoutId)
         {
-            //like filter in java
-            //return (IList<CompleteWorkoutModel>)this._completeWorkoutRepo.GetAllCompleteWorkouts().Where(completeWorkout => completeWorkout.WorkoutId == wid);
-
             IList<CompleteWorkoutModel> completeWorkouts = new List<CompleteWorkoutModel>();
             foreach (CompleteWorkoutModel completeWorkout in this._completeWorkoutRepository.GetAllCompleteWorkouts().Where(completeWorkout => completeWorkout.WorkoutId == workoutId))
             {
