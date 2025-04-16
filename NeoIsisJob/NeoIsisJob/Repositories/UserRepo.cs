@@ -1,119 +1,75 @@
-﻿using Microsoft.UI.Xaml;
+﻿using NeoIsisJob.Models;
+using NeoIsisJob.Data.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NeoIsisJob.Models;
+using System.Data;
 using System.Data.SqlClient;
 using NeoIsisJob.Data;
-using System.Diagnostics;
 
 namespace NeoIsisJob.Repositories
 {
     public class UserRepo : IUserRepo
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
-        public UserRepo(DatabaseHelper dbHelper)  { _databaseHelper = dbHelper; }
+        public UserRepo()
+        {
+            _databaseHelper = new DatabaseHelper();
+        }
+        public UserRepo(IDatabaseHelper databaseHelper)
+        {
+            _databaseHelper = databaseHelper;
+        }
 
         public UserModel GetUserById(int userId)
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            string query = "SELECT UID FROM Users WHERE UID = @Id";
+            var parameters = new[]
             {
-                // open connection to database
-                connection.Open();
+                new SqlParameter("@Id", SqlDbType.Int) { Value = userId }
+            };
 
-                // query to get user by id
-                string query = "SELECT UID FROM Users WHERE UID = @Id";
+            DataTable result = _databaseHelper.ExecuteReader(query, parameters);
 
-                // create command and set parameters
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", userId);
-                SqlDataReader reader = command.ExecuteReader();
-
-                // if user found return user
-                if (reader.Read())
-                {
-                    return new UserModel(Convert.ToInt32(reader["UID"]));
-                }
-
-                // if no user found return null
-                return new UserModel();
+            if (result.Rows.Count > 0)
+            {
+                return new UserModel(Convert.ToInt32(result.Rows[0]["UID"]));
             }
+
+            return new UserModel();
         }
 
         public int InsertUser()
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
-            {
-                // open connection to database
-                connection.Open();
+            string query = "INSERT INTO Users DEFAULT VALUES; SELECT SCOPE_IDENTITY();";
 
-                // query to insert user
-                string query = "INSERT INTO Users DEFAULT VALUES; SELECT SCOPE_IDENTITY();";
-
-                // create command and set parameters
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // execute command and get new user id
-                int newUserId = Convert.ToInt32((decimal)command.ExecuteScalar());
-                return newUserId;
-            }
+            return _databaseHelper.ExecuteScalar<int>(query);
         }
 
         public bool DeleteUserById(int userId)
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            string query = "DELETE FROM Users WHERE UID = @Id";
+            var parameters = new[]
             {
-                // open connection to database
-                connection.Open();
+                new SqlParameter("@Id", SqlDbType.Int) { Value = userId }
+            };
 
-                // query to delete user by id
-                string query = "DELETE FROM Users WHERE UID = @Id";
-
-                // create command and set parameters
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Id", userId);
-
-                // execute command and return true if user deleted
-                return command.ExecuteNonQuery() > 0;
-            }
+            int rowsAffected = _databaseHelper.ExecuteNonQuery(query, parameters);
+            return rowsAffected > 0;
         }
 
         public List<UserModel> GetAllUsers()
         {
-            List<UserModel> users = new List<UserModel>();
+            string query = "SELECT UID FROM Users";
+            DataTable result = _databaseHelper.ExecuteReader(query, null);
 
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            var users = new List<UserModel>();
+
+            foreach (DataRow row in result.Rows)
             {
-                try
-                {
-                    // open connection to database
-                    connection.Open();
-
-                    // query to get all users
-                    string query = "SELECT UID FROM Users";
-
-                    // create command and set parameters
-                    SqlCommand command = new SqlCommand(query, connection);
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    // add all users to list
-                    while (reader.Read())
-                    {
-                        users.Add(new UserModel(Convert.ToInt32(reader["UID"])));
-                    }
-                }
-                catch (SqlException sqlEx)
-                {
-                    Debug.WriteLine($"SQL Error: {sqlEx.Message}");
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine($"General Error: {ex.Message}");
-                }
-                // Connection automatically closes here
+                users.Add(new UserModel(Convert.ToInt32(row["UID"])));
             }
+
             return users;
         }
     }
