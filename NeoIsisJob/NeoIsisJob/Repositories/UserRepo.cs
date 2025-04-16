@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace NeoIsisJob.Repositories
 {
-    public class UserRepo
+    public class UserRepo : IUserRepo
     {
         private readonly DatabaseHelper _databaseHelper;
 

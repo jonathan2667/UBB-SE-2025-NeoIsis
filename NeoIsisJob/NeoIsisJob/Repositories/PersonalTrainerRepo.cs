@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NeoIsisJob.Repositories
 {
-    public class PersonalTrainerRepo
+    public class PersonalTrainerRepo : IPersonalTrainerRepo
     {
         private readonly DatabaseHelper _databasebHelper;
 

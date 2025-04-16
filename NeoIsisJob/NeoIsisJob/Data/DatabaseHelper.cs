@@ -23,6 +23,7 @@ namespace NeoIsisJob.Data
             }
         }
 
+
         public SqlConnection GetConnection() {
             return new SqlConnection(connectionString);
         }
