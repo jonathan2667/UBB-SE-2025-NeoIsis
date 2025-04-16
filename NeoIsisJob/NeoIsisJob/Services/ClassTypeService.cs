@@ -12,9 +12,9 @@ namespace NeoIsisJob.Services
 {
     public class ClassTypeService
     {
-        private readonly ClassTypeRepo _classTypeRepository;
+        private readonly ClassTypeRepository _classTypeRepository;
 
-        public ClassTypeService() { this._classTypeRepository = new ClassTypeRepo(); }
+        public ClassTypeService() { this._classTypeRepository = new ClassTypeRepository(); }
 
         public List<ClassTypeModel> GetAllClassTypes()
         {
@@ -37,7 +37,7 @@ namespace NeoIsisJob.Services
         }
 
         // In case you guys need to update a class type
-        // create a method here that calls the UpdateClassTypeModel method from the ClassTypeRepo +
-        // create the UpdateClassTypeModel method in the ClassTypeRepo
+        // create a method here that calls the UpdateClassTypeModel method from the ClassTypeRepository +
+        // create the UpdateClassTypeModel method in the ClassTypeRepository
     }
 }

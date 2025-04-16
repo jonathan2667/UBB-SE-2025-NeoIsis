@@ -7,14 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using NeoIsisJob.Data;
 using NeoIsisJob.Models;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
-    public class ClassTypeRepo
+    public class ClassTypeRepository : IClassTypeRepository
     {
         private readonly DatabaseHelper _databaseHelper;
 
-        public ClassTypeRepo() { this._databaseHelper = new DatabaseHelper(); }
+        public ClassTypeRepository() { this._databaseHelper = new DatabaseHelper(); }
 
         public ClassTypeModel GetClassTypeModelById(int classTypeId)
         {

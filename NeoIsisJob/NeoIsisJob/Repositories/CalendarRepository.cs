@@ -5,18 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.ComponentModel.Design;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
-    public interface ICalendarRepository
-    {
-        List<CalendarDay> GetCalendarDaysForMonth(int userId, DateTime month);
-        UserWorkoutModel GetUserWorkout(int userId, DateTime date);
-        List<WorkoutModel> GetWorkouts();
-
-        String GetUserClass(int userId, DateTime date);
-    }
-
     public class CalendarRepository : ICalendarRepository
     {
         private readonly DatabaseHelper _databaseHelper;

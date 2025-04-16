@@ -6,10 +6,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
-    public class MuscleGroupRepo
+    public class MuscleGroupRepo : IMuscleGroupRepo
     {
         private readonly DatabaseHelper _databaseHelper;
 

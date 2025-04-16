@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Linq;
 using NeoIsisJob.Services.Interfaces;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Services
 {
