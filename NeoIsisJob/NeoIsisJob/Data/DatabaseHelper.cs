@@ -12,7 +12,7 @@ namespace NeoIsisJob.Data
 
         public DatabaseHelper()
         {
-            connectionString = @"Server=localhost;Database=Workout;Integrated Security=True;TrustServerCertificate=True;";
+            connectionString = @"Server=LIZ19\SQLEXPRESS;Database=Workout;Integrated Security=True;TrustServerCertificate=True;";
             try
             {
                 this.sqlConnection = new SqlConnection(this.connectionString);
