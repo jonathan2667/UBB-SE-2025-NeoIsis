@@ -32,4 +32,8 @@
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Service\Mocks\" />
+  </ItemGroup>
+
 </Project>

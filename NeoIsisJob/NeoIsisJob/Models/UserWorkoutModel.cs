@@ -13,6 +13,7 @@ namespace NeoIsisJob.Models
         public int WorkoutId { get => _workoutId; set => _workoutId = value; }
         public DateTime Date { get => _date; set => _date = value; }
         public bool Completed { get => _completed; set => _completed = value; }
+        public int UserWorkoutId { get; set; }
 
         private UserWorkoutModel() { }
 

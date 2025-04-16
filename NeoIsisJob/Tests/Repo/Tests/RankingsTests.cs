@@ -4,17 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Tests.Repo.Mocks;
+using NeoIsisJob.Models;
+using NeoIsisJob.Data.Interfaces;
+using Moq;
+using NeoIsisJob.Repositories;
 
 namespace Tests.Repo.Tests
 {
     [TestClass]
-    class RankingsTests
+    public class RankingsTests
     {
-        private readonly RankingsMock _rankingRepository = new RankingsMock();
+        private  Mock<IDatabaseHelper> _mockDatabaseHelper;
+        private  RankingsRepository _rankingRepository;
 
-        [TestMethod]
-        public void TestGetByUserID()
+        [TestInitialize]
+        public void Setup()
         {
+            _rankingRepository = new RankingsRepository(_mockDatabaseHelper.Object);
         }
+
     }
 }
