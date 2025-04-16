@@ -8,7 +8,7 @@ using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Repositories
 {
-    public class UserClassRepo
+    public class UserClassRepo : IUserClassRepo
     {
         private readonly IDatabaseHelper _databaseHelper;
 
