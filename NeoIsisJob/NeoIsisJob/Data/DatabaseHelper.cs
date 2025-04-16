@@ -11,7 +11,7 @@ namespace NeoIsisJob.Data
         // Store the connection string in one place
         public DatabaseHelper()
         {
-            connectionString = @"Server=YORKSHIRE;Database=Workout;Integrated Security=True;TrustServerCertificate=True;";
+            connectionString = @"Server=localhost;Database=Workout;Integrated Security=True;TrustServerCertificate=True;";
         }
 
         // Provide an open connection to be used in repositories
