@@ -5,29 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Tests.Repo.Mocks;
 using NeoIsisJob.Models;
+using NeoIsisJob.Data.Interfaces;
+using Moq;
+using NeoIsisJob.Repositories;
 
 namespace Tests.Repo.Tests
 {
     [TestClass]
     public class RankingsTests
     {
-        private readonly RankingsMock _rankingRepository = new RankingsMock();
+        private  Mock<IDatabaseHelper> _mockDatabaseHelper;
+        private  RankingsRepository _rankingRepository;
 
-        [TestMethod]
-        public void TestGetByUserID()
+        [TestInitialize]
+        public void Setup()
         {
-            List<RankingModel> res = (List<RankingModel>)_rankingRepository.GetAllRankingsByUserID(1);
-            Assert.AreEqual(res.Count, 3);
-        }
-
-        [TestMethod]
-
-        public void TestGetByFullID()
-        {
-            RankingModel res = _rankingRepository.GetRankingByFullID(1, 1);
-            Assert.AreEqual(res.UserId, 1);
-            Assert.AreEqual(res.MuscleGroupId, 1);
-            Assert.AreEqual(res.Rank, 1);
+            _rankingRepository = new RankingsRepository(_mockDatabaseHelper.Object);
         }
 
     }

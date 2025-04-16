@@ -1,71 +1,72 @@
 ﻿using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeoIsisJob.Repositories
 {
     public class RankingsRepository : IRankingsRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
         public RankingsRepository()
         {
             this._databaseHelper = new DatabaseHelper();
         }
 
-        public RankingModel GetRankingByFullID(int userId, int muscleGroupId)
+        public RankingsRepository(IDatabaseHelper databaseHelper)
         {
-            RankingModel ranking = null;
-
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
-            {
-                connection.Open();
-                String query = "Select * from Rankings where UID=@UID and MGID=@MGID";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@UID", userId);
-                command.Parameters.AddWithValue("@MGID", muscleGroupId);
-                SqlDataReader reader = command.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    ranking = new RankingModel(
-                        Convert.ToInt32(reader["UID"]),
-                        Convert.ToInt32(reader["MGID"]),
-                        Convert.ToInt32(reader["Rank"])
-                    );
-                }
-            }
-
-            return ranking;
+            this._databaseHelper = databaseHelper;
         }
 
-        public IList<RankingModel> GetAllRankingsByUserID(int userId) 
+        public RankingModel GetRankingByFullID(int userId, int muscleGroupId)
         {
+            string query = "SELECT * FROM Rankings WHERE UID = @UID AND MGID = @MGID";
+
+            var parameters = new SqlParameter[]
+            {
+                new SqlParameter("@UID", userId),
+                new SqlParameter("@MGID", muscleGroupId)
+            };
+
+            DataTable dt = _databaseHelper.ExecuteReader(query, parameters);
+
+            if (dt.Rows.Count > 0)
+            {
+                var row = dt.Rows[0];
+                return new RankingModel(
+                    Convert.ToInt32(row["UID"]),
+                    Convert.ToInt32(row["MGID"]),
+                    Convert.ToInt32(row["Rank"])
+                );
+            }
+
+            return null;
+        }
+
+        public IList<RankingModel> GetAllRankingsByUserID(int userId)
+        {
+            string query = "SELECT * FROM Rankings WHERE UID = @UID";
+
+            var parameters = new SqlParameter[]
+            {
+                new SqlParameter("@UID", userId)
+            };
+
+            DataTable dt = _databaseHelper.ExecuteReader(query, parameters);
             IList<RankingModel> rankings = new List<RankingModel>();
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            foreach (DataRow row in dt.Rows)
             {
-                connection.Open();
-
-                String query = "Select * from Rankings where UID=@UID";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@UID", userId);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    rankings.Add(new RankingModel(
-                        Convert.ToInt32(reader["UID"]),
-                        Convert.ToInt32(reader["MGID"]),
-                        Convert.ToInt32(reader["Rank"])
-                    ));
-                }
+                rankings.Add(new RankingModel(
+                    Convert.ToInt32(row["UID"]),
+                    Convert.ToInt32(row["MGID"]),
+                    Convert.ToInt32(row["Rank"])
+                ));
             }
 
             return rankings;
