@@ -1,85 +1,119 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Tests.Repo.Mocks;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace Tests.Repo.Tests
 {
     [TestClass]
-    public class UserWorkoutTests
+    public class UserWorkoutRepoTests
     {
+        private Mock<IDatabaseHelper> _mockDbHelper;
+        private UserWorkoutRepo _repo;
 
-        UserWorkoutMock userWorkoutRepository = new UserWorkoutMock();
-
-        [TestMethod]
-        public void TestGetByUserID()
+        [TestInitialize]
+        public void Setup()
         {
-            UserWorkoutModel res = userWorkoutRepository.GetUserWorkoutModel(1, 1, DateTime.Now);
-            Assert.IsNotNull(res);
-            Assert.AreEqual(res.UserId, 1);
-        }
-        [TestMethod]
-        public void TestAddUserWorkout()
-        {
-            UserWorkoutModel newUserWorkout = new UserWorkoutModel(1, 4, DateTime.Now, false);
-            userWorkoutRepository.AddUserWorkout(newUserWorkout);
-            UserWorkoutModel res = userWorkoutRepository.GetUserWorkoutModel(1, 4, DateTime.Now);
-            Assert.IsNotNull(res);
-            Assert.AreEqual(res.UserId, 1);
-            Assert.AreEqual(res.WorkoutId, 4);
-
-            UserWorkoutModel nullUserWorkout = null;
-            try
-            {
-                userWorkoutRepository.AddUserWorkout(nullUserWorkout);
-                Assert.Fail("Expected ArgumentNullException was not thrown.");
-            }
-            catch (ArgumentNullException ex)
-            {
-                Assert.AreEqual(ex.ParamName, "userWorkout");
-            }
+            _mockDbHelper = new Mock<IDatabaseHelper>();
+            _repo = new UserWorkoutRepo(_mockDbHelper.Object);
         }
 
         [TestMethod]
-        public void TestUpdateUserWorkout()
+        public void GetUserWorkoutModelByDate_ReturnsUserWorkouts()
         {
-            UserWorkoutModel existingUserWorkout = userWorkoutRepository.GetUserWorkoutModel(1, 1, DateTime.Now);
-            userWorkoutRepository.UpdateUserWorkout(existingUserWorkout);
-            UserWorkoutModel res = userWorkoutRepository.GetUserWorkoutModel(1, 1, DateTime.Now);
-            Assert.IsNotNull(res);
-            Assert.AreEqual(res.Completed, existingUserWorkout.Completed);
-            UserWorkoutModel nullUserWorkout = null;
-            try
-            {
-                userWorkoutRepository.UpdateUserWorkout(nullUserWorkout);
-                Assert.Fail("Expected ArgumentNullException was not thrown.");
-            }
-            catch (ArgumentNullException ex)
-            {
-                Assert.AreEqual(ex.ParamName, "userWorkout");
-            }
+            // Arrange
+            var date = new DateTime(2025, 4, 10);
+            var table = new DataTable();
+            table.Columns.Add("UID", typeof(int));
+            table.Columns.Add("WID", typeof(int));
+            table.Columns.Add("Date", typeof(DateTime));
+            table.Columns.Add("Completed", typeof(bool));
+
+            table.Rows.Add(1, 101, date, true);
+            table.Rows.Add(2, 102, date, false);
+
+            _mockDbHelper.Setup(x => x.ExecuteReader(It.IsAny<string>(), It.IsAny<SqlParameter[]>()))
+                         .Returns(table);
+
+            // Act
+            var result = _repo.GetUserWorkoutModelByDate(date);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(1, result[0].UserId);
+            Assert.AreEqual(101, result[0].WorkoutId);
         }
 
         [TestMethod]
-        public void TestDeleteUserWorkout()
+        public void GetUserWorkoutModel_ReturnsCorrectWorkout()
         {
-            UserWorkoutModel existingUserWorkout = userWorkoutRepository.GetUserWorkoutModel(1, 1, DateTime.Now);
-            userWorkoutRepository.DeleteUserWorkout(existingUserWorkout.UserId, existingUserWorkout.WorkoutId, existingUserWorkout.Date);
-            UserWorkoutModel res = userWorkoutRepository.GetUserWorkoutModel(1, 1, DateTime.Now);
-            Assert.IsNull(res);
-            try
-            {
-                userWorkoutRepository.DeleteUserWorkout(1, 1, DateTime.Now);
-                Assert.Fail("Expected KeyNotFoundException was not thrown.");
-            }
-            catch (KeyNotFoundException ex)
-            {
-                Assert.AreEqual(ex.Message, "User workout not found.");
-            }
+            // Arrange
+            var date = new DateTime(2025, 4, 10);
+            var table = new DataTable();
+            table.Columns.Add("UID", typeof(int));
+            table.Columns.Add("WID", typeof(int));
+            table.Columns.Add("Date", typeof(DateTime));
+            table.Columns.Add("Completed", typeof(bool));
+
+            table.Rows.Add(1, 101, date, true);
+
+            _mockDbHelper.Setup(x => x.ExecuteReader(It.IsAny<string>(), It.IsAny<SqlParameter[]>()))
+                         .Returns(table);
+
+            // Act
+            var result = _repo.GetUserWorkoutModel(1, 101, date);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.UserId);
+            Assert.IsTrue(result.Completed);
+        }
+
+        [TestMethod]
+        public void AddUserWorkout_ExecutesWithoutError()
+        {
+            // Arrange
+            var workout = new UserWorkoutModel(1, 101, DateTime.Today, true);
+            _mockDbHelper.Setup(x => x.ExecuteNonQuery(It.IsAny<string>(), It.IsAny<SqlParameter[]>()))
+                         .Returns(1);
+
+            // Act + Assert
+            _repo.AddUserWorkout(workout);
+        }
+
+        [TestMethod]
+        public void UpdateUserWorkout_ExecutesSuccessfully()
+        {
+            // Arrange
+            var workout = new UserWorkoutModel(1, 101, DateTime.Today, false);
+            _mockDbHelper.Setup(x => x.ExecuteNonQuery(It.IsAny<string>(), It.IsAny<SqlParameter[]>()))
+                         .Returns(1);
+
+            // Act
+            _repo.UpdateUserWorkout(workout);
+        }
+
+        [TestMethod]
+        public void DeleteUserWorkout_ExecutesSuccessfully()
+        {
+            // Arrange
+            var date = DateTime.Today;
+            _mockDbHelper.Setup(x => x.ExecuteNonQuery(It.IsAny<string>(), It.IsAny<SqlParameter[]>()))
+                         .Returns(1);
+
+            // Act
+            _repo.DeleteUserWorkout(1, 101, date);
+
+            // Assert
+            _mockDbHelper.Verify(x => x.ExecuteNonQuery(It.IsAny<string>(), It.IsAny<SqlParameter[]>()), Times.Once);
+
+
         }
     }
 }

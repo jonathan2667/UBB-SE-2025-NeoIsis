@@ -1,10 +1,9 @@
-﻿using NeoIsisJob.Data;
-using NeoIsisJob.Data.Interfaces;
+﻿using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace NeoIsisJob.Repositories
@@ -18,151 +17,88 @@ namespace NeoIsisJob.Repositories
             _databaseHelper = databaseHelper;
         }
 
-        public UserWorkoutRepo()
-        {
-            _databaseHelper = new DatabaseHelper();
-        }
-
         public List<UserWorkoutModel> GetUserWorkoutModelByDate(DateTime date)
         {
-            List<UserWorkoutModel> userWorkouts = new List<UserWorkoutModel>();
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            string query = "SELECT UID, WID, Date, Completed FROM UserWorkouts WHERE Date = @Date";
+            SqlParameter[] parameters = {
+                new SqlParameter("@Date", date)
+            };
+
+            DataTable table = _databaseHelper.ExecuteReader(query, parameters);
+            var userWorkouts = new List<UserWorkoutModel>();
+
+            foreach (DataRow row in table.Rows)
             {
-                // Open the connection
-                connection.Open();
-
-                // Create a query
-                string query = "SELECT UID, WID, Date, Completed FROM UserWorkouts WHERE Date = @Date";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@Date", date);
-
-                // Execute the command
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Read the data
-                while (reader.Read())
-                {
-                    UserWorkoutModel userWorkout = new UserWorkoutModel(
-                        (int)reader["UID"],
-                        (int)reader["WID"],
-                        (DateTime)reader["Date"],
-                        (bool)reader["Completed"]
-                    );
-                    userWorkouts.Add(userWorkout);
-                }
+                userWorkouts.Add(new UserWorkoutModel(
+                    Convert.ToInt32(row["UID"]),
+                    Convert.ToInt32(row["WID"]),
+                    Convert.ToDateTime(row["Date"]),
+                    Convert.ToBoolean(row["Completed"])
+                ));
             }
+
             return userWorkouts;
         }
 
         public UserWorkoutModel GetUserWorkoutModel(int userId, int workoutId, DateTime date)
         {
-            UserWorkoutModel userWorkout = null;
-            using (SqlConnection connection = _databaseHelper.GetConnection())
-            {
-                // Open the connection
-                connection.Open();
+            string query = "SELECT UID, WID, Date, Completed FROM UserWorkouts WHERE UID = @UID AND WID = @WID AND Date = @Date";
+            SqlParameter[] parameters = {
+                new SqlParameter("@UID", userId),
+                new SqlParameter("@WID", workoutId),
+                new SqlParameter("@Date", date)
+            };
 
-                // Create a query
-                string query = "SELECT UID, WID, Date, Completed FROM UserWorkouts WHERE UID = @UID AND WID = @WID AND Date = @Date";
+            DataTable table = _databaseHelper.ExecuteReader(query, parameters);
 
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
+            if (table.Rows.Count == 0) return null;
 
-                // Add the parameters
-                command.Parameters.AddWithValue("@UID", userId);
-                command.Parameters.AddWithValue("@WID", workoutId);
-                command.Parameters.AddWithValue("@Date", date);
+            DataRow row = table.Rows[0];
 
-                // Execute the command
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Read the data
-                if (reader.Read())
-                {
-                    userWorkout = new UserWorkoutModel(
-                        (int)reader["UID"],
-                        (int)reader["WID"],
-                        (DateTime)reader["Date"],
-                        (bool)reader["Completed"]
-                    );
-                }
-            }
-            return userWorkout;
+            return new UserWorkoutModel(
+                Convert.ToInt32(row["UID"]),
+                Convert.ToInt32(row["WID"]),
+                Convert.ToDateTime(row["Date"]),
+                Convert.ToBoolean(row["Completed"])
+            );
         }
 
         public void AddUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
-            {
-                // Open the connection
-                connection.Open();
+            string query = "INSERT INTO UserWorkouts (UID, WID, Date, Completed) VALUES (@UID, @WID, @Date, @Completed)";
+            SqlParameter[] parameters = {
+                new SqlParameter("@UID", userWorkout.UserId),
+                new SqlParameter("@WID", userWorkout.WorkoutId),
+                new SqlParameter("@Date", userWorkout.Date),
+                new SqlParameter("@Completed", userWorkout.Completed)
+            };
 
-                // Create a query
-                string query = "INSERT INTO UserWorkouts(UID, WID, Date, Completed) VALUES (@UID, @WID, @Date, @Completed)";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@UID", userWorkout.UserId);
-                command.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
-                command.Parameters.AddWithValue("@Date", userWorkout.Date);
-                command.Parameters.AddWithValue("@Completed", userWorkout.Completed);
-
-                // Execute the command
-                command.ExecuteNonQuery();
-            }
+            _databaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         public void UpdateUserWorkout(UserWorkoutModel userWorkout)
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
-            {
-                // Open the connection
-                connection.Open();
+            string query = "UPDATE UserWorkouts SET Completed = @Completed WHERE UID = @UID AND WID = @WID AND Date = @Date";
+            SqlParameter[] parameters = {
+                new SqlParameter("@Completed", userWorkout.Completed),
+                new SqlParameter("@UID", userWorkout.UserId),
+                new SqlParameter("@WID", userWorkout.WorkoutId),
+                new SqlParameter("@Date", userWorkout.Date)
+            };
 
-                // Create a query
-                string query = "UPDATE UserWorkouts SET Completed = @Completed WHERE UID = @UID AND WID = @WID AND Date = @Date";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@UID", userWorkout.UserId);
-                command.Parameters.AddWithValue("@WID", userWorkout.WorkoutId);
-                command.Parameters.AddWithValue("@Date", userWorkout.Date);
-                command.Parameters.AddWithValue("@Completed", userWorkout.Completed);
-
-                // Execute the command
-                command.ExecuteNonQuery();
-            }
+            _databaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         public void DeleteUserWorkout(int userId, int workoutId, DateTime date)
         {
-            using (SqlConnection connection = _databaseHelper.GetConnection())
-            {
-                // Open the connection
-                connection.Open();
+            string query = "DELETE FROM UserWorkouts WHERE UID = @UID AND WID = @WID AND Date = @Date";
+            SqlParameter[] parameters = {
+                new SqlParameter("@UID", userId),
+                new SqlParameter("@WID", workoutId),
+                new SqlParameter("@Date", date)
+            };
 
-                // Create a query
-                string query = "DELETE FROM UserWorkouts WHERE UID = @UID AND WID = @WID AND Date = @Date";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@UID", userId);
-                command.Parameters.AddWithValue("@WID", workoutId);
-                command.Parameters.AddWithValue("@Date", date);
-
-                // Execute the command
-                command.ExecuteNonQuery();
-            }
+            _databaseHelper.ExecuteNonQuery(query, parameters);
         }
     }
 }
