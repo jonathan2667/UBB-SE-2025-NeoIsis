@@ -15,7 +15,6 @@ namespace Tests.Repo.Tests
         [TestMethod]
         public void TestGetByUserID()
         {
-            Assert.Equals(_rankingRepository.GetAllRankingsByUserID(1)
         }
     }
 }
