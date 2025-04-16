@@ -1,7 +1,7 @@
-using Microsoft.UI.Xaml;
+ï»¿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,7 +82,7 @@ namespace NeoIsisJob.Views
                                 _currentWorkoutExercises.Add(new ExerciseWithDetails
                                 {
                                     Name = exercise.Name,
-                                    Details = $"{completeWorkout.Sets} sets × {completeWorkout.RepetitionsPerSet} reps"
+                                    Details = $"{completeWorkout.Sets} sets ï¿½ {completeWorkout.RepetitionsPerSet} reps"
                                 });
                             }
                         }

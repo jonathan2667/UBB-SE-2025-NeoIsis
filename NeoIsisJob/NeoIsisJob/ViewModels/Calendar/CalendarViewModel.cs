@@ -7,9 +7,10 @@ using System.Data.SqlClient;
 using System.Windows.Input;
 using NeoIsisJob.Models;
 using NeoIsisJob.Data;
-using NeoIsisJob.Repos;
+using NeoIsisJob.Repositories;
 using System.Linq;
-using NeoIsisJob.Servs;
+using NeoIsisJob.Services;
+using NeoIsisJob.Services.Interfaces;
 
 namespace NeoIsisJob.ViewModels.Calendar
 {
