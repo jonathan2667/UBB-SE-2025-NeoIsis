@@ -13,7 +13,7 @@ namespace NeoIsisJob.Services
 {
     public class UserClassService
     {
-        private readonly UserClassRepo _userClassRepository;
+        private readonly IUserClassRepo _userClassRepository;
 
         public UserClassService() { this._userClassRepository = new UserClassRepo(); }
 
