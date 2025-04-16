@@ -1,6 +1,4 @@
 ﻿using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
-using NeoIsisJob.Repos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,88 +9,81 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
+using Windows.UI;
+using NeoIsisJob.Services.Interfaces;
 
 namespace NeoIsisJob.ViewModels.Rankings
 {
-    class RankingsViewModel
+    public class RankingsViewModel
     {
-        private readonly RankingsService _rankingsService;
-        private readonly int _user_id = 1; // !!!!!!!!!!!!!!! HARDCODED USER VALUE !!!!!!! CHANGE THIS FOR PROD !!!!!!!!
-    
-        //private ObservableCollection<RankingModel> _rankings;
+        private readonly IRankingsService _rankingsService;
+        private readonly int _userId = 1; // !!!!!!!!!!!!!!! HARDCODED USER VALUE !!!!!!! CHANGE THIS FOR PROD !!!!!!!!
+        private readonly List<RankDefinition> _rankDefinitions;
 
-        public RankingsViewModel()
+        public RankingsViewModel(IRankingsService rankingsService)
         {
-            this._rankingsService = new RankingsService();
+            this._rankingsService = rankingsService;
+            this._rankDefinitions = InitializeRankDefinitions();
+        }
+
+        private List<RankDefinition> InitializeRankDefinitions()
+        {
+            return new List<RankDefinition>
+            {
+                new RankDefinition { Name = "Challenger", MinPoints = 9500, MaxPoints = 10000, Color = Colors.Aquamarine, ImagePath = "/Assets/Ranks/Rank8.png" },
+                new RankDefinition { Name = "Grandmaster", MinPoints = 8500, MaxPoints = 9500, Color = Colors.OrangeRed, ImagePath = "/Assets/Ranks/Rank7.png" },
+                new RankDefinition { Name = "Master", MinPoints = 7000, MaxPoints = 8500, Color = Colors.DarkViolet, ImagePath = "/Assets/Ranks/Rank6.png" },
+                new RankDefinition { Name = "Elite", MinPoints = 5000, MaxPoints = 7000, Color = Colors.DarkGreen, ImagePath = "/Assets/Ranks/Rank5.png" },
+                new RankDefinition { Name = "Gold", MinPoints = 3500, MaxPoints = 5000, Color = Colors.Gold, ImagePath = "/Assets/Ranks/Rank4.png" },
+                new RankDefinition { Name = "Silver", MinPoints = 2250, MaxPoints = 3500, Color = Colors.Silver, ImagePath = "/Assets/Ranks/Rank3.png" },
+                new RankDefinition { Name = "Bronze", MinPoints = 1000, MaxPoints = 2250, Color = Colors.SandyBrown, ImagePath = "/Assets/Ranks/Rank2.png" },
+                new RankDefinition { Name = "Beginner", MinPoints = 0, MaxPoints = 1000, Color = Colors.DimGray, ImagePath = "/Assets/Ranks/Rank1.png" }
+            };
+        }
+
+        public IList<RankDefinition> GetRankDefinitions()
+        {
+            return _rankDefinitions;
+        }
+
+        public RankDefinition GetRankDefinitionForPoints(int points)
+        {
+            return _rankDefinitions.FirstOrDefault(r => points >= r.MinPoints && points < r.MaxPoints) 
+                   ?? _rankDefinitions.Last();
+        }
+
+        public int GetNextRankPoints(int currentRank)
+        {
+            return this._rankingsService.CalculatePointsToNextRank(currentRank, _rankDefinitions);
         }
 
         public RankingModel GetRankingByMGID(int muscleGroupid)
         {
-            RankingModel ranking = this._rankingsService.GetRankingByFullID(this._user_id, muscleGroupid);
-            
-            return ranking;
-            
+            return this._rankingsService.GetRankingByFullID(this._userId, muscleGroupid);
         }
 
         public SolidColorBrush GetRankColor(int rank)
         {
-            return rank switch
-            {
-                <= 1000 => new SolidColorBrush(Colors.DimGray),
-                >= 1000 and < 2250 => new SolidColorBrush(Colors.SandyBrown),
-                >=2250 and < 3500 => new SolidColorBrush(Colors.Silver),
-                >=3500 and < 5000 => new SolidColorBrush(Colors.Gold),
-                >=5000 and < 7000 => new SolidColorBrush(Colors.DarkGreen),
-                >= 7000 and < 8500 => new SolidColorBrush(Colors.DarkViolet),
-                >= 8500 and < 9500 => new SolidColorBrush(Colors.OrangeRed),
-                > 9500 => new SolidColorBrush(Colors.Aquamarine)
-                
-            };
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return new SolidColorBrush(rankDefinition.Color);
         }
 
-        public String GetRankIcon(int rank)
+        public string GetRankIcon(int rank)
         {
-            return rank switch
-            {
-                <= 1000 => "/Assets/Ranks/Rank1.png",
-                >= 1000 and < 2250 => "/Assets/Ranks/Rank2.png",
-                >= 2250 and < 3500 => "/Assets/Ranks/Rank3.png",
-                >= 3500 and < 5000 => "/Assets/Ranks/Rank4.png",
-                >= 5000 and < 7000 => "/Assets/Ranks/Rank5.png",
-                >= 7000 and < 8500 => "/Assets/Ranks/Rank6.png",
-                >= 8500 and < 9500 => "/Assets/Ranks/Rank7.png",
-                > 9500 => "/Assets/Ranks/Rank8.png"
-            };
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return rankDefinition.ImagePath;
         }
 
         public int GetRankLowerBound(int rank)
         {
-            return rank switch
-            {
-                <= 1000 => 0,
-                >= 1000 and < 2250 => 1000,
-                >= 2250 and < 3500 => 2250,
-                >= 3500 and < 5000 => 3500,
-                >= 5000 and < 7000 => 5000,
-                >= 7000 and < 8500 => 7000,
-                >= 8500 and < 9500 => 8500,
-                > 9500 => 9500
-            };
-        }
-        public int GetRankUpperBound(int rank)
-        {
-            return rank switch
-            {
-                <= 1000 => 1000,
-                >= 1000 and < 2250 => 2250,
-                >= 2250 and < 3500 => 3500,
-                >= 3500 and < 5000 => 5000,
-                >= 5000 and < 7000 => 7000,
-                >= 7000 and < 8500 => 8500,
-                >= 8500 and < 9500 => 9500,
-                > 9500 => 10000
-            };
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return rankDefinition.MinPoints;
         }
 
+        public int GetRankUpperBound(int rank)
+        {
+            var rankDefinition = GetRankDefinitionForPoints(rank);
+            return rankDefinition.MaxPoints;
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using NeoIsisJob.Models;
-using NeoIsisJob.Servs;
-using NeoIsisJob.Repos;
+using NeoIsisJob.Services;
+using NeoIsisJob.Repositories;
 using NeoIsisJob.ViewModels.Classes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
