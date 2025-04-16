@@ -1,5 +1,6 @@
 ﻿using NeoIsisJob.Models;
 using NeoIsisJob.Repositories;
+using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,16 @@ namespace NeoIsisJob.Services
 {
     public class MuscleGroupService
     {
-        private readonly MuscleGroupRepo _muscleGroupRepository;
+        private readonly IMuscleGroupRepo _muscleGroupRepository;
 
         public MuscleGroupService()
         {
             this._muscleGroupRepository = new MuscleGroupRepo();
+        }
+
+        public MuscleGroupService(IMuscleGroupRepo muscleGroupRepository)
+        {
+            this._muscleGroupRepository = muscleGroupRepository;
         }
 
         public MuscleGroupModel GetMuscleGroupById(int muscleGroupId)

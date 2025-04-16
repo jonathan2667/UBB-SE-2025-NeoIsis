@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using NeoIsisJob.Services.Interfaces;
+using NeoIsisJob.Repositories.Interfaces;
 
 // please add validation for the input parameters
 
@@ -14,12 +15,19 @@ namespace NeoIsisJob.Services
 {
     public class ClassService : IClassService
     {
-        private readonly ClassRepository _classRepository;
+        //private readonly ClassRepository _classRepository;
+        private readonly IClassRepository _classRepository;
         private readonly UserClassService _userClassService;
 
         public ClassService() 
         { 
             this._classRepository = new ClassRepository();
+            this._userClassService = new UserClassService();
+        }
+
+        public ClassService(IClassRepository classRepository)
+        {
+            this._classRepository = classRepository;
             this._userClassService = new UserClassService();
         }
 

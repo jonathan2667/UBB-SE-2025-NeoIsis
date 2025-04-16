@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NeoIsisJob.Repositories;
 using NeoIsisJob.Models;
+using NeoIsisJob.Repositories.Interfaces;
 
 // please add validation for the input parameters
 
@@ -12,9 +13,17 @@ namespace NeoIsisJob.Services
 {
     public class ClassTypeService
     {
-        private readonly ClassTypeRepository _classTypeRepository;
+        private readonly IClassTypeRepository _classTypeRepository;
 
-        public ClassTypeService() { this._classTypeRepository = new ClassTypeRepository(); }
+        public ClassTypeService() 
+        { 
+            this._classTypeRepository = new ClassTypeRepository(); 
+        }
+
+        public ClassTypeService(IClassTypeRepository classTypeRepository)
+        {
+            this._classTypeRepository = classTypeRepository;
+        }
 
         public List<ClassTypeModel> GetAllClassTypes()
         {
