@@ -1,142 +1,126 @@
 ﻿using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeoIsisJob.Repositories
 {
     public class ClassRepository : IClassRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
-        public ClassRepository() { this._databaseHelper = new DatabaseHelper(); }
+        public ClassRepository()
+        {
+            this._databaseHelper = new DatabaseHelper();
+        }
+
+        public ClassRepository(IDatabaseHelper databaseHelper)
+        {
+            this._databaseHelper = databaseHelper;
+        }
 
         public ClassModel GetClassModelById(int classId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string query = "SELECT CID, Name, Description, CTID, PTID FROM Classes WHERE CID = @cid";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                // Open the connection
-                connection.Open();
+                new SqlParameter("@cid", classId)
+            };
 
-                // Create a query
-                string query = "SELECT CID, Name, Description, CTID, PTID FROM Classes WHERE Cid = @cid";
+            try
+            {
+                var dataTable = _databaseHelper.ExecuteReader(query, parameters);
 
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameter
-                command.Parameters.AddWithValue("@cid", classId);
-
-                // Execute the command
-                SqlDataReader reader = command.ExecuteReader();
-
-                // Read the data
-                if (reader.Read())
+                if (dataTable.Rows.Count > 0)
                 {
-                    // Return the class model
+                    var row = dataTable.Rows[0];
                     return new ClassModel
                     {
-                        Id = (int)reader["CID"],
-                        Name = reader["Name"].ToString() ?? string.Empty,
-                        Description = reader["Description"].ToString() ?? string.Empty,
-                        ClassTypeId = (int)reader["CTID"],
-                        PersonalTrainerId = (int)reader["PTID"]
+                        Id = Convert.ToInt32(row["CID"]),
+                        Name = Convert.ToString(row["Name"]) ?? string.Empty,
+                        Description = Convert.ToString(row["Description"]) ?? string.Empty,
+                        ClassTypeId = Convert.ToInt32(row["CTID"]),
+                        PersonalTrainerId = Convert.ToInt32(row["PTID"])
                     };
                 }
 
-                // Return an empty instance
-                return new ClassModel();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching class by ID: " + ex.Message);
             }
         }
 
         public List<ClassModel> GetAllClassModel()
         {
-            List<ClassModel> classes = new List<ClassModel>();
+            List<ClassModel> classList = new List<ClassModel>();
+            string query = "SELECT CID, Name, Description, CTID, PTID FROM Classes";
+
             try
             {
-                using (SqlConnection connection = this._databaseHelper.GetConnection())
+                var dataTable = _databaseHelper.ExecuteReader(query, null);
+
+                foreach (DataRow row in dataTable.Rows)
                 {
-                    // Open the connection
-                    connection.Open();
-
-                    // Create a query
-                    string query = "SELECT CID, Name, Description, CTID, PTID FROM Classes";
-
-                    // Create a command
-                    SqlCommand command = new SqlCommand(query, connection);
-
-                    // Execute the command
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    // Read the data
-                    while (reader.Read())
+                    classList.Add(new ClassModel
                     {
-                        classes.Add(new ClassModel
-                        {
-                            Id = (int)reader["CID"],
-                            Name = reader["Name"].ToString() ?? string.Empty,
-                            Description = reader["Description"].ToString() ?? string.Empty,
-                            ClassTypeId = (int)reader["CTID"],
-                            PersonalTrainerId = (int)reader["PTID"]
-                        });
-                    }
-
-                    // Return the classes
-                    return classes;
+                        Id = Convert.ToInt32(row["CID"]),
+                        Name = Convert.ToString(row["Name"]) ?? string.Empty,
+                        Description = Convert.ToString(row["Description"]) ?? string.Empty,
+                        ClassTypeId = Convert.ToInt32(row["CTID"]),
+                        PersonalTrainerId = Convert.ToInt32(row["PTID"])
+                    });
                 }
-            }catch(Exception ex) { throw new Exception(ex.Message); }
+
+                return classList;
             }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching classes: " + ex.Message);
+            }
+        }
 
         public void AddClassModel(ClassModel classModel)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string query = "INSERT INTO Classes (Name, Description, CTID, PTID) VALUES (@name, @description, @ctid, @ptid)";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                // Open the connection
-                connection.Open();
+                new SqlParameter("@name", classModel.Name),
+                new SqlParameter("@description", classModel.Description),
+                new SqlParameter("@ctid", classModel.ClassTypeId),
+                new SqlParameter("@ptid", classModel.PersonalTrainerId)
+            };
 
-                // Create a query
-                string query = "INSERT INTO Classes (Name, Description, CTID, PTID) VALUES (@name, @description, @ctid, @ptid)";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameters
-                command.Parameters.AddWithValue("@name", classModel.Name);
-                command.Parameters.AddWithValue("@description", classModel.Description);
-                command.Parameters.AddWithValue("@ctid", classModel.ClassTypeId);
-                command.Parameters.AddWithValue("@ptid", classModel.PersonalTrainerId);
-
-                // Execute the command
-                command.ExecuteNonQuery();
+            try
+            {
+                _databaseHelper.ExecuteNonQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while adding class: " + ex.Message);
             }
         }
 
         public void DeleteClassModel(int classId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string query = "DELETE FROM Classes WHERE CID = @cid";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                // Open the connection
-                connection.Open();
+                new SqlParameter("@cid", classId)
+            };
 
-                // Create a query
-                string query = "DELETE FROM Class WHERE Cid = @cid";
-
-                // Create a command
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // Add the parameter
-                command.Parameters.AddWithValue("@cid", classId);
-
-                // Execute the command
-                command.ExecuteNonQuery();
+            try
+            {
+                _databaseHelper.ExecuteNonQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while deleting class: " + ex.Message);
             }
         }
     }
