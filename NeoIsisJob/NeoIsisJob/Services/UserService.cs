@@ -7,9 +7,9 @@ namespace NeoIsisJob.Services
 {
     public class UserService
     {
-        private readonly UserRepo _userRepository;
+        private readonly IUserRepo _userRepository;
 
-        public UserService(UserRepo userRepo) { _userRepository = userRepo; }
+        public UserService(IUserRepo userRepo) { _userRepository = userRepo; }
 
         public int RegisterNewUser() { return _userRepository.InsertUser(); }
 
