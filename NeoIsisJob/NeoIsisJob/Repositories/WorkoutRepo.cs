@@ -1,106 +1,90 @@
-﻿using NeoIsisJob.Data;
+﻿using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NeoIsisJob.Data;
 
 namespace NeoIsisJob.Repositories
 {
     public class WorkoutRepo : IWorkoutRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
-        public WorkoutRepo() { this._databaseHelper = new DatabaseHelper(); }
+        public WorkoutRepo()
+        {
+            _databaseHelper = new DatabaseHelper();
+        }
+        public WorkoutRepo(IDatabaseHelper databaseHelper)
+        {
+            _databaseHelper = databaseHelper;
+        }
 
         public WorkoutModel GetWorkoutById(int workoutId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string query = "SELECT * FROM Workouts WHERE WID = @wid";
+            SqlParameter[] parameters = {
+                new SqlParameter("@wid", workoutId)
+            };
+
+            DataTable table = _databaseHelper.ExecuteReader(query, parameters);
+
+            if (table.Rows.Count > 0)
             {
-                //open the connection
-                connection.Open();
-
-                //create the query
-                string query = "SELECT * FROM Workouts WHERE WID=@wid";
-
-                //create the command now
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@wid", workoutId);
-                SqlDataReader reader = command.ExecuteReader();
-
-                //now check if the type exists -> if yes return it
-                if (reader.Read())
-                {
-                    //if ok return it
-                    return new WorkoutModel(Convert.ToInt32(reader["WID"]), Convert.ToString(reader["Name"]), Convert.ToInt32(reader["WTID"]));
-                }
+                DataRow row = table.Rows[0];
+                return new WorkoutModel(
+                    Convert.ToInt32(row["WID"]),
+                    row["Name"].ToString(),
+                    Convert.ToInt32(row["WTID"])
+                );
             }
 
-            //if not found -> return empty object
-            return new WorkoutModel();
+            return new WorkoutModel(); // return empty object if not found
         }
 
-        public WorkoutModel GetWorkoutByName(String workoutName)
+        public WorkoutModel GetWorkoutByName(string workoutName)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string query = "SELECT * FROM Workouts WHERE Name = @name";
+            SqlParameter[] parameters = {
+                new SqlParameter("@name", workoutName)
+            };
+
+            DataTable table = _databaseHelper.ExecuteReader(query, parameters);
+
+            if (table.Rows.Count > 0)
             {
-                //open the connection
-                connection.Open();
-
-                //create the query
-                string query = "SELECT * FROM Workouts WHERE Name=@name";
-
-                //create the command now
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@name", workoutName);
-                SqlDataReader reader = command.ExecuteReader();
-
-                //now check if the type exists -> if yes return it
-                if (reader.Read())
-                {
-                    //if ok return it
-                    return new WorkoutModel(Convert.ToInt32(reader["WID"]), Convert.ToString(reader["Name"]), Convert.ToInt32(reader["WTID"]));
-                }
+                DataRow row = table.Rows[0];
+                return new WorkoutModel(
+                    Convert.ToInt32(row["WID"]),
+                    row["Name"].ToString(),
+                    Convert.ToInt32(row["WTID"])
+                );
             }
 
-            //if not found -> return empty object
             return new WorkoutModel();
         }
 
         public void InsertWorkout(string workoutName, int workoutTypeId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
-            {
-                //open the connection
-                connection.Open();
+            string query = "INSERT INTO Workouts (Name, WTID) VALUES (@name, @wtid)";
+            SqlParameter[] parameters = {
+                new SqlParameter("@name", workoutName),
+                new SqlParameter("@wtid", workoutTypeId)
+            };
 
-                //create the insert statement
-                string insertStatement = "INSERT INTO Workouts([Name], WTID) VALUES (@name, @wtid)";
-
-                //create the command, add params and execute it
-                SqlCommand command = new SqlCommand(insertStatement, connection);
-                command.Parameters.AddWithValue("@name", workoutName);
-                command.Parameters.AddWithValue("@wtid", workoutTypeId);
-                command.ExecuteNonQuery();
-            }
+            _databaseHelper.ExecuteNonQuery(query, parameters);
         }
-   
+
         public void DeleteWorkout(int workoutId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
-            {
-                connection.Open();
+            string query = "DELETE FROM Workouts WHERE WID = @wid";
+            SqlParameter[] parameters = {
+                new SqlParameter("@wid", workoutId)
+            };
 
-                string deleteStatement = "DELETE FROM Workouts WHERE WID=@wid";
-
-                SqlCommand command = new SqlCommand(deleteStatement, connection);
-                command.Parameters.AddWithValue("@wid", workoutId);
-                command.ExecuteNonQuery();
-            }
+            _databaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         public void UpdateWorkout(WorkoutModel workout)
@@ -108,63 +92,47 @@ namespace NeoIsisJob.Repositories
             if (workout == null)
                 throw new ArgumentNullException(nameof(workout), "Workout cannot be null.");
 
+            // Check for duplicates
             string checkQuery = "SELECT COUNT(*) FROM Workouts WHERE Name = @Name AND WID != @Id";
-            string updateQuery = "UPDATE Workouts SET Name = @Name WHERE WID = @Id";
+            SqlParameter[] checkParams = {
+                new SqlParameter("@Name", workout.Name),
+                new SqlParameter("@Id", workout.Id)
+            };
 
-            using (SqlConnection connection = _databaseHelper.GetConnection())
+            int duplicateCount = _databaseHelper.ExecuteScalar<int>(checkQuery, checkParams);
+            if (duplicateCount > 0)
             {
-                connection.Open();
+                throw new Exception("A workout with this name already exists.");
+            }
 
-                // Check for duplicate names
-                using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
-                {
-                    checkCommand.Parameters.AddWithValue("@Name", workout.Name);
-                    checkCommand.Parameters.AddWithValue("@Id", workout.Id);
+            // Perform the update
+            string updateQuery = "UPDATE Workouts SET Name = @Name WHERE WID = @Id";
+            SqlParameter[] updateParams = {
+                new SqlParameter("@Name", workout.Name),
+                new SqlParameter("@Id", workout.Id)
+            };
 
-                    int count = (int)checkCommand.ExecuteScalar();
-                    if (count > 0)
-                    {
-                        throw new Exception("A workout with this name already exists.");
-                    }
-                }
-
-                // Perform the update
-                using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
-                {
-                    updateCommand.Parameters.AddWithValue("@Name", workout.Name);
-                    updateCommand.Parameters.AddWithValue("@Id", workout.Id);
-
-                    int rowsAffected = updateCommand.ExecuteNonQuery();
-                    if (rowsAffected == 0)
-                    {
-                        throw new Exception("No workout was updated. Ensure the workout ID exists.");
-                    }
-                }
+            int rowsAffected = _databaseHelper.ExecuteNonQuery(updateQuery, updateParams);
+            if (rowsAffected == 0)
+            {
+                throw new Exception("No workout was updated. Ensure the workout ID exists.");
             }
         }
 
         public IList<WorkoutModel> GetAllWorkouts()
         {
+            string query = "SELECT * FROM Workouts";
 
-            IList<WorkoutModel> workouts = new List<WorkoutModel>();
+            DataTable table = _databaseHelper.ExecuteReader(query, null);
+            var workouts = new List<WorkoutModel>();
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            foreach (DataRow row in table.Rows)
             {
-                //open the connection
-                connection.Open();
-
-                //create the query
-                string query = "SELECT * FROM Workouts";
-
-                //create the command now
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while(reader.Read())
-                {
-                    // Create WorkoutTypeModel and add to the list
-                    workouts.Add(new WorkoutModel(Convert.ToInt32(reader["WID"]), Convert.ToString(reader["Name"]), Convert.ToInt32(reader["WTID"])));
-                }
+                workouts.Add(new WorkoutModel(
+                    Convert.ToInt32(row["WID"]),
+                    row["Name"].ToString(),
+                    Convert.ToInt32(row["WTID"])
+                ));
             }
 
             return workouts;

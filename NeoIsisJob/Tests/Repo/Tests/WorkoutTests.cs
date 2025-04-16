@@ -1,74 +1,175 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NeoIsisJob.Repositories;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
-using Tests.Repo.Mocks;
+using NeoIsisJob.Repositories;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace Tests.Repo.Tests
 {
     [TestClass]
-    public class WorkoutTests
+    public class WorkoutRepoTests
     {
-        private WorkoutMock _workoutRepository = new WorkoutMock();
-        [TestMethod]
-        public void TestGetAllWorkouts()
+        private Mock<IDatabaseHelper> _mockDbHelper;
+        private WorkoutRepo _workoutRepo;
+
+        [TestInitialize]
+        public void Setup()
         {
-            IList<WorkoutModel> res = _workoutRepository.GetAllWorkouts();
-            Assert.IsNotNull(res);
-            Assert.AreEqual(res.Count, 3);
+            _mockDbHelper = new Mock<IDatabaseHelper>();
+            _workoutRepo = new WorkoutRepo(_mockDbHelper.Object);
         }
 
         [TestMethod]
-        public void TestInsertWorkout()
+        public void GetWorkoutById_ShouldReturnWorkoutModel_WhenWorkoutExists()
         {
-            WorkoutModel newWorkout = new WorkoutModel(4, "Workout D", 4);
-            _workoutRepository.InsertWorkout(newWorkout.Name, newWorkout.WorkoutTypeId);
+            // Arrange
+            var expected = new WorkoutModel(1, "Push Ups", 2);
 
-            WorkoutModel insertedWorkout = _workoutRepository.GetWorkoutById(newWorkout.Id);
-            Assert.IsNotNull(insertedWorkout);
+            _workoutRepo.InsertWorkout(expected.Name, expected.WorkoutTypeId);
+
+            var table = new DataTable();
+            table.Columns.Add("WID", typeof(int));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("WTID", typeof(int));
+            table.Rows.Add(1, "Push Ups", 2);
+
+            
+
+            _mockDbHelper
+                .Setup(db => db.ExecuteReader(
+                    It.IsAny<string>(),
+                    It.IsAny<SqlParameter[]>()))
+                .Returns(table);
+
+            // Act
+            var result = _workoutRepo.GetWorkoutById(1);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expected.Id, result.Id);
+            Assert.AreEqual(expected.Name, result.Name);
+            Assert.AreEqual(expected.WorkoutTypeId, result.WorkoutTypeId);
+        }
+
+
+        [TestMethod]
+        public void GetWorkoutByName_ShouldReturnWorkoutModel_WhenWorkoutExists()
+        {
+            var expected = new WorkoutModel(1, "Squats", 3);
+
+            var table = new DataTable();
+            table.Columns.Add("WID", typeof(int));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("WTID", typeof(int));
+            table.Rows.Add(1, "Squats", 3);
+
+            _mockDbHelper.Setup(db => db.ExecuteReader(
+                It.IsAny<string>(),
+                It.Is<SqlParameter[]>(p => (string)p[0].Value == "Squats")
+                )).Returns(table);
+
+
+            var result = _workoutRepo.GetWorkoutByName("Squats");
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expected.Name, result.Name);
         }
 
         [TestMethod]
-        public void TestUpdateWorkout()
+        public void InsertWorkout_ShouldCallExecuteNonQuery()
         {
-            WorkoutModel existingWorkout = _workoutRepository.GetWorkoutById(1);
-            existingWorkout.Name = "Updated Workout A";
-            _workoutRepository.UpdateWorkout(existingWorkout);
-            WorkoutModel updatedWorkout = _workoutRepository.GetWorkoutById(1);
-            Assert.IsNotNull(updatedWorkout);
-            Assert.AreEqual(updatedWorkout.Name, "Updated Workout A");
+            _workoutRepo.InsertWorkout("Deadlifts", 5);
 
-            WorkoutModel nonExistingWorkout = new WorkoutModel(999, "Non-existing Workout", 1);
-            try
-            {
-                _workoutRepository.UpdateWorkout(nonExistingWorkout);
-                Assert.Fail("Expected exception was not thrown.");
-            }
-            catch (Exception ex)
-            {
-                Assert.AreEqual("Workout not found.", ex.Message);
-            }
+            _mockDbHelper.Verify(db => db.ExecuteNonQuery(
+               It.IsAny<string>(),
+                It.Is<SqlParameter[]>(p =>
+                    (string)p[0].Value == "Deadlifts" &&
+                    (int)p[1].Value == 5
+                )), Times.Once);
         }
 
         [TestMethod]
-        public void TestDeleteWorkout()
+        public void DeleteWorkout_ShouldCallExecuteNonQuery()
         {
-            _workoutRepository.DeleteWorkout(1);
-            WorkoutModel deletedWorkout = _workoutRepository.GetWorkoutById(1);
-            Assert.IsNull(deletedWorkout);
+            _workoutRepo.DeleteWorkout(1);
 
-            try
+            _mockDbHelper.Setup(x => x.ExecuteNonQuery(It.IsAny<string>(), It.IsAny<SqlParameter[]>()))
+                         .Returns(1);
+
+            _mockDbHelper.Setup(x => x.ExecuteNonQuery(It.IsAny<string>(), It.IsAny<SqlParameter[]>()))
+                         .Returns(1);
+        }
+
+        [TestMethod]
+        public void UpdateWorkout_ShouldCallExecuteNonQuery_WhenValid()
+        {
+            var workout = new WorkoutModel(3, "Lunges", 1);
+
+            _mockDbHelper.Setup(db => db.ExecuteScalar<int>(
+                "SELECT COUNT(*) FROM Workouts WHERE Name = @Name AND WID != @Id",
+                It.Is<SqlParameter[]>(p => (string)p[0].Value == "Lunges" && (int)p[1].Value == 3)))
+                .Returns(0);
+
+            _mockDbHelper.Setup(db => db.ExecuteNonQuery(
+                "UPDATE Workouts SET Name = @Name WHERE WID = @Id",
+                It.Is<SqlParameter[]>(p => (string)p[0].Value == "Lunges" && (int)p[1].Value == 3)))
+                .Returns(1);
+
+            _workoutRepo.UpdateWorkout(workout);
+
+            _mockDbHelper.VerifyAll();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception), "A workout with this name already exists.")]
+        public void UpdateWorkout_ShouldThrowException_WhenDuplicateNameExists()
+        {
+            var workout = new WorkoutModel(3, "Plank", 1);
+
+            _mockDbHelper.Setup(db => db.ExecuteScalar<int>(
+                "SELECT COUNT(*) FROM Workouts WHERE Name = @Name AND WID != @Id",
+                It.IsAny<SqlParameter[]>()))
+                .Returns(1);
+
+            _workoutRepo.UpdateWorkout(workout);
+        }
+
+        [TestMethod]
+        public void GetAllWorkouts_ShouldReturnList()
+        {
+            var expectedList = new List<WorkoutModel>
             {
-                _workoutRepository.DeleteWorkout(999);
-                Assert.Fail("Expected exception was not thrown.");
-            }
-            catch (KeyNotFoundException ex)
+                new WorkoutModel(1, "Sit Ups", 1),
+                new WorkoutModel(2, "Burpees", 2)
+            };
+
+            var table = new DataTable();
+            table.Columns.Add("WID", typeof(int));
+            table.Columns.Add("Name", typeof(string));
+            table.Columns.Add("WTID", typeof(int));
+            table.Rows.Add(1, "Sit Ups", 1);
+            table.Rows.Add(2, "Burpees", 2);
+
+            _mockDbHelper.Setup(db => db.ExecuteReader(
+               "SELECT * FROM Workouts",
+               It.IsAny<SqlParameter[]>() // Corrected the second argument to match the method signature
+           )).Returns(table);
+
+            var result = _workoutRepo.GetAllWorkouts();
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(expectedList.Count, result.Count);
+            for (int i = 0; i < expectedList.Count; i++)
             {
-                Assert.AreEqual("Workout not found.", ex.Message);
+                Assert.AreEqual(expectedList[i].Id, result[i].Id);
+                Assert.AreEqual(expectedList[i].Name, result[i].Name);
+                Assert.AreEqual(expectedList[i].WorkoutTypeId, result[i].WorkoutTypeId);
             }
+
         }
     }
 }
