@@ -2,22 +2,24 @@
 {
     public class CompleteWorkoutModel
     {
-        private int _workoutId;
-        private int _exerciseId;
-        private int _sets;
-        private int _repetitionsPerSet;
+        private int workoutId;
+        private int exerciseId;
+        private int sets;
+        private int repetitionsPerSet;
 
-        private ExercisesModel _exercise;
+        private ExercisesModel exercise;
 
-        public int WorkoutId { get => _workoutId; set => _workoutId = value; }
-        public int ExerciseId { get => _exerciseId; set => _exerciseId = value; }
-        public int Sets { get => _sets; set => _sets = value; }
-        public int RepetitionsPerSet { get => _repetitionsPerSet; set => _repetitionsPerSet = value; }
+        public int WorkoutId { get => workoutId; set => workoutId = value; }
+        public int ExerciseId { get => exerciseId; set => exerciseId = value; }
+        public int Sets { get => sets; set => sets = value; }
+        public int RepetitionsPerSet { get => repetitionsPerSet; set => repetitionsPerSet = value; }
 
-        //property for tracking the complete excercise
-        public ExercisesModel Exercise { get => _exercise; set => _exercise = value; }
+        // property for tracking the complete excercise
+        public ExercisesModel Exercise { get => exercise; set => exercise = value; }
 
-        private CompleteWorkoutModel() { }
+        private CompleteWorkoutModel()
+        {
+        }
 
         public CompleteWorkoutModel(int workoutId, int exerciseId, int sets, int repetitionsPerSet)
         {

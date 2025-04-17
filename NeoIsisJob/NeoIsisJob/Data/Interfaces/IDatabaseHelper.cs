@@ -15,5 +15,4 @@ namespace NeoIsisJob.Data.Interfaces
 
         T ExecuteScalar<T>(string commandText, SqlParameter[]? parameters = null);
     }
-
 }
