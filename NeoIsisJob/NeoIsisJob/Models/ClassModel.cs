@@ -9,13 +9,19 @@
         private int personalTrainerId;
 
         public int Id { get => id; set => id = value; }
+
         public string Name { get => name; set => name = value; }
+
         public string Description { get => description; set => description = value; }
+
         public int ClassTypeId { get => classTypeId; set => classTypeId = value; }
+
         public int PersonalTrainerId { get => personalTrainerId; set => personalTrainerId = value; }
+
         public PersonalTrainerModel PersonalTrainer { get; set; }
 
         public string TrainerFullName => PersonalTrainer != null ? $"{PersonalTrainer.LastName} {PersonalTrainer.FirstName}" : "No Trainer Assigned";
+
         public ClassModel()
         {
         }
