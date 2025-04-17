@@ -1,25 +1,24 @@
 ﻿// Repositories/CalendarRepository.cs
-using NeoIsisJob.Models;
-using NeoIsisJob.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.ComponentModel.Design;
+using NeoIsisJob.Models;
+using NeoIsisJob.Data;
 using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
-
     public class CalendarRepository : ICalendarRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly DatabaseHelper databaseHelper;
         private const int FirstDayOfMonth = 1;
         private const int StartEndMonthDifference = 1;
         private const int StartEndDayDifference = -1;
 
         public CalendarRepository()
         {
-            _databaseHelper = new DatabaseHelper();
+            databaseHelper = new DatabaseHelper();
         }
 
         public List<CalendarDay> GetCalendarDaysForMonth(int userId, DateTime month)
@@ -28,7 +27,7 @@ namespace NeoIsisJob.Repositories
             DateTime firstDay = new DateTime(month.Year, month.Month, FirstDayOfMonth);
             int daysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
 
-            using (var databaseConnection = _databaseHelper.GetConnection())
+            using (var databaseConnection = databaseHelper.GetConnection())
             {
                 databaseConnection.Open();
                 string query = @"
@@ -37,8 +36,8 @@ namespace NeoIsisJob.Repositories
                 WHERE UID = @UserId 
                 AND Date >= @StartDate 
                 AND Date <= @EndDate";
-                int UserWorkoutsDateColumn = 0;
-                int UserWorkoutsCompletedColumn = 2;
+                int userWorkoutsDateColumn = 0;
+                int userWorkoutsCompletedColumn = 2;
 
                 var workoutDays = new Dictionary<DateTime, (bool HasWorkout, bool Completed)>();
 
@@ -52,9 +51,9 @@ namespace NeoIsisJob.Repositories
                     {
                         while (reader.Read())
                         {
-                            var date = reader.GetDateTime(UserWorkoutsDateColumn);
-                            workoutDays[date] = (true, reader.GetBoolean(UserWorkoutsCompletedColumn));
-                            System.Diagnostics.Debug.WriteLine($"Found workout: Date={date:yyyy-MM-dd}, Completed={reader.GetBoolean(UserWorkoutsCompletedColumn)}");
+                            var date = reader.GetDateTime(userWorkoutsDateColumn);
+                            workoutDays[date] = (true, reader.GetBoolean(userWorkoutsCompletedColumn));
+                            System.Diagnostics.Debug.WriteLine($"Found workout: Date={date:yyyy-MM-dd}, Completed={reader.GetBoolean(userWorkoutsCompletedColumn)}");
                         }
                     }
                 }
@@ -66,7 +65,7 @@ namespace NeoIsisJob.Repositories
                 WHERE UID = @UserId 
                 AND Date >= @StartDate 
                 AND Date <= @EndDate";
-                int UserClassesDateColumn = 0;
+                int userClassesDateColumn = 0;
 
                 var classDays = new Dictionary<DateTime, bool>();  // Using HashSet for efficient lookup
                 using (var command = new SqlCommand(classQuery, databaseConnection))
@@ -79,7 +78,7 @@ namespace NeoIsisJob.Repositories
                     {
                         while (reader.Read())
                         {
-                            var date = reader.GetDateTime(UserClassesDateColumn);
+                            var date = reader.GetDateTime(userClassesDateColumn);
                             classDays[date] = (true);
                             System.Diagnostics.Debug.WriteLine($"Found class: Date={date:yyyy-MM-dd}");
                         }
@@ -100,22 +99,22 @@ namespace NeoIsisJob.Repositories
                         IsWorkoutCompleted = isCompleted,
                         HasClass = hasClass
                     });
-                }                   
+                }
             }
             return calendarDays;
         }
 
         public UserWorkoutModel GetUserWorkout(int userId, DateTime date)
         {
-            using (var databaseConnection = _databaseHelper.GetConnection())
+            using (var databaseConnection = databaseHelper.GetConnection())
             {
                 databaseConnection.Open();
                 string query = @"
                 SELECT WID, Completed 
                 FROM UserWorkouts 
                 WHERE UID = @UserId AND Date = @Date";
-                int WorkoutIDColumn = 0;
-                int CompletedColumn = 1;
+                int workoutIDColumn = 0;
+                int completedColumn = 1;
 
                 using (var command = new SqlCommand(query, databaseConnection))
                 {
@@ -128,9 +127,9 @@ namespace NeoIsisJob.Repositories
                         {
                             return new UserWorkoutModel(
                                 userId: userId,
-                                workoutId: reader.GetInt32(WorkoutIDColumn),
+                                workoutId: reader.GetInt32(workoutIDColumn),
                                 date: date,
-                                completed: reader.GetBoolean(CompletedColumn)
+                                completed: reader.GetBoolean(completedColumn)
                             );
                         }
                         return null;
@@ -139,9 +138,9 @@ namespace NeoIsisJob.Repositories
             }
         }
 
-        public String GetUserClass(int userId, DateTime date)
+        public string GetUserClass(int userId, DateTime date)
         {
-            using (var databaseConnection = _databaseHelper.GetConnection())
+            using (var databaseConnection = databaseHelper.GetConnection())
             {
                 databaseConnection.Open();
 
@@ -150,7 +149,7 @@ namespace NeoIsisJob.Repositories
                 SELECT CID
                 FROM UserClasses 
                 WHERE UID = @UserId AND Date = @Date";
-                int UserClassIDColumn = 0;
+                int userClassIDColumn = 0;
 
                 int? classId = null;
                 using (var command = new SqlCommand(classQuery, databaseConnection))
@@ -162,7 +161,7 @@ namespace NeoIsisJob.Repositories
                     {
                         if (reader.Read())
                         {
-                            classId = reader.GetInt32(UserClassIDColumn); // Get CID
+                            classId = reader.GetInt32(userClassIDColumn); // Get CID
                         }
                     }
                 }
@@ -178,7 +177,7 @@ namespace NeoIsisJob.Repositories
                 SELECT Name 
                 FROM Classes 
                 WHERE CID = @ClassId";
-                int ClassNameColumn = 0;
+                int classNameColumn = 0;
 
                 using (var command = new SqlCommand(detailsQuery, databaseConnection))
                 {
@@ -190,7 +189,7 @@ namespace NeoIsisJob.Repositories
                         {
                             // Since UserClasses doesn't have Completed, we'll default it to false
                             // Adjust this if Classes has a relevant field
-                            return reader.GetString(ClassNameColumn);
+                            return reader.GetString(classNameColumn);
                         }
                         return null; // Class not found in Classes table
                     }
@@ -200,12 +199,12 @@ namespace NeoIsisJob.Repositories
 
         public List<WorkoutModel> GetWorkouts()
         {
-            using (var databaseConnection = _databaseHelper.GetConnection())
+            using (var databaseConnection = databaseHelper.GetConnection())
             {
                 databaseConnection.Open();
                 string query = "SELECT WID, Name FROM Workouts";
-                int WorkoutIDColumn = 0;
-                int WorkoutNameColumn = 1;
+                int workoutIDColumn = 0;
+                int workoutNameColumn = 1;
 
                 using (var command = new SqlCommand(query, databaseConnection))
                 {
@@ -216,8 +215,8 @@ namespace NeoIsisJob.Repositories
                         {
                             workouts.Add(new WorkoutModel
                             {
-                                Id = reader.GetInt32(WorkoutIDColumn),
-                                Name = reader.GetString(WorkoutNameColumn)
+                                Id = reader.GetInt32(workoutIDColumn),
+                                Name = reader.GetString(workoutNameColumn)
                             });
                         }
                         return workouts;
