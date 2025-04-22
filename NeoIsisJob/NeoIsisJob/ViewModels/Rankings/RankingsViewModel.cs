@@ -1,12 +1,12 @@
-﻿using NeoIsisJob.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using NeoIsisJob.Commands;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using NeoIsisJob.Models;
+using NeoIsisJob.Commands;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using Windows.UI;
@@ -16,14 +16,14 @@ namespace NeoIsisJob.ViewModels.Rankings
 {
     public class RankingsViewModel
     {
-        private readonly IRankingsService _rankingsService;
-        private readonly int _userId = 1; // !!!!!!!!!!!!!!! HARDCODED USER VALUE !!!!!!! CHANGE THIS FOR PROD !!!!!!!!
-        private readonly List<RankDefinition> _rankDefinitions;
+        private readonly IRankingsService rankingsService;
+        private readonly int userId = 1; // !!!!!!!!!!!!!!! HARDCODED USER VALUE !!!!!!! CHANGE THIS FOR PROD !!!!!!!!
+        private readonly List<RankDefinition> rankDefinitions;
 
         public RankingsViewModel(IRankingsService rankingsService)
         {
-            this._rankingsService = rankingsService;
-            this._rankDefinitions = InitializeRankDefinitions();
+            this.rankingsService = rankingsService;
+            this.rankDefinitions = InitializeRankDefinitions();
         }
 
         private List<RankDefinition> InitializeRankDefinitions()
@@ -43,23 +43,23 @@ namespace NeoIsisJob.ViewModels.Rankings
 
         public IList<RankDefinition> GetRankDefinitions()
         {
-            return _rankDefinitions;
+            return rankDefinitions;
         }
 
         public RankDefinition GetRankDefinitionForPoints(int points)
         {
-            return _rankDefinitions.FirstOrDefault(r => points >= r.MinPoints && points < r.MaxPoints) 
-                   ?? _rankDefinitions.Last();
+            return rankDefinitions.FirstOrDefault(r => points >= r.MinPoints && points < r.MaxPoints)
+                   ?? rankDefinitions.Last();
         }
 
         public int GetNextRankPoints(int currentRank)
         {
-            return this._rankingsService.CalculatePointsToNextRank(currentRank, _rankDefinitions);
+            return this.rankingsService.CalculatePointsToNextRank(currentRank, rankDefinitions);
         }
 
         public RankingModel GetRankingByMGID(int muscleGroupid)
         {
-            return this._rankingsService.GetRankingByFullID(this._userId, muscleGroupid);
+            return this.rankingsService.GetRankingByFullID(this.userId, muscleGroupid);
         }
 
         public SolidColorBrush GetRankColor(int rank)

@@ -22,7 +22,7 @@ namespace NeoIsisJob.Views
         public CalendarPage()
         {
             this.InitializeComponent();
-            // Assuming you have a way to get the userId, e.g., from app state or navigation
+            // Assuming you have a way to get the UserId, e.g., from app state or navigation
             int userId = 1; // Replace with actual user ID source
             _calendarService = new CalendarService();
             ViewModel = new CalendarViewModel(userId, _calendarService);
@@ -148,8 +148,8 @@ namespace NeoIsisJob.Views
 
                 if (day.HasWorkout || day.HasClass)
                 {
-                    var userWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
-                    string userClass = day.HasClass ? _calendarService.GetUserClass(ViewModel._userId, day.Date) : null;
+                    var userWorkout = _calendarService.GetUserWorkout(ViewModel.UserId, day.Date);
+                    string userClass = day.HasClass ? _calendarService.GetUserClass(ViewModel.UserId, day.Date) : null;
 
                     if (userWorkout != null || userClass != null)
                     {
@@ -210,8 +210,8 @@ namespace NeoIsisJob.Views
 
                 if (day.HasWorkout || day.HasClass)
                 {
-                    var userWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
-                    string userClass = day.HasClass ? _calendarService.GetUserClass(ViewModel._userId, day.Date) : null;
+                    var userWorkout = _calendarService.GetUserWorkout(ViewModel.UserId, day.Date);
+                    string userClass = day.HasClass ? _calendarService.GetUserClass(ViewModel.UserId, day.Date) : null;
 
                     if (userWorkout != null || userClass != null)
                     {
@@ -273,15 +273,15 @@ namespace NeoIsisJob.Views
                                         if (btnSender is Button clickedButton && clickedButton.Tag is int workoutId)
                                         {
                                             // Remove existing workout first
-                                            var existingWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
+                                            var existingWorkout = _calendarService.GetUserWorkout(ViewModel.UserId, day.Date);
                                             if (existingWorkout != null)
                                             {
-                                                _calendarService.DeleteUserWorkout(ViewModel._userId, existingWorkout.WorkoutId, day.Date);
+                                                _calendarService.DeleteUserWorkout(ViewModel.UserId, existingWorkout.WorkoutId, day.Date);
                                             }
 
                                             // Add new workout
                                             var newWorkout = new UserWorkoutModel(
-                                                userId: ViewModel._userId,
+                                                userId: ViewModel.UserId,
                                                 workoutId: workoutId,
                                                 date: day.Date,
                                                 completed: false
@@ -321,7 +321,7 @@ namespace NeoIsisJob.Views
                             if (day.HasWorkout && day.Date >= DateTime.Now.Date)
                             {
                                 args.Cancel = true; // Keep dialog open
-                                _calendarService.RemoveWorkout(ViewModel._userId, day);
+                                _calendarService.RemoveWorkout(ViewModel.UserId, day);
                                 ViewModel.UpdateCalendar(); // Force calendar update
                                 dialog.Hide(); // Close the dialog
                             }
@@ -408,16 +408,16 @@ namespace NeoIsisJob.Views
                                 if (btnSender is Button clickedButton && clickedButton.Tag is int workoutId)
                                 {
                                     // Check if workout already exists for this date
-                                    var existingWorkout = _calendarService.GetUserWorkout(ViewModel._userId, day.Date);
+                                    var existingWorkout = _calendarService.GetUserWorkout(ViewModel.UserId, day.Date);
                                     if (existingWorkout != null)
                                     {
                                         // If workout exists, update it instead of adding a new one
-                                        _calendarService.DeleteUserWorkout(ViewModel._userId, existingWorkout.WorkoutId, day.Date);
+                                        _calendarService.DeleteUserWorkout(ViewModel.UserId, existingWorkout.WorkoutId, day.Date);
                                     }
 
                                     // Add new workout
                                     var newWorkout = new UserWorkoutModel(
-                                        userId: ViewModel._userId,
+                                        userId: ViewModel.UserId,
                                         workoutId: workoutId,
                                         date: day.Date,
                                         completed: false

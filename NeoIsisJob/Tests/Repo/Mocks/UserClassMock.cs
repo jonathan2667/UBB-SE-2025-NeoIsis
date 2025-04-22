@@ -23,14 +23,14 @@
 
 //        }
 
-//        public override UserClassModel GetUserClassModelById(int userId, int classId, DateTime date)
+//        public override UserClassModel GetUserClassModelById(int UserId, int classId, DateTime date)
 //        {
-//            return (UserClassModel)userClasses.Where(uc => uc.UserId == userId);
+//            return (UserClassModel)userClasses.Where(uc => uc.UserId == UserId);
 //        }
 
-//        public override UserClassModel GetUserClassByFullID(int userId, int classId)
+//        public override UserClassModel GetUserClassByFullID(int UserId, int classId)
 //        {
-//            return userClasses.FirstOrDefault(uc => uc.UserId == userId && uc.ClassId == classId);
+//            return userClasses.FirstOrDefault(uc => uc.UserId == UserId && uc.ClassId == classId);
 //        }
 
 //        public override UserClassModel GetUserClassByID(int userClassId)
