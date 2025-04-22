@@ -17,10 +17,8 @@ using NeoIsisJob.ViewModels.Classes;
 using NeoIsisJob.ViewModels.Workout;
 using Microsoft.Extensions.DependencyInjection;
 
-
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace NeoIsisJob.Views
 {
     /// <summary>
@@ -28,7 +26,7 @@ namespace NeoIsisJob.Views
     /// </summary>
     public sealed partial class ClassPage : Page
     {
-        private ClassesViewModel _classesViewModel;
+        private ClassesViewModel classesViewModel;
         public ClassesViewModel ViewModel { get; }
 
         public ClassPage()
@@ -55,7 +53,7 @@ namespace NeoIsisJob.Views
 
         public void GoToClassPage_Tap(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(ClassPage));
+            // this.Frame.Navigate(typeof(ClassPage));
         }
 
         public void GoToRankingPage_Tap(object sender, RoutedEventArgs e)
@@ -69,7 +67,10 @@ namespace NeoIsisJob.Views
         {
             bool isVisible = (bool)value;
             bool invert = parameter?.ToString()?.ToLower() == "inverse";
-            if (invert) isVisible = !isVisible;
+            if (invert)
+            {
+                isVisible = !isVisible;
+            }
             return isVisible ? Visibility.Visible : Visibility.Collapsed;
         }
 

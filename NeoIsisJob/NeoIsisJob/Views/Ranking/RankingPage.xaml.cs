@@ -21,18 +21,17 @@ using NeoIsisJob.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace NeoIsisJob.Views
 {
     public sealed partial class RankingPage : Page
     {
-        // I am sorry for whoever has to work on this code in the future. Know that the failures of this code 
+        // I am sorry for whoever has to work on this code in the future. Know that the failures of this code
         // are not by design, but a victim of time constraint, frustration and endless crashing.
-        private readonly RankingsViewModel _rankingsViewModel;
+        private readonly RankingsViewModel rankingsViewModel;
         public RankingPage()
         {
             this.InitializeComponent();
-            this._rankingsViewModel = App.Services.GetRequiredService<RankingsViewModel>();
+            this.rankingsViewModel = App.Services.GetRequiredService<RankingsViewModel>();
             this.LoadRankings();
             this.LoadColorForMuscleGroup();
         }
@@ -97,14 +96,14 @@ namespace NeoIsisJob.Views
 
         private void LoadRankingsForMuscleGroupPanel(int muscleGroupId, string muscleGroupName)
         {
-            var ranking = this._rankingsViewModel.GetRankingByMGID(muscleGroupId);
+            var ranking = this.rankingsViewModel.GetRankingByMGID(muscleGroupId);
             if (ranking != null)
             {
                 var rankingPanel = FindName("RankingPanel") as StackPanel;
                 if (rankingPanel != null)
                 {
                     rankingPanel.Children.Clear();
-                    var rankDef = _rankingsViewModel.GetRankDefinitionForPoints(ranking.Rank);
+                    var rankDef = rankingsViewModel.GetRankDefinitionForPoints(ranking.Rank);
                     rankingPanel.Children.Add(CreateMuscleGroupPanel(rankDef, muscleGroupName, ranking.Rank));
                 }
             }
@@ -122,10 +121,10 @@ namespace NeoIsisJob.Views
         private void LoadMuscleGroupColor(int muscleGroupId, string muscleGroupName)
         {
             var svg = FindName(muscleGroupName) as Microsoft.UI.Xaml.Shapes.Path;
-            var ranking = this._rankingsViewModel.GetRankingByMGID(muscleGroupId);
+            var ranking = this.rankingsViewModel.GetRankingByMGID(muscleGroupId);
             if (svg != null && ranking != null)
             {
-                svg.Fill = this._rankingsViewModel.GetRankColor(ranking.Rank);
+                svg.Fill = this.rankingsViewModel.GetRankColor(ranking.Rank);
             }
         }
 
@@ -137,7 +136,7 @@ namespace NeoIsisJob.Views
                 rankingPanel.Children.Clear();
                 rankingPanel.Children.Add(new TextBlock { Text = "All Rankings Explained:", FontSize = 25 });
 
-                foreach (var rankDefinition in _rankingsViewModel.GetRankDefinitions())
+                foreach (var rankDefinition in rankingsViewModel.GetRankDefinitions())
                 {
                     rankingPanel.Children.Add(CreateRankItem(rankDefinition));
                 }
@@ -150,17 +149,26 @@ namespace NeoIsisJob.Views
             StackPanel rowStackPanel = new StackPanel { Orientation = Orientation.Horizontal };
 
             Image rankImage = new Image { Source = new BitmapImage(new Uri(this.BaseUri, rankDef.ImagePath)), Width = 150, Height = 150 };
-            TextBlock muscleGroupName = new TextBlock { Text = muscleGroup, FontSize = 25, Foreground = new SolidColorBrush(rankDef.Color), Margin = new Thickness(20, 60, 0, 10)};
-            ProgressBar progressBar = new ProgressBar { Value = rank, Minimum = rankDef.MinPoints, Maximum = rankDef.MaxPoints, Foreground = new SolidColorBrush(rankDef.Color)};
-            TextBlock nextRankBlock = new TextBlock { Text = $"You require {_rankingsViewModel.GetNextRankPoints(rank)} points to reach the next ranking!"};
+            TextBlock muscleGroupName = new TextBlock
+            {
+                Text = muscleGroup, FontSize = 25, Foreground = new SolidColorBrush(rankDef.Color), Margin = new Thickness(20, 60, 0, 10)
+            };
+            ProgressBar progressBar = new ProgressBar
+            {
+                Value = rank, Minimum = rankDef.MinPoints, Maximum = rankDef.MaxPoints, Foreground = new SolidColorBrush(rankDef.Color)
+            };
+            TextBlock nextRankBlock = new TextBlock
+            {
+                Text = $"You require {rankingsViewModel.GetNextRankPoints(rank)} points to reach the next ranking!"
+            };
 
             rowStackPanel.Children.Add(rankImage);
             rowStackPanel.Children.Add(muscleGroupName);
-            
+
             stackPanel.Children.Add(rowStackPanel);
             stackPanel.Children.Add(progressBar);
             stackPanel.Children.Add(nextRankBlock);
-            
+
             return stackPanel;
         }
 
@@ -185,7 +193,6 @@ namespace NeoIsisJob.Views
 
         private void Abs_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-
         }
     }
 }
