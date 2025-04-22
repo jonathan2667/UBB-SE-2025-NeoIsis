@@ -1,55 +1,53 @@
-﻿using NeoIsisJob.Repositories;
-using NeoIsisJob.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using NeoIsisJob.Repositories;
+using NeoIsisJob.Models;
 using NeoIsisJob.Services.Interfaces;
 using NeoIsisJob.Repositories.Interfaces;
 
-
 // please add validation for the input parameters
-
 namespace NeoIsisJob.Services
 {
     public class ClassService : IClassService
     {
-        //private readonly ClassRepository _classRepository;
-        private readonly IClassRepository _classRepository;
-        private readonly UserClassService _userClassService;
+        // private readonly ClassRepository classRepository;
+        private readonly IClassRepository classRepository;
+        private readonly UserClassService userClassService;
 
-        public ClassService() 
-        { 
-            this._classRepository = new ClassRepository();
-            this._userClassService = new UserClassService();
+        public ClassService()
+        {
+            this.classRepository = new ClassRepository();
+            this.userClassService = new UserClassService();
         }
 
         public ClassService(IClassRepository classRepository)
         {
-            this._classRepository = classRepository;
-            this._userClassService = new UserClassService();
+            this.classRepository = classRepository;
+            this.userClassService = new UserClassService();
         }
 
         public List<ClassModel> GetAllClasses()
         {
-            return this._classRepository.GetAllClassModel();
+            return this.classRepository.GetAllClassModel();
         }
-    
+
         public ClassModel GetClassById(int classId)
         {
-            return _classRepository.GetClassModelById(classId);
+            return classRepository.GetClassModelById(classId);
         }
 
         public void AddClass(ClassModel classModel)
         {
-            _classRepository.AddClassModel(classModel);
+            classRepository.AddClassModel(classModel);
         }
 
         public void DeleteClass(int classId)
         {
-            _classRepository.DeleteClassModel(classId);
+            classRepository.DeleteClassModel(classId);
         }
 
         public string ConfirmRegistration(int userId, int classId, DateTime date)
@@ -69,9 +67,9 @@ namespace NeoIsisJob.Services
                     EnrollmentDate = date
                 };
 
-                _userClassService.AddUserClass(userClass);
+                userClassService.AddUserClass(userClass);
                 Debug.WriteLine($"Successfully registered for class {GetClassById(classId).Name}");
-                return ""; // Return empty string for success
+                return string.Empty; // Return empty string for success
             }
             catch (Exception ex)
             {

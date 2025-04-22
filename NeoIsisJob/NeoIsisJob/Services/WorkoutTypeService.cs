@@ -1,40 +1,42 @@
-﻿using NeoIsisJob.Models;
-using NeoIsisJob.Repositories;
-using NeoIsisJob.Repositories.Interfaces;
-using NeoIsisJob.Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using NeoIsisJob.Models;
+using NeoIsisJob.Repositories;
+using NeoIsisJob.Repositories.Interfaces;
+using NeoIsisJob.Services.Interfaces;
 
 namespace NeoIsisJob.Services
 {
     public class WorkoutTypeService : IWorkoutTypeService
     {
-        private readonly IWorkoutTypeRepository _workoutTypeRepository;
+        private readonly IWorkoutTypeRepository workoutTypeRepository;
 
-        public WorkoutTypeService() 
-        { 
-            this._workoutTypeRepository = new WorkoutTypeRepo(); 
+        public WorkoutTypeService()
+        {
+            this.workoutTypeRepository = new WorkoutTypeRepo();
         }
 
         public WorkoutTypeService(IWorkoutTypeRepository workoutTypeRepository)
         {
-            this._workoutTypeRepository = workoutTypeRepository ?? throw new ArgumentNullException(nameof(workoutTypeRepository));
+            this.workoutTypeRepository = workoutTypeRepository ?? throw new ArgumentNullException(nameof(workoutTypeRepository));
         }
 
-        public void InsertWorkoutType(String workoutTypeName) 
+        public void InsertWorkoutType(string workoutTypeName)
         {
-            //NAME HAS TO BE UNIQUE
+            // NAME HAS TO BE UNIQUE
             if (string.IsNullOrWhiteSpace(workoutTypeName))
+            {
                 throw new ArgumentException("Workout type name cannot be empty or null.");
+            }
 
             try
             {
-                this._workoutTypeRepository.InsertWorkoutType(workoutTypeName);
+                this.workoutTypeRepository.InsertWorkoutType(workoutTypeName);
             }
             catch (SqlException ex) when (ex.Number == 2627) // SQL Server unique constraint violation
             {
@@ -48,17 +50,17 @@ namespace NeoIsisJob.Services
 
         public void DeleteWorkoutType(int workoutTypeId)
         {
-            this._workoutTypeRepository.DeleteWorkoutType(workoutTypeId);
+            this.workoutTypeRepository.DeleteWorkoutType(workoutTypeId);
         }
 
-        public WorkoutTypeModel GetWorkoutTypeById(int workoutTypeId) 
+        public WorkoutTypeModel GetWorkoutTypeById(int workoutTypeId)
         {
-            return this._workoutTypeRepository.GetWorkoutTypeById(workoutTypeId);
+            return this.workoutTypeRepository.GetWorkoutTypeById(workoutTypeId);
         }
 
         public IList<WorkoutTypeModel> GetAllWorkoutTypes()
         {
-            return this._workoutTypeRepository.GetAllWorkoutTypes();
+            return this.workoutTypeRepository.GetAllWorkoutTypes();
         }
     }
 }
