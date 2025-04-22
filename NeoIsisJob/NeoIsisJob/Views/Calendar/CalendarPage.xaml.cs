@@ -477,9 +477,9 @@ namespace NeoIsisJob.Views
             this.Frame.Navigate(typeof(WorkoutPage));
         }
 
+        // Already on CalendarPage, no Action needed
         public void GoToCalendarPage_Tap(object sender, RoutedEventArgs e)
         {
-            // Already on CalendarPage, no Action needed
         }
 
         public void GoToClassPage_Tap(object sender, RoutedEventArgs e)

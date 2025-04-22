@@ -1,8 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using NeoIsisJob.Commands;
-using NeoIsisJob.Models;
-using NeoIsisJob.Services;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,121 +7,145 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.UI.Xaml.Controls;
+using NeoIsisJob.Commands;
+using NeoIsisJob.Models;
+using NeoIsisJob.Services;
 
 namespace NeoIsisJob.ViewModels.Workout
 {
     public class CreateWorkoutViewModel : INotifyPropertyChanged
     {
-        private readonly Frame _frame;
+        private readonly Frame frame;
 
-        private readonly WorkoutTypeService _workoutTypeService;
-        private readonly ExerciseService _exerciseService;
-        private readonly MuscleGroupService _muscleGroupService;
-        private readonly WorkoutService _workoutService;
-        private readonly CompleteWorkoutService _completeWorkoutService;
-        private ObservableCollection<WorkoutTypeModel> _workoutTypes;
-        private ObservableCollection<ExercisesModel> _exercises;
+        private readonly WorkoutTypeService workoutTypeService;
+        private readonly ExerciseService exerciseService;
+        private readonly MuscleGroupService muscleGroupService;
+        private readonly WorkoutService workoutService;
+        private readonly CompleteWorkoutService completeWorkoutService;
+        private ObservableCollection<WorkoutTypeModel> workoutTypes;
+        private ObservableCollection<ExercisesModel> exercises;
 
-        //for the add functionality
-        private String _selectedWorkoutName;
-        private WorkoutTypeModel _selectedWorkoutType;
-        private ObservableCollection<ExercisesModel> _selectedExercises;
-        private int _selectedNumberOfSets;
-        private int _selectedNumberOfRepsPerSet;
-        
+        // for the add functionality
+        private string selectedWorkoutName;
+        private WorkoutTypeModel selectedWorkoutType;
+        private ObservableCollection<ExercisesModel> selectedExercises;
+        private int selectedNumberOfSets;
+        private int selectedNumberOfRepsPerSet;
 
-        public ObservableCollection<WorkoutTypeModel> WorkoutTypes 
+        public ObservableCollection<WorkoutTypeModel> WorkoutTypes
         {
-            get {  return _workoutTypes; }
+            get
+            {
+                return workoutTypes;
+            }
             set
             {
-                _workoutTypes = value;
+                workoutTypes = value;
                 OnPropertyChanged();
             }
         }
 
         public ObservableCollection<ExercisesModel> Exercises
         {
-            get { return _exercises; }
+            get
+            {
+                return exercises;
+            }
             set
             {
-                _exercises = value;
+                exercises = value;
                 OnPropertyChanged();
             }
         }
 
-        //property for the current selected workout type
+        // property for the current selected workout type
         public WorkoutTypeModel SelectedWorkoutType
         {
-            get { return _selectedWorkoutType; }
+            get
+            {
+                return selectedWorkoutType;
+            }
             set
             {
-                _selectedWorkoutType = value;
+                selectedWorkoutType = value;
                 OnPropertyChanged();
             }
         }
 
-        public String SelectedWorkoutName
+        public string SelectedWorkoutName
         {
-            get { return _selectedWorkoutName; }
+            get
+            {
+                return selectedWorkoutName;
+            }
             set
             {
-                _selectedWorkoutName = value;
+                selectedWorkoutName = value;
                 OnPropertyChanged();
             }
         }
 
         public ObservableCollection<ExercisesModel> SelectedExercises
         {
-            get { return _selectedExercises; }
+            get
+            {
+                return selectedExercises;
+            }
             set
             {
-                _selectedExercises = value;
+                selectedExercises = value;
                 OnPropertyChanged();
             }
         }
 
         public int SelectedNumberOfSets
         {
-            get { return _selectedNumberOfSets; }
+            get
+            {
+                return selectedNumberOfSets;
+            }
             set
             {
-                _selectedNumberOfSets = value;
+                selectedNumberOfSets = value;
                 OnPropertyChanged();
             }
         }
 
         public int SelectedNumberOfRepsPerSet
         {
-            get { return _selectedNumberOfRepsPerSet; }
+            get
+            {
+                return selectedNumberOfRepsPerSet;
+            }
             set
             {
-                _selectedNumberOfRepsPerSet = value;
+                selectedNumberOfRepsPerSet = value;
                 OnPropertyChanged();
             }
         }
 
-        //command for add
+        // command for add
         public ICommand CreateWorkoutAndCompleteWorkoutsCommand { get; }
 
-        //command for cancel
+        // command for cancel
         public ICommand CancelCommand { get; }
 
         public CreateWorkoutViewModel(Frame frame)
         {
-            //pass the frame to the viewModel
-            this._frame = frame;
+            // pass the frame to the viewModel
+            this.frame = frame;
 
-            this._workoutTypeService = new WorkoutTypeService();
-            this._exerciseService = new ExerciseService();
-            this._muscleGroupService = new MuscleGroupService(); 
-            this._workoutService = new WorkoutService();
-            this._completeWorkoutService = new CompleteWorkoutService();
+            this.workoutTypeService = new WorkoutTypeService();
+            this.exerciseService = new ExerciseService();
+            this.muscleGroupService = new MuscleGroupService();
+            this.workoutService = new WorkoutService();
+            this.completeWorkoutService = new CompleteWorkoutService();
             this.WorkoutTypes = new ObservableCollection<WorkoutTypeModel>();
             this.Exercises = new ObservableCollection<ExercisesModel>();
             this.SelectedExercises = new ObservableCollection<ExercisesModel>();
 
-            //initialize the commands
+            // initialize the commands
             CreateWorkoutAndCompleteWorkoutsCommand = new RelayCommand(CreateWorkoutAndCompleteWorkouts);
             CancelCommand = new RelayCommand(Cancel);
 
@@ -137,9 +157,9 @@ namespace NeoIsisJob.ViewModels.Workout
         {
             WorkoutTypes.Clear();
 
-            foreach(WorkoutTypeModel workoutType in this._workoutTypeService.GetAllWorkoutTypes())
+            foreach (WorkoutTypeModel workoutType in this.workoutTypeService.GetAllWorkoutTypes())
             {
-                this.WorkoutTypes.Add(workoutType); 
+                this.WorkoutTypes.Add(workoutType);
             }
         }
 
@@ -147,44 +167,48 @@ namespace NeoIsisJob.ViewModels.Workout
         {
             Exercises.Clear();
 
-            foreach (ExercisesModel exercise in this._exerciseService.GetAllExercises())
+            foreach (ExercisesModel exercise in this.exerciseService.GetAllExercises())
             {
-                //add the corresponding MuscleGroup object to every one
-                exercise.MuscleGroup = this._muscleGroupService.GetMuscleGroupById(exercise.MuscleGroupId);
+                // add the corresponding MuscleGroup object to every one
+                exercise.MuscleGroup = this.muscleGroupService.GetMuscleGroupById(exercise.MuscleGroupId);
                 this.Exercises.Add(exercise);
             }
         }
 
-        //function that will serve a command bound to the save button
+        // function that will serve a command bound to the save button
         public void CreateWorkoutAndCompleteWorkouts()
         {
-            //save the workout and then save all entries in CompleteWorkouts
+            // save the workout and then save all entries in CompleteWorkouts
 
-            //here add the workout
-            this._workoutService.InsertWorkout(SelectedWorkoutName, SelectedWorkoutType.Id);
-            int selectedWorkoutId = this._workoutService.GetWorkoutByName(SelectedWorkoutName).Id;
+            // here add the workout
+            this.workoutService.InsertWorkout(SelectedWorkoutName, SelectedWorkoutType.Id);
+            int selectedWorkoutId = this.workoutService.GetWorkoutByName(SelectedWorkoutName).Id;
 
-            //here add all the entries in CompleteWorkouts
-            foreach(ExercisesModel exercise in SelectedExercises)
+            // here add all the entries in CompleteWorkouts
+            foreach (ExercisesModel exercise in SelectedExercises)
             {
-                this._completeWorkoutService.InsertCompleteWorkout(selectedWorkoutId, exercise.Id, SelectedNumberOfSets, SelectedNumberOfRepsPerSet);
+                this.completeWorkoutService.InsertCompleteWorkout(selectedWorkoutId, exercise.Id, SelectedNumberOfSets, SelectedNumberOfRepsPerSet);
             }
 
-            //now go to back to the prev page
-            if(this._frame.CanGoBack)
-                this._frame.GoBack();
+            // now go to back to the prev page
+            if (this.frame.CanGoBack)
+            {
+                this.frame.GoBack();
+            }
         }
 
         public void Cancel()
         {
-            if (this._frame.CanGoBack)
-                this._frame.GoBack();
+            if (this.frame.CanGoBack)
+            {
+                this.frame.GoBack();
+            }
         }
 
         // INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        //gets triggered every time a property changes
+        // gets triggered every time a property changes
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

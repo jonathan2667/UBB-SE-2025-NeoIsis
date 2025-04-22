@@ -37,8 +37,7 @@ namespace NeoIsisJob
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
-        /// 
-
+        ///
         public static IServiceProvider Services { get; private set; }
 
         public App()
@@ -53,8 +52,8 @@ namespace NeoIsisJob
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            m_window = new MainWindow();
-            m_window.Activate();
+            mWindow = new MainWindow();
+            mWindow.Activate();
         }
 
         private void ConfigureServices()
@@ -74,6 +73,6 @@ namespace NeoIsisJob
             Services = serviceCollection.BuildServiceProvider();
         }
 
-        private Window? m_window;
+        private Window? mWindow;
     }
 }
