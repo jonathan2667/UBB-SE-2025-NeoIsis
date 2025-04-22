@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Windows.Input;
-using System.Linq;
-using Microsoft.UI.Xaml.Controls;
 using NeoIsisJob.Models;
 using NeoIsisJob.Data;
 using NeoIsisJob.Repositories;
+using System.Linq;
 using NeoIsisJob.Services;
 using NeoIsisJob.Services.Interfaces;
 
@@ -16,25 +16,25 @@ namespace NeoIsisJob.ViewModels.Calendar
 {
     public class CalendarViewModel : INotifyPropertyChanged
     {
-        private DateTime currentDate;
-        private string yearText;
-        private string monthText;
-        private ObservableCollection<CalendarDay> calendarDays;
+        private DateTime _currentDate;
+        private string _yearText;
+        private string _monthText;
+        private ObservableCollection<CalendarDay> _calendarDays;
 
-        private readonly ICalendarService calendarService;
+        private readonly ICalendarService _calendarService;
 
-        private readonly DatabaseHelper databaseHelper;
+        private readonly DatabaseHelper _databaseHelper;
 
-        public readonly int UserId;
+        public readonly int _userId;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public CalendarViewModel(int userId, ICalendarService calendarService = null)
         {
-            this.UserId = userId;
-            currentDate = DateTime.Now;
+            _userId = userId;
+            _currentDate = DateTime.Now;
 
-            this.calendarService = calendarService ?? new CalendarService();
-            databaseHelper = new DatabaseHelper();
+            _calendarService = calendarService ?? new CalendarService();
+            _databaseHelper = new DatabaseHelper();
             CalendarDays = new ObservableCollection<CalendarDay>();
             PreviousMonthCommand = new RelayCommand(PreviousMonth);
             NextMonthCommand = new RelayCommand(NextMonth);
@@ -43,75 +43,77 @@ namespace NeoIsisJob.ViewModels.Calendar
 
         public string YearText
         {
-            get => yearText;
+            get => _yearText;
             set
             {
-                yearText = value;
+                _yearText = value;
                 OnPropertyChanged(nameof(YearText));
             }
         }
 
         public string MonthText
         {
-            get => monthText;
+            get => _monthText;
             set
             {
-                monthText = value;
+                _monthText = value;
                 OnPropertyChanged(nameof(MonthText));
             }
         }
 
         public ObservableCollection<CalendarDay> CalendarDays
         {
-            get => calendarDays;
+            get => _calendarDays;
             set
             {
-                calendarDays = value;
+                _calendarDays = value;
                 OnPropertyChanged(nameof(CalendarDays));
                 OnPropertyChanged(nameof(WorkoutDaysCountText));
                 OnPropertyChanged(nameof(DaysCountText));
             }
         }
 
-        public string WorkoutDaysCountText => calendarService.GetWorkoutDaysCountText(CalendarDays);
-        public string DaysCountText => calendarService.GetDaysCountText(CalendarDays);
+        public string WorkoutDaysCountText => _calendarService.GetWorkoutDaysCountText(CalendarDays);
+        public string DaysCountText => _calendarService.GetDaysCountText(CalendarDays);
         public ICommand PreviousMonthCommand { get; }
         public ICommand NextMonthCommand { get; }
 
         public void UpdateCalendar()
         {
-            YearText = currentDate.Year.ToString();
-            MonthText = currentDate.ToString("MMMM");
-            CalendarDays = calendarService.GetCalendarDays(UserId, currentDate);
+            YearText = _currentDate.Year.ToString();
+            MonthText = _currentDate.ToString("MMMM");
+            CalendarDays = _calendarService.GetCalendarDays(_userId, _currentDate);
         }
 
         private void PreviousMonth()
         {
-            currentDate = currentDate.AddMonths(-1);
+            _currentDate = _currentDate.AddMonths(-1);
             UpdateCalendar();
         }
 
         private void NextMonth()
         {
-            currentDate = currentDate.AddMonths(1);
+            _currentDate = _currentDate.AddMonths(1);
             UpdateCalendar();
         }
 
         public void AddUserWorkout(UserWorkoutModel userWorkout)
         {
-            calendarService.AddUserWorkout(userWorkout);
+            _calendarService.AddUserWorkout(userWorkout);
+            
+            
             UpdateCalendar();
         }
 
         public void UpdateUserWorkout(UserWorkoutModel userWorkout)
         {
-            calendarService.UpdateUserWorkout(userWorkout);
+            _calendarService.UpdateUserWorkout(userWorkout);
             UpdateCalendar();
         }
 
         public void DeleteUserWorkout(int workoutId, DateTime date)
         {
-            calendarService.DeleteUserWorkout(UserId, workoutId, date);
+            _calendarService.DeleteUserWorkout(_userId, workoutId, date);
             UpdateCalendar();
         }
 
@@ -123,37 +125,37 @@ namespace NeoIsisJob.ViewModels.Calendar
 
     public class RelayCommand : ICommand
     {
-        private readonly Action execute;
-        private readonly Func<bool> canExecute;
+        private readonly Action _execute;
+        private readonly Func<bool> _canExecute;
 
         public RelayCommand(Action execute, Func<bool> canExecute = null)
         {
-            this.execute = execute;
-            this.canExecute = canExecute;
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute(object parameter) => canExecute == null || canExecute();
+        public bool CanExecute(object parameter) => _canExecute == null || _canExecute();
 
-        public void Execute(object parameter) => execute();
+        public void Execute(object parameter) => _execute();
     }
 
     public class RelayCommand<T> : ICommand
     {
-        private readonly Action<T> execute;
-        private readonly Func<T, bool> canExecute;
+        private readonly Action<T> _execute;
+        private readonly Func<T, bool> _canExecute;
 
         public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
         {
-            this.execute = execute;
-            this.canExecute = canExecute;
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
         public event EventHandler CanExecuteChanged;
 
-        public bool CanExecute(object parameter) => canExecute == null || canExecute((T)parameter);
+        public bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
 
-        public void Execute(object parameter) => execute((T)parameter);
+        public void Execute(object parameter) => _execute((T)parameter);
     }
 }

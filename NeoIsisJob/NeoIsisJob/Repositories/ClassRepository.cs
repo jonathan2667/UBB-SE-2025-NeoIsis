@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NeoIsisJob.Data;
+using NeoIsisJob.Models;
+using NeoIsisJob.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -7,9 +10,6 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using NeoIsisJob.Data;
-using NeoIsisJob.Models;
-using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
