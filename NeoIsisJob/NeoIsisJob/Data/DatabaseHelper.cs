@@ -12,7 +12,9 @@ namespace NeoIsisJob.Data
 
         public DatabaseHelper()
         {
-            connectionString = @"Server=LIZ19\SQLEXPRESS;Database=Workout;Integrated Security=True;TrustServerCertificate=True;";
+            // connectionString = @"Server=localhost;Database=Workout;Integrated Security=True;TrustServerCertificate=True;";
+            connectionString = @"Data Source=localhost\SQLEXPRESS;Initial Catalog=Workout;Integrated Security=True;";
+
             try
             {
                 this.sqlConnection = new SqlConnection(this.connectionString);
@@ -23,7 +25,11 @@ namespace NeoIsisJob.Data
             }
         }
 
-        public SqlConnection GetConnection() => this.sqlConnection;
+
+        public SqlConnection GetConnection()
+        {
+            return new SqlConnection(connectionString);
+        }
 
         public void OpenConnection()
         {

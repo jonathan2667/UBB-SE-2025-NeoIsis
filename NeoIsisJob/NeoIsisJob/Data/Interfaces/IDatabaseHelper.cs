@@ -12,6 +12,8 @@ namespace NeoIsisJob.Data.Interfaces
     {
         DataTable ExecuteReader(string commandText, SqlParameter[] parameters);
         int ExecuteNonQuery(string commandText, SqlParameter[] parameters);
+
+        T ExecuteScalar<T>(string commandText, SqlParameter[]? parameters = null);
     }
 
 }
