@@ -4,15 +4,17 @@ namespace NeoIsisJob.Models
 {
     public class UserClassModel
     {
-        private int _userId;
-        private int _classId;
-        private DateTime _enrollmentDate;
+        private int userId;
+        private int classId;
+        private DateTime enrollmentDate;
 
-        public int UserId { get => _userId; set => _userId = value; }
-        public int ClassId { get => _classId; set => _classId = value; }
-        public DateTime EnrollmentDate { get => _enrollmentDate; set => _enrollmentDate = value; }
+        public int UserId { get => userId; set => userId = value; }
+        public int ClassId { get => classId; set => classId = value; }
+        public DateTime EnrollmentDate { get => enrollmentDate; set => enrollmentDate = value; }
 
-        public UserClassModel() { }
+        public UserClassModel()
+        {
+        }
 
         public UserClassModel(int userId, int classId, DateTime enrollmentDate)
         {

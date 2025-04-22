@@ -4,17 +4,19 @@ namespace NeoIsisJob.Models
 {
     public class PersonalTrainerModel
     {
-        private int _id;
-        private string _firstName;
-        private string _lastName;
-        private DateTime _workStartDateTime;
+        private int id;
+        private string firstName;
+        private string lastName;
+        private DateTime workStartDateTime;
 
-        public int Id { get => _id; set => _id = value; }
-        public string FirstName { get => _firstName; set => _firstName = value; }
-        public string LastName { get => _lastName; set => _lastName = value; }
-        public DateTime WorkStartDateTime { get => _workStartDateTime; set => _workStartDateTime = value; }
+        public int Id { get => id; set => id = value; }
+        public string FirstName { get => firstName; set => firstName = value; }
+        public string LastName { get => lastName; set => lastName = value; }
+        public DateTime WorkStartDateTime { get => workStartDateTime; set => workStartDateTime = value; }
 
-        public PersonalTrainerModel() { }
+        public PersonalTrainerModel()
+        {
+        }
 
         public PersonalTrainerModel(int id, string firstName, string lastName, DateTime workStartDateTime)
         {

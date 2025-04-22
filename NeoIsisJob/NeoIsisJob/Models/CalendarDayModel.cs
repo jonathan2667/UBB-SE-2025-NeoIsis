@@ -16,8 +16,8 @@ namespace NeoIsisJob.Models
         public bool IsNotCurrentDay => !IsCurrentDay;
         public int GridRow { get; set; }
         public int GridColumn { get; set; }
-        public bool HasClass { get; set; }        
-        public bool HasWorkout { get; set; }       
+        public bool HasClass { get; set; }
+        public bool HasWorkout { get; set; }
         public bool IsWorkoutCompleted { get; set; }
         public DateTime Date { get; set; }
         public ICommand ClickCommand { get; set; }

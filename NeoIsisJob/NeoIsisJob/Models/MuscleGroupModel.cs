@@ -2,13 +2,15 @@
 {
     public class MuscleGroupModel
     {
-        private int _id;
-        private string _name;
+        private int id;
+        private string name;
 
-        public int Id { get => _id; set => _id = value; }
-        public string Name { get => _name; set => _name = value; }
+        public int Id { get => id; set => id = value; }
+        public string Name { get => name; set => name = value; }
 
-        public MuscleGroupModel() { }
+        public MuscleGroupModel()
+        {
+        }
 
         public MuscleGroupModel(int id, string name)
         {
