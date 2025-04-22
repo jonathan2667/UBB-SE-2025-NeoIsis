@@ -11,19 +11,19 @@ namespace NeoIsisJob.Repositories
 {
     public class CalendarRepository : ICalendarRepository
     {
-        private readonly IDatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper databaseHelper;
         private const int FirstDayOfMonth = 1;
         private const int StartEndMonthDifference = 1;
         private const int StartEndDayDifference = -1;
 
         public CalendarRepository()
         {
-            _databaseHelper = new DatabaseHelper();
+            databaseHelper = new DatabaseHelper();
         }
 
         public CalendarRepository(IDatabaseHelper databaseHelper)
         {
-            _databaseHelper = databaseHelper;
+            this.databaseHelper = databaseHelper;
         }
 
         public List<CalendarDay> GetCalendarDaysForMonth(int userId, DateTime month)
@@ -49,7 +49,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@EndDate", lastDay)
             };
 
-            var workoutTable = _databaseHelper.ExecuteReader(workoutQuery, workoutParams);
+            var workoutTable = databaseHelper.ExecuteReader(workoutQuery, workoutParams);
             foreach (DataRow row in workoutTable.Rows)
             {
                 var date = Convert.ToDateTime(row["Date"]);
@@ -70,7 +70,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@EndDate", lastDay)
             };
 
-            var classTable = _databaseHelper.ExecuteReader(classQuery, classParams);
+            var classTable = databaseHelper.ExecuteReader(classQuery, classParams);
             foreach (DataRow row in classTable.Rows)
             {
                 var date = Convert.ToDateTime(row["Date"]);
@@ -111,17 +111,18 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@Date", date.Date)
             };
 
-            var table = _databaseHelper.ExecuteReader(query, parameters);
+            var table = databaseHelper.ExecuteReader(query, parameters);
             if (table.Rows.Count == 0)
+            {
                 return null;
+            }
 
             var row = table.Rows[0];
             return new UserWorkoutModel(
                 userId: userId,
                 workoutId: Convert.ToInt32(row["WID"]),
                 date: date,
-                completed: Convert.ToBoolean(row["Completed"])
-            );
+                completed: Convert.ToBoolean(row["Completed"]));
         }
 
         public string? GetUserClass(int userId, DateTime date)
@@ -133,23 +134,25 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@Date", date.Date)
             };
 
-            var classIdTable = _databaseHelper.ExecuteReader(classIdQuery, parameters);
+            var classIdTable = databaseHelper.ExecuteReader(classIdQuery, parameters);
             if (classIdTable.Rows.Count == 0)
+            {
                 return null;
+            }
 
             int classId = Convert.ToInt32(classIdTable.Rows[0]["CID"]);
 
             string classNameQuery = "SELECT Name FROM Classes WHERE CID = @ClassId";
             var nameParams = new[] { new SqlParameter("@ClassId", classId) };
 
-            var classNameTable = _databaseHelper.ExecuteReader(classNameQuery, nameParams);
+            var classNameTable = databaseHelper.ExecuteReader(classNameQuery, nameParams);
             return classNameTable.Rows.Count > 0 ? classNameTable.Rows[0]["Name"].ToString() : null;
         }
 
         public List<WorkoutModel> GetWorkouts()
         {
             string query = "SELECT WID, Name FROM Workouts";
-            var table = _databaseHelper.ExecuteReader(query, Array.Empty<SqlParameter>());
+            var table = databaseHelper.ExecuteReader(query, Array.Empty<SqlParameter>());
 
             var workouts = new List<WorkoutModel>();
             foreach (DataRow row in table.Rows)

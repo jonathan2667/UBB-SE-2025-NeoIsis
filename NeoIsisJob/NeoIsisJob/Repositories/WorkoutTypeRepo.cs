@@ -13,48 +13,51 @@ namespace NeoIsisJob.Repositories
 {
     public class WorkoutTypeRepo : IWorkoutTypeRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly DatabaseHelper databaseHelper;
 
-        public WorkoutTypeRepo() { this._databaseHelper = new DatabaseHelper(); }
+        public WorkoutTypeRepo()
+        {
+            this.databaseHelper = new DatabaseHelper();
+        }
 
         public WorkoutTypeModel GetWorkoutTypeById(int workoutTypeId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
-                //open the connection
+                // open the connection
                 connection.Open();
 
-                //create the query
+                // create the query
                 string query = "SELECT * FROM WorkoutTypes WHERE WTID=@wtid";
 
-                //create the command now
+                // create the command now
                 SqlCommand command = new SqlCommand(query, connection);
                 command.Parameters.AddWithValue("@wtid", workoutTypeId);
                 SqlDataReader reader = command.ExecuteReader();
 
-                //now check if the type exists -> if yes return it
+                // now check if the type exists -> if yes return it
                 if (reader.Read())
                 {
                     return new WorkoutTypeModel(Convert.ToInt32(reader["WTID"]), Convert.ToString(reader["Name"]));
                 }
             }
 
-            //otherwise return empty instance
+            // otherwise return empty instance
             return new WorkoutTypeModel();
         }
 
-        public void InsertWorkoutType(String workoutTypeName)
+        public void InsertWorkoutType(string workoutTypeName)
         {
-            //use the setup connection
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            // use the setup connection
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
-                //open the connection
+                // open the connection
                 connection.Open();
 
-                //insert statement to insert the workout type
+                // insert statement to insert the workout type
                 string insertStatement = "INSERT INTO WorkoutTypes([Name]) VALUES (@name)";
 
-                //now create the command and set the parameters
+                // now create the command and set the parameters
                 SqlCommand command = new SqlCommand(insertStatement, connection);
                 command.Parameters.AddWithValue("@name", workoutTypeName);
 
@@ -64,16 +67,16 @@ namespace NeoIsisJob.Repositories
 
         public void DeleteWorkoutType(int workoutTypeId)
         {
-            //use the setup connection
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            // use the setup connection
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
-                //open the connection
+                // open the connection
                 connection.Open();
 
-                //delete statement
+                // delete statement
                 string deleteStatement = "DELETE FROM WorkoutTypes WHERE WTID=@wtid";
 
-                //now create the command and set the parameters
+                // now create the command and set the parameters
                 SqlCommand command = new SqlCommand(deleteStatement, connection);
                 command.Parameters.AddWithValue("@wtid", workoutTypeId);
 
@@ -83,22 +86,21 @@ namespace NeoIsisJob.Repositories
 
         public IList<WorkoutTypeModel> GetAllWorkoutTypes()
         {
-
             List<WorkoutTypeModel> workoutTypes = new List<WorkoutTypeModel>();
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
-                //open the connection
+                // open the connection
                 connection.Open();
 
-                //create the query
+                // create the query
                 string query = "SELECT * FROM WorkoutTypes";
 
-                //create the command now
+                // create the command now
                 SqlCommand command = new SqlCommand(query, connection);
                 SqlDataReader reader = command.ExecuteReader();
 
-                //now check if the type exists -> if yes return it
+                // now check if the type exists -> if yes return it
                 while (reader.Read())
                 {
                     // Ensure data is not null before accessing it
@@ -110,10 +112,10 @@ namespace NeoIsisJob.Repositories
                 }
             }
 
-            //if no entry -> return empty list annyways
+            // if no entry -> return empty list annyways
             return workoutTypes;
         }
 
-        //eventually edit if it is needed
+        // eventually edit if it is needed
     }
 }

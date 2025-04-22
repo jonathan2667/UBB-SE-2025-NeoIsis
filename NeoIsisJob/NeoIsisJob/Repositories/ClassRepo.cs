@@ -1,6 +1,4 @@
-﻿using NeoIsisJob.Data;
-using NeoIsisJob.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
@@ -9,18 +7,23 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using NeoIsisJob.Data;
+using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Repositories
 {
     public class ClassRepo
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly DatabaseHelper databaseHelper;
 
-        public ClassRepo() { this._databaseHelper = new DatabaseHelper(); }
+        public ClassRepo()
+        {
+            this.databaseHelper = new DatabaseHelper();
+        }
 
         public ClassModel GetClassModelById(int classId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -61,7 +64,7 @@ namespace NeoIsisJob.Repositories
             List<ClassModel> classes = new List<ClassModel>();
             try
             {
-                using (SqlConnection connection = this._databaseHelper.GetConnection())
+                using (SqlConnection connection = this.databaseHelper.GetConnection())
                 {
                     // Open the connection
                     connection.Open();
@@ -91,12 +94,16 @@ namespace NeoIsisJob.Repositories
                     // Return the classes
                     return classes;
                 }
-            }catch(Exception ex) { throw new Exception(ex.Message); }
+            }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
 
         public void AddClassModel(ClassModel classModel)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();
@@ -120,7 +127,7 @@ namespace NeoIsisJob.Repositories
 
         public void DeleteClassModel(int classId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
                 // Open the connection
                 connection.Open();

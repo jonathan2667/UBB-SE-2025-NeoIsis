@@ -1,26 +1,26 @@
-﻿using NeoIsisJob.Data;
-using NeoIsisJob.Data.Interfaces;
-using NeoIsisJob.Models;
-using NeoIsisJob.Repositories.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
+using NeoIsisJob.Models;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
     public class ExerciseRepo : IExerciseRepository
     {
-        private readonly IDatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper databaseHelper;
 
         public ExerciseRepo()
         {
-            this._databaseHelper = new DatabaseHelper();
+            this.databaseHelper = new DatabaseHelper();
         }
 
         public ExerciseRepo(IDatabaseHelper databaseHelper)
         {
-            _databaseHelper = databaseHelper;
+            this.databaseHelper = databaseHelper;
         }
 
         public IList<ExercisesModel> GetAllExercises()
@@ -30,7 +30,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                var dataTable = _databaseHelper.ExecuteReader(query, null);
+                var dataTable = databaseHelper.ExecuteReader(query, null);
 
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -39,8 +39,7 @@ namespace NeoIsisJob.Repositories
                         Convert.ToString(row["Name"]),
                         Convert.ToString(row["Description"]),
                         Convert.ToInt32(row["Difficulty"]),
-                        Convert.ToInt32(row["MGID"])
-                    ));
+                        Convert.ToInt32(row["MGID"])));
                 }
             }
             catch (Exception ex)
@@ -63,7 +62,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                var dataTable = _databaseHelper.ExecuteReader(query, parameters);
+                var dataTable = databaseHelper.ExecuteReader(query, parameters);
 
                 if (dataTable.Rows.Count > 0)
                 {
@@ -73,8 +72,7 @@ namespace NeoIsisJob.Repositories
                         Convert.ToString(row["Name"]),
                         Convert.ToString(row["Description"]),
                         Convert.ToInt32(row["Difficulty"]),
-                        Convert.ToInt32(row["MGID"])
-                    );
+                        Convert.ToInt32(row["MGID"]));
                 }
             }
             catch (Exception ex)

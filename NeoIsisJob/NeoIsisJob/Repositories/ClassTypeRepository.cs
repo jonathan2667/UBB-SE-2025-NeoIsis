@@ -1,26 +1,26 @@
-﻿using NeoIsisJob.Data;
-using NeoIsisJob.Data.Interfaces;
-using NeoIsisJob.Models;
-using NeoIsisJob.Repositories.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
+using NeoIsisJob.Models;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
     public class ClassTypeRepository : IClassTypeRepository
     {
-        private readonly IDatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper databaseHelper;
 
         public ClassTypeRepository()
         {
-            this._databaseHelper = new DatabaseHelper();
+            this.databaseHelper = new DatabaseHelper();
         }
 
         public ClassTypeRepository(IDatabaseHelper databaseHelper)
         {
-            this._databaseHelper = databaseHelper;
+            this.databaseHelper = databaseHelper;
         }
 
         public ClassTypeModel? GetClassTypeModelById(int classTypeId)
@@ -33,7 +33,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                var dataTable = _databaseHelper.ExecuteReader(query, parameters);
+                var dataTable = databaseHelper.ExecuteReader(query, parameters);
 
                 if (dataTable.Rows.Count > 0)
                 {
@@ -60,7 +60,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                var dataTable = _databaseHelper.ExecuteReader(query, null);
+                var dataTable = databaseHelper.ExecuteReader(query, null);
 
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -89,7 +89,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                _databaseHelper.ExecuteNonQuery(query, parameters);
+                databaseHelper.ExecuteNonQuery(query, parameters);
             }
             catch (Exception ex)
             {
@@ -107,7 +107,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                _databaseHelper.ExecuteNonQuery(query, parameters);
+                databaseHelper.ExecuteNonQuery(query, parameters);
             }
             catch (Exception ex)
             {
