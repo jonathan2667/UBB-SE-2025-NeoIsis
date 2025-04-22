@@ -1,6 +1,6 @@
+using NeoIsisJob.Models;
 using System;
 using System.Collections.Generic;
-using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Services.Interfaces
 {
@@ -12,4 +12,4 @@ namespace NeoIsisJob.Services.Interfaces
         void DeleteClass(int classId);
         string ConfirmRegistration(int userId, int classId, DateTime date);
     }
-}
+} 

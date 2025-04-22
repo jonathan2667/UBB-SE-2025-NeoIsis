@@ -5,16 +5,16 @@ namespace NeoIsisJob.ViewModels
 {
     public class ClassesViewModel
     {
-        private readonly IClassService classService;
+        private readonly IClassService _classService;
 
         public ClassesViewModel(IClassService classService)
         {
-            this.classService = classService;
+            _classService = classService;
         }
 
         public string ConfirmRegistration(int userId, int classId, DateTime date)
         {
-            return classService.ConfirmRegistration(userId, classId, date);
+            return _classService.ConfirmRegistration(userId, classId, date);
         }
     }
 } 

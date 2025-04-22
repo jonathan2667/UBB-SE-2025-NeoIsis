@@ -1,7 +1,7 @@
-﻿using System;
+﻿using NeoIsisJob.Data.Interfaces;
+using System;
 using System.Data;
 using System.Data.SqlClient;
-using NeoIsisJob.Data.Interfaces;
 
 namespace NeoIsisJob.Data
 {
@@ -23,25 +23,21 @@ namespace NeoIsisJob.Data
             }
         }
 
-        public SqlConnection GetConnection()
-        {
+
+        public SqlConnection GetConnection() {
             return new SqlConnection(connectionString);
         }
 
         public void OpenConnection()
         {
             if (this.sqlConnection.State != ConnectionState.Open)
-            {
                 this.sqlConnection.Open();
-            }
         }
 
         public void CloseConnection()
         {
             if (this.sqlConnection.State != ConnectionState.Closed)
-            {
                 this.sqlConnection.Close();
-            }
         }
 
         // Explicitly implement the interface methods
@@ -54,9 +50,7 @@ namespace NeoIsisJob.Data
                 {
                     command.CommandType = CommandType.Text;
                     if (parameters != null)
-                    {
                         command.Parameters.AddRange(parameters);
-                    }
 
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
@@ -85,9 +79,7 @@ namespace NeoIsisJob.Data
                 {
                     command.CommandType = CommandType.Text;
                     if (parameters != null)
-                    {
                         command.Parameters.AddRange(parameters);
-                    }
 
                     return command.ExecuteNonQuery();
                 }
@@ -112,9 +104,7 @@ namespace NeoIsisJob.Data
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     if (sqlParameters != null)
-                    {
                         command.Parameters.AddRange(sqlParameters);
-                    }
 
                     var result = command.ExecuteScalar();
                     return (result == null || result == DBNull.Value)

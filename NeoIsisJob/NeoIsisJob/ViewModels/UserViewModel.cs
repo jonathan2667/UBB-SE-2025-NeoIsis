@@ -7,27 +7,27 @@ namespace NeoIsisJob.ViewModels
 {
     public class UserViewModel
     {
-        private readonly UserService userService;
+        private readonly UserService _userService;
 
         public ObservableCollection<UserModel> Users { get; set; }
         public UserModel? SelectedUser { get; set; } // Make SelectedUser nullable
 
         public UserViewModel(UserService userService)
         {
-            this.userService = userService;
-            Users = new ObservableCollection<UserModel>(this.userService.GetAllUsers());
+            _userService = userService;
+            Users = new ObservableCollection<UserModel>(_userService.GetAllUsers());
             SelectedUser = null; // Initialize SelectedUser to null
         }
 
         public void AddUser()
         {
-            int newUserId = userService.RegisterNewUser();
+            int newUserId = _userService.RegisterNewUser();
             Users.Add(new UserModel(newUserId));
         }
 
         public void DeleteUser(int userId)
         {
-            if (userService.RemoveUser(userId))
+            if (_userService.RemoveUser(userId))
             {
                 var userToRemove = Users.FirstOrDefault(user => user.Id == userId);
                 if (userToRemove != null)
@@ -39,14 +39,14 @@ namespace NeoIsisJob.ViewModels
 
         public UserModel? GetUserById(int userId)
         {
-            SelectedUser = userService.GetUser(userId);
+            SelectedUser = _userService.GetUser(userId);
             return SelectedUser;
         }
 
         public void RefreshUsers()
         {
             Users.Clear();
-            foreach (var user in userService.GetAllUsers())
+            foreach (var user in _userService.GetAllUsers())
             {
                 Users.Add(user);
             }

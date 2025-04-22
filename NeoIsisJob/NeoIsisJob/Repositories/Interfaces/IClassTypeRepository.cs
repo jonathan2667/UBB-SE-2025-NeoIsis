@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using NeoIsisJob.Models;
+using System.Collections.Generic;
 
 namespace NeoIsisJob.Repositories.Interfaces
 {
@@ -10,4 +10,4 @@ namespace NeoIsisJob.Repositories.Interfaces
         void AddClassTypeModel(ClassTypeModel classType);
         void DeleteClassTypeModel(int classTypeId);
     }
-}
+} 

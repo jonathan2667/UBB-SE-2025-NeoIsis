@@ -1,12 +1,12 @@
-﻿using System.ComponentModel;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using NeoIsisJob.Data;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.Linq;
 using NeoIsisJob.Services.Interfaces;
 using NeoIsisJob.Repositories.Interfaces;
 
@@ -14,18 +14,18 @@ namespace NeoIsisJob.Services
 {
     public class CalendarService : ICalendarService
     {
-        private readonly ICalendarRepository calendarRepository;
-        private readonly UserWorkoutRepo userWorkoutRepo;
+        private readonly ICalendarRepository _calendarRepository;
+        private readonly UserWorkoutRepo _userWorkoutRepo;
 
         public CalendarService(ICalendarRepository calendarRepository = null, UserWorkoutRepo userWorkoutRepo = null)
         {
-            this.calendarRepository = calendarRepository ?? new CalendarRepository();
-            this.userWorkoutRepo = userWorkoutRepo ?? new UserWorkoutRepo(new DatabaseHelper());
+            _calendarRepository = calendarRepository ?? new CalendarRepository();
+            _userWorkoutRepo = userWorkoutRepo ?? new UserWorkoutRepo(new DatabaseHelper());
         }
 
         public List<CalendarDay> GetCalendarDaysForMonth(int userId, DateTime date)
         {
-            return calendarRepository.GetCalendarDaysForMonth(userId, date);
+            return _calendarRepository.GetCalendarDaysForMonth(userId, date);
         }
 
         public ObservableCollection<CalendarDay> GetCalendarDays(int userId, DateTime currentDate)
@@ -48,11 +48,7 @@ namespace NeoIsisJob.Services
                     GridColumn = col
                 });
                 col++;
-                if (col > 6)
-                {
-                    col = 0;
-                    row++;
-                }
+                if (col > 6) { col = 0; row++; }
             }
 
             DateTime today = DateTime.Now.Date;
@@ -67,11 +63,7 @@ namespace NeoIsisJob.Services
                 }
                 calendarDays.Add(day);
                 col++;
-                if (col > 6)
-                {
-                    col = 0;
-                    row++;
-                }
+                if (col > 6) { col = 0; row++; }
             }
 
             return calendarDays;
@@ -107,32 +99,32 @@ namespace NeoIsisJob.Services
 
         public void AddUserWorkout(UserWorkoutModel userWorkout)
         {
-            userWorkoutRepo.AddUserWorkout(userWorkout);
+            _userWorkoutRepo.AddUserWorkout(userWorkout);
         }
 
         public void UpdateUserWorkout(UserWorkoutModel userWorkout)
         {
-            userWorkoutRepo.UpdateUserWorkout(userWorkout);
+            _userWorkoutRepo.UpdateUserWorkout(userWorkout);
         }
 
         public void DeleteUserWorkout(int userId, int workoutId, DateTime date)
         {
-            userWorkoutRepo.DeleteUserWorkout(userId, workoutId, date);
+            _userWorkoutRepo.DeleteUserWorkout(userId, workoutId, date);
         }
 
         public UserWorkoutModel GetUserWorkout(int userId, DateTime date)
         {
-            return calendarRepository.GetUserWorkout(userId, date);
+            return _calendarRepository.GetUserWorkout(userId, date);
         }
 
         public string GetUserClass(int userId, DateTime date)
         {
-            return calendarRepository.GetUserClass(userId, date);
+            return _calendarRepository.GetUserClass(userId, date);
         }
 
         public List<WorkoutModel> GetWorkouts()
         {
-            return calendarRepository.GetWorkouts();
+            return _calendarRepository.GetWorkouts();
         }
     }
 }

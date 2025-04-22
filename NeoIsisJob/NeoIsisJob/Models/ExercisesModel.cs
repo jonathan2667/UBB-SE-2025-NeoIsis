@@ -2,26 +2,24 @@
 {
     public class ExercisesModel
     {
-        private int id;
-        private string name;
-        private string description;
-        private int difficulty;
-        private int muscleGroupId;
+        private int _id;
+        private string _name;
+        private string _description;
+        private int _difficulty;
+        private int _muscleGroupId;
 
-        private MuscleGroupModel muscleGroup;
+        private MuscleGroupModel _muscleGroup;
 
-        public int Id { get => id; set => id = value; }
-        public string Name { get => name; set => name = value; }
-        public string Description { get => description; set => description = value; }
-        public int Difficulty { get => difficulty; set => difficulty = value; }
-        public int MuscleGroupId { get => muscleGroupId; set => muscleGroupId = value; }
+        public int Id { get => _id; set => _id = value; }
+        public string Name { get => _name; set => _name = value; }
+        public string Description { get => _description; set => _description = value; }
+        public int Difficulty { get => _difficulty; set => _difficulty = value; }
+        public int MuscleGroupId { get => _muscleGroupId; set => _muscleGroupId = value; }
 
-        // property for the referenced muscle group
-        public MuscleGroupModel MuscleGroup { get => muscleGroup; set => muscleGroup = value; }
+        //property for the referenced muscle group
+        public MuscleGroupModel MuscleGroup { get => _muscleGroup; set => _muscleGroup = value; }
 
-        public ExercisesModel()
-        {
-        }
+        public ExercisesModel() { }
 
         public ExercisesModel(int id, string name, string description, int difficulty, int muscleGroupId)
         {
