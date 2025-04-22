@@ -1,6 +1,6 @@
-using NeoIsisJob.Models;
 using System;
 using System.Collections.Generic;
+using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Services.Interfaces
 {
@@ -11,4 +11,4 @@ namespace NeoIsisJob.Services.Interfaces
         void CompleteUserWorkout(int userId, int workoutId, DateTime date);
         void DeleteUserWorkout(int userId, int workoutId, DateTime date);
     }
-} 
+}
