@@ -7,33 +7,35 @@ using NeoIsisJob.Repositories;
 using NeoIsisJob.Models;
 
 // please add validation for the input parameters
-
 namespace NeoIsisJob.Services
 {
     public class PersonalTrainerService
     {
-        private readonly PersonalTrainerRepo _personalTrainerRepository;
+        private readonly PersonalTrainerRepo personalTrainerRepository;
 
-        public PersonalTrainerService() { this._personalTrainerRepository = new PersonalTrainerRepo(); }
+        public PersonalTrainerService()
+        {
+            this.personalTrainerRepository = new PersonalTrainerRepo();
+        }
 
         public List<PersonalTrainerModel> GetAllPersonalTrainers()
         {
-            return _personalTrainerRepository.GetAllPersonalTrainerModel();
+            return personalTrainerRepository.GetAllPersonalTrainerModel();
         }
 
         public PersonalTrainerModel GetPersonalTrainerById(int personalTrainerId)
         {
-            return _personalTrainerRepository.GetPersonalTrainerModelById(personalTrainerId);
+            return personalTrainerRepository.GetPersonalTrainerModelById(personalTrainerId);
         }
 
         public void AddPersonalTrainer(PersonalTrainerModel personalTrainerModel)
         {
-            _personalTrainerRepository.AddPersonalTrainerModel(personalTrainerModel);
+            personalTrainerRepository.AddPersonalTrainerModel(personalTrainerModel);
         }
 
         public void DeletePersonalTrainer(int personalTrainerId)
         {
-            _personalTrainerRepository.DeletePersonalTrainerModel(personalTrainerId);
+            personalTrainerRepository.DeletePersonalTrainerModel(personalTrainerId);
         }
 
         // In case you guys need to update a personal trainer

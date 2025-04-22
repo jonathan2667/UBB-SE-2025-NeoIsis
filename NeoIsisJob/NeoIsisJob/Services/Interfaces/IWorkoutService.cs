@@ -1,6 +1,6 @@
-using NeoIsisJob.Models;
 using System;
 using System.Collections.Generic;
+using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Services.Interfaces
 {
@@ -13,4 +13,4 @@ namespace NeoIsisJob.Services.Interfaces
         void UpdateWorkout(WorkoutModel workout);
         IList<WorkoutModel> GetAllWorkouts();
     }
-} 
+}

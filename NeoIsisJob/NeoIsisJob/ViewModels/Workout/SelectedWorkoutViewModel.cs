@@ -1,7 +1,4 @@
-﻿using NeoIsisJob.Models;
-using NeoIsisJob.Services;
-using NeoIsisJob.Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -10,33 +7,36 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using NeoIsisJob.Models;
+using NeoIsisJob.Services;
+using NeoIsisJob.Services.Interfaces;
 
 namespace NeoIsisJob.ViewModels.Workout
 {
     public class SelectedWorkoutViewModel : INotifyPropertyChanged
     {
-        private readonly IWorkoutService _workoutService;
-        //for getting the exercise by id
-        private readonly IExerciseService _exerciseService;
-        private readonly ICompleteWorkoutService _completeWorkoutService;
-        private WorkoutModel _selectedWorkout;
-        private ObservableCollection<CompleteWorkoutModel> _completeWorkouts;
+        private readonly IWorkoutService workoutService;
+        // for getting the exercise by id
+        private readonly IExerciseService exerciseService;
+        private readonly ICompleteWorkoutService completeWorkoutService;
+        private WorkoutModel selectedWorkout;
+        private ObservableCollection<CompleteWorkoutModel> completeWorkouts;
 
         public WorkoutModel SelectedWorkout
         {
-            get => _selectedWorkout;
-            set 
-            { 
-                _selectedWorkout = value;
-                //signal that the property has changed
-                Debug.WriteLine($"SelectedWorkout set to: {_selectedWorkout?.Name}"); // Debug message
+            get => selectedWorkout;
+            set
+            {
+                selectedWorkout = value;
+                // signal that the property has changed
+                Debug.WriteLine($"SelectedWorkout set to: {selectedWorkout?.Name}"); // Debug message
                 OnPropertyChanged();
 
-                if (_selectedWorkout != null)
+                if (selectedWorkout != null)
                 {
-                    //update the collection
+                    // update the collection
                     IList<CompleteWorkoutModel> completeWorkouts = FilledCompleteWorkoutsWithExercies(
-                        this._completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this._selectedWorkout.Id));
+                        this.completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this.selectedWorkout.Id));
                     CompleteWorkouts = new ObservableCollection<CompleteWorkoutModel>(completeWorkouts);
                 }
                 else
@@ -48,10 +48,10 @@ namespace NeoIsisJob.ViewModels.Workout
 
         public ObservableCollection<CompleteWorkoutModel> CompleteWorkouts
         {
-            get => _completeWorkouts;
+            get => completeWorkouts;
             set
             {
-                _completeWorkouts = value;
+                completeWorkouts = value;
                 OnPropertyChanged();
             }
         }
@@ -70,17 +70,17 @@ namespace NeoIsisJob.ViewModels.Workout
             IExerciseService exerciseService,
             ICompleteWorkoutService completeWorkoutService)
         {
-            this._workoutService = workoutService;
-            this._exerciseService = exerciseService;
-            this._completeWorkoutService = completeWorkoutService;
-            this._completeWorkouts = new ObservableCollection<CompleteWorkoutModel>();
+            this.workoutService = workoutService;
+            this.exerciseService = exerciseService;
+            this.completeWorkoutService = completeWorkoutService;
+            this.completeWorkouts = new ObservableCollection<CompleteWorkoutModel>();
         }
 
         public IList<CompleteWorkoutModel> FilledCompleteWorkoutsWithExercies(IList<CompleteWorkoutModel> complWorkouts)
         {
             foreach (CompleteWorkoutModel complWorkout in complWorkouts)
             {
-                complWorkout.Exercise = this._exerciseService.GetExerciseById(complWorkout.ExerciseId);
+                complWorkout.Exercise = this.exerciseService.GetExerciseById(complWorkout.ExerciseId);
             }
 
             return complWorkouts;
@@ -89,7 +89,7 @@ namespace NeoIsisJob.ViewModels.Workout
         // INotifyPropertyChanged implementation
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        //gets triggered every time a property changes
+        // gets triggered every time a property changes
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -99,21 +99,20 @@ namespace NeoIsisJob.ViewModels.Workout
         {
             try
             {
-                if (_selectedWorkout == null || string.IsNullOrWhiteSpace(newName))
+                if (selectedWorkout == null || string.IsNullOrWhiteSpace(newName))
                 {
                     throw new InvalidOperationException("Workout cannot be null and name cannot be empty or null.");
                 }
 
-                _selectedWorkout.Name = newName;
-                this._workoutService.UpdateWorkout(_selectedWorkout);
+                selectedWorkout.Name = newName;
+                this.workoutService.UpdateWorkout(selectedWorkout);
 
                 // Notify the UI about the change
                 OnPropertyChanged(nameof(SelectedWorkout));
 
                 // Reload the CompleteWorkouts collection if necessary
-                IList<CompleteWorkoutModel> complWorkouts = FilledCompleteWorkoutsWithExercies(this._completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this._selectedWorkout.Id));
+                IList<CompleteWorkoutModel> complWorkouts = FilledCompleteWorkoutsWithExercies(this.completeWorkoutService.GetCompleteWorkoutsByWorkoutId(this.selectedWorkout.Id));
                 CompleteWorkouts = new ObservableCollection<CompleteWorkoutModel>(complWorkouts);
-
             }
             catch (Exception ex)
             {

@@ -17,7 +17,6 @@ using NeoIsisJob.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace NeoIsisJob.Views.Workout
 {
     /// <summary>
@@ -25,23 +24,23 @@ namespace NeoIsisJob.Views.Workout
     /// </summary>
     public sealed partial class CreateWorkoutPage : Page
     {
-        private CreateWorkoutViewModel _viewModel;
+        private CreateWorkoutViewModel viewModel;
 
         public CreateWorkoutViewModel ViewModel
         {
-            get { return _viewModel; }
-            set { _viewModel = value; }
+            get { return viewModel; }
+            set { viewModel = value; }
         }
 
         public CreateWorkoutPage()
         {
-            //bind the view with the view model
+            // bind the view with the view model
             this.InitializeComponent();
-            //this.ViewModel = new CreateWorkoutViewModel(this.Frame);
-            //this.DataContext = this.ViewModel;
+            // this.ViewModel = new CreateWorkoutViewModel(this.Frame);
+            // this.DataContext = this.ViewModel;
         }
 
-        //necessary so that it is sure that the page is loaded and the frame is available, so it can be passed to the viewmodel!!!
+        // necessary so that it is sure that the page is loaded and the frame is available, so it can be passed to the viewmodel!!!
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -51,45 +50,29 @@ namespace NeoIsisJob.Views.Workout
             this.DataContext = this.ViewModel;
         }
 
-        //public void CancelButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    //reset the changes
-        //    //ResetFormFields();
-
-        //    //and now go back
-        //    if (this.Frame.CanGoBack)
-        //    {
-        //        this.Frame.GoBack();
-        //    }
-        //}
-
-        //public void SaveButton_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if(this.Frame.CanGoBack)
-        //    {
-        //        this.Frame.GoBack(); 
-        //    }
-        //}
-
-        //handler for selection change in the list of exercises
+        // handler for selection change in the list of exercises
         private void ExercisesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //if the context is CreateWorkoutViewModel
-            if(DataContext is CreateWorkoutViewModel viewModel)
+            // if the context is CreateWorkoutViewModel
+            if (DataContext is CreateWorkoutViewModel viewModel)
             {
-                //add the currently selected exercises
-                foreach(var item in e.AddedItems)
+                // add the currently selected exercises
+                foreach (var item in e.AddedItems)
                 {
-                    //if it is an exercise and it is not present add
-                    if(item is ExercisesModel exercise && !viewModel.SelectedExercises.Contains(exercise))
+                    // if it is an exercise and it is not present add
+                    if (item is ExercisesModel exercise && !viewModel.SelectedExercises.Contains(exercise))
+                    {
                         viewModel.SelectedExercises.Add(exercise);
+                    }
                 }
 
-                //remove what is not selected anymore
-                foreach(var item in e.RemovedItems)
+                // remove what is not selected anymore
+                foreach (var item in e.RemovedItems)
                 {
-                    if(item is ExercisesModel exercise && viewModel.SelectedExercises.Contains(exercise))
+                    if (item is ExercisesModel exercise && viewModel.SelectedExercises.Contains(exercise))
+                    {
                         viewModel.SelectedExercises.Remove(exercise);
+                    }
                 }
             }
         }

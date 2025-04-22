@@ -1,26 +1,26 @@
-﻿using NeoIsisJob.Data;
-using NeoIsisJob.Data.Interfaces;
-using NeoIsisJob.Models;
-using NeoIsisJob.Repositories.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
+using NeoIsisJob.Models;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
     public class RankingsRepository : IRankingsRepository
     {
-        private readonly IDatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper databaseHelper;
 
         public RankingsRepository()
         {
-            this._databaseHelper = new DatabaseHelper();
+            this.databaseHelper = new DatabaseHelper();
         }
 
         public RankingsRepository(IDatabaseHelper databaseHelper)
         {
-            this._databaseHelper = databaseHelper;
+            this.databaseHelper = databaseHelper;
         }
 
         public RankingModel GetRankingByFullID(int userId, int muscleGroupId)
@@ -33,7 +33,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@MGID", muscleGroupId)
             };
 
-            DataTable dt = _databaseHelper.ExecuteReader(query, parameters);
+            DataTable dt = databaseHelper.ExecuteReader(query, parameters);
 
             if (dt.Rows.Count > 0)
             {
@@ -41,8 +41,7 @@ namespace NeoIsisJob.Repositories
                 return new RankingModel(
                     Convert.ToInt32(row["UID"]),
                     Convert.ToInt32(row["MGID"]),
-                    Convert.ToInt32(row["Rank"])
-                );
+                    Convert.ToInt32(row["Rank"]));
             }
 
             return null;
@@ -57,7 +56,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@UID", userId)
             };
 
-            DataTable dt = _databaseHelper.ExecuteReader(query, parameters);
+            DataTable dt = databaseHelper.ExecuteReader(query, parameters);
             IList<RankingModel> rankings = new List<RankingModel>();
 
             foreach (DataRow row in dt.Rows)
@@ -65,8 +64,7 @@ namespace NeoIsisJob.Repositories
                 rankings.Add(new RankingModel(
                     Convert.ToInt32(row["UID"]),
                     Convert.ToInt32(row["MGID"]),
-                    Convert.ToInt32(row["Rank"])
-                ));
+                    Convert.ToInt32(row["Rank"])));
             }
 
             return rankings;

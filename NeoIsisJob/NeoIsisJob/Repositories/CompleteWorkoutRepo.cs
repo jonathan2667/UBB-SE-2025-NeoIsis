@@ -1,19 +1,19 @@
-using NeoIsisJob.Data.Interfaces;
-using NeoIsisJob.Models;
-using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using NeoIsisJob.Data.Interfaces;
+using NeoIsisJob.Models;
+using NeoIsisJob.Repositories.Interfaces;
 
 namespace NeoIsisJob.Repositories
 {
     public class CompleteWorkoutRepo : ICompleteWorkoutRepository
     {
-        private readonly IDatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper databaseHelper;
 
         public CompleteWorkoutRepo(IDatabaseHelper databaseHelper)
         {
-            _databaseHelper = databaseHelper;
+            this.databaseHelper = databaseHelper;
         }
 
         public IList<CompleteWorkoutModel> GetAllCompleteWorkouts()
@@ -23,15 +23,14 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                var dataTable = _databaseHelper.ExecuteReader(query, null);
+                var dataTable = databaseHelper.ExecuteReader(query, null);
                 foreach (System.Data.DataRow row in dataTable.Rows)
                 {
                     completeWorkouts.Add(new CompleteWorkoutModel(
                         Convert.ToInt32(row["WID"]),
                         Convert.ToInt32(row["EID"]),
                         Convert.ToInt32(row["Sets"]),
-                        Convert.ToInt32(row["RepsPerSet"])
-                    ));
+                        Convert.ToInt32(row["RepsPerSet"])));
                 }
             }
             catch (Exception ex)
@@ -52,7 +51,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                _databaseHelper.ExecuteNonQuery(deleteCommand, parameters);
+                databaseHelper.ExecuteNonQuery(deleteCommand, parameters);
             }
             catch (Exception ex)
             {
@@ -73,7 +72,7 @@ namespace NeoIsisJob.Repositories
 
             try
             {
-                _databaseHelper.ExecuteNonQuery(insertCommand, parameters);
+                databaseHelper.ExecuteNonQuery(insertCommand, parameters);
             }
             catch (Exception ex)
             {

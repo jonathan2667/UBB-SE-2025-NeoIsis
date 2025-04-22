@@ -1,26 +1,26 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using NeoIsisJob.Models;
 using NeoIsisJob.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NeoIsisJob.Views
 {
     public sealed partial class MainPage : Page
     {
         // Services
-        private readonly WorkoutService _workoutService;
-        private readonly ExerciseService _exerciseService;
-        private readonly CompleteWorkoutService _completeWorkoutService;
+        private readonly WorkoutService workoutService;
+        private readonly ExerciseService exerciseService;
+        private readonly CompleteWorkoutService completeWorkoutService;
 
         // Current workout data
-        private WorkoutModel _currentWorkout;
-        private List<ExerciseWithDetails> _currentWorkoutExercises;
+        private WorkoutModel currentWorkout;
+        private List<ExerciseWithDetails> currentWorkoutExercises;
 
         // Test user ID (for testing purposes only)
-        private readonly int _currentUserId = 1;
+        private readonly int currentUserId = 1;
 
         // Helper class to display exercise details
         private class ExerciseWithDetails
@@ -39,9 +39,9 @@ namespace NeoIsisJob.Views
             this.InitializeComponent();
 
             // Initialize services
-            _workoutService = new WorkoutService();
-            _exerciseService = new ExerciseService();
-            _completeWorkoutService = new CompleteWorkoutService();
+            workoutService = new WorkoutService();
+            exerciseService = new ExerciseService();
+            completeWorkoutService = new CompleteWorkoutService();
 
             // Set current date
             CurrentDateTextBlock.Text = DateTime.Now.ToString("dddd, MMMM d, yyyy");
@@ -66,20 +66,20 @@ namespace NeoIsisJob.Views
                 if (todaysWorkoutId.HasValue)
                 {
                     // Get the workout details
-                    _currentWorkout = _workoutService.GetWorkout(todaysWorkoutId.Value);
+                    currentWorkout = workoutService.GetWorkout(todaysWorkoutId.Value);
 
-                    if (_currentWorkout != null)
+                    if (currentWorkout != null)
                     {
                         // Get the exercises for this workout
-                        var completeWorkouts = _completeWorkoutService.GetCompleteWorkoutsByWorkoutId(_currentWorkout.Id);
-                        _currentWorkoutExercises = new List<ExerciseWithDetails>();
+                        var completeWorkouts = completeWorkoutService.GetCompleteWorkoutsByWorkoutId(currentWorkout.Id);
+                        currentWorkoutExercises = new List<ExerciseWithDetails>();
 
                         foreach (var completeWorkout in completeWorkouts)
                         {
-                            var exercise = _exerciseService.GetExerciseById(completeWorkout.ExerciseId);
+                            var exercise = exerciseService.GetExerciseById(completeWorkout.ExerciseId);
                             if (exercise != null)
                             {
-                                _currentWorkoutExercises.Add(new ExerciseWithDetails
+                                currentWorkoutExercises.Add(new ExerciseWithDetails
                                 {
                                     Name = exercise.Name,
                                     Details = $"{completeWorkout.Sets} sets � {completeWorkout.RepetitionsPerSet} reps"
@@ -107,11 +107,11 @@ namespace NeoIsisJob.Views
         private void DisplayWorkout()
         {
             // Show workout details
-            WorkoutTitleTextBlock.Text = _currentWorkout.Name;
+            WorkoutTitleTextBlock.Text = currentWorkout.Name;
             WorkoutDescriptionTextBlock.Text = "Today's workout plan";
 
             // Populate exercises list
-            ExercisesList.ItemsSource = _currentWorkoutExercises;
+            ExercisesList.ItemsSource = currentWorkoutExercises;
 
             // Show the exercise panel, hide the no workout message
             NoWorkoutTextBlock.Visibility = Visibility.Collapsed;
@@ -138,8 +138,8 @@ namespace NeoIsisJob.Views
             DeleteWorkoutButton.Visibility = Visibility.Collapsed;
 
             // Clear current workout data
-            _currentWorkout = null;
-            _currentWorkoutExercises = null;
+            currentWorkout = null;
+            currentWorkoutExercises = null;
         }
 
         private async void AddWorkoutButton_Click(object sender, RoutedEventArgs e)
@@ -147,7 +147,7 @@ namespace NeoIsisJob.Views
             try
             {
                 // Get all available workouts
-                var availableWorkouts = _workoutService.GetAllWorkouts();
+                var availableWorkouts = workoutService.GetAllWorkouts();
 
                 if (availableWorkouts.Count == 0)
                 {
@@ -217,7 +217,7 @@ namespace NeoIsisJob.Views
 
         private void CompleteWorkoutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentWorkout != null)
+            if (currentWorkout != null)
             {
                 // For testing, just remove the workout from local settings
                 Windows.Storage.ApplicationData.Current.LocalSettings.Values.Remove("TodaysWorkoutId");
@@ -229,7 +229,7 @@ namespace NeoIsisJob.Views
 
         private void DeleteWorkoutButton_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentWorkout != null)
+            if (currentWorkout != null)
             {
                 // For testing, just remove the workout from local settings
                 Windows.Storage.ApplicationData.Current.LocalSettings.Values.Remove("TodaysWorkoutId");
@@ -242,7 +242,7 @@ namespace NeoIsisJob.Views
         // Navigation methods - you already have these implemented
         public void GoToMainPage_Tap(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(MainPage));
+            // this.Frame.Navigate(typeof(MainPage));
         }
 
         public void GoToWorkoutPage_Tap(object sender, RoutedEventArgs e)

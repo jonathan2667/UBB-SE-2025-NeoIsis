@@ -1,50 +1,52 @@
-﻿using NeoIsisJob.Models;
-using NeoIsisJob.Repositories;
-using NeoIsisJob.Repositories.Interfaces;
-using NeoIsisJob.Services.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using NeoIsisJob.Models;
+using NeoIsisJob.Repositories;
+using NeoIsisJob.Repositories.Interfaces;
+using NeoIsisJob.Services.Interfaces;
 
 namespace NeoIsisJob.Services
 {
     public class WorkoutService : IWorkoutService
     {
-        private readonly IWorkoutRepository _workoutRepository;
+        private readonly IWorkoutRepository workoutRepository;
 
-        public WorkoutService() 
-        { 
-            this._workoutRepository = new WorkoutRepo(); 
+        public WorkoutService()
+        {
+            this.workoutRepository = new WorkoutRepo();
         }
 
         public WorkoutService(IWorkoutRepository workoutRepository)
         {
-            this._workoutRepository = workoutRepository; // ?? throw new ArgumentNullException(nameof(workoutRepository));
+            this.workoutRepository = workoutRepository; // ?? throw new ArgumentNullException(nameof(workoutRepository));
         }
 
         public WorkoutModel GetWorkout(int workoutId)
         {
-            return this._workoutRepository.GetWorkoutById(workoutId);
+            return this.workoutRepository.GetWorkoutById(workoutId);
         }
 
-        public WorkoutModel GetWorkoutByName(String workoutName)
+        public WorkoutModel GetWorkoutByName(string workoutName)
         {
-            return this._workoutRepository.GetWorkoutByName(workoutName);
+            return this.workoutRepository.GetWorkoutByName(workoutName);
         }
 
-        public void InsertWorkout(String workoutName, int workoutTypeId)
+        public void InsertWorkout(string workoutName, int workoutTypeId)
         {
-            //NAME HAS TO BE UNIQUE
+            // NAME HAS TO BE UNIQUE
             if (string.IsNullOrWhiteSpace(workoutName))
+            {
                 throw new ArgumentException("Workout name cannot be empty or null.");
+            }
 
             try
             {
-                this._workoutRepository.InsertWorkout(workoutName, workoutTypeId);
+                this.workoutRepository.InsertWorkout(workoutName, workoutTypeId);
             }
             catch (SqlException ex) when (ex.Number == 2627) // SQL Server unique constraint violation
             {
@@ -58,20 +60,24 @@ namespace NeoIsisJob.Services
 
         public void DeleteWorkout(int workoutId)
         {
-            this._workoutRepository.DeleteWorkout(workoutId);
+            this.workoutRepository.DeleteWorkout(workoutId);
         }
 
         public void UpdateWorkout(WorkoutModel workout)
         {
             if (workout == null)
+            {
                 throw new ArgumentNullException(nameof(workout), "Workout cannot be null.");
+            }
 
             if (string.IsNullOrWhiteSpace(workout.Name))
+            {
                 throw new ArgumentException("Workout name cannot be empty or null.", nameof(workout.Name));
+            }
 
             try
             {
-                this._workoutRepository.UpdateWorkout(workout);
+                this.workoutRepository.UpdateWorkout(workout);
             }
             catch (Exception ex) when (ex.Message.Contains("A workout with this name already exists"))
             {
@@ -85,7 +91,7 @@ namespace NeoIsisJob.Services
 
         public IList<WorkoutModel> GetAllWorkouts()
         {
-            return this._workoutRepository.GetAllWorkouts();
+            return this.workoutRepository.GetAllWorkouts();
         }
     }
 }

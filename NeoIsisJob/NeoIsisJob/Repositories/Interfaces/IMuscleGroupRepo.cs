@@ -6,4 +6,4 @@ namespace NeoIsisJob.Repositories.Interfaces
     {
         MuscleGroupModel GetMuscleGroupById(int muscleGroupId);
     }
-} 
+}

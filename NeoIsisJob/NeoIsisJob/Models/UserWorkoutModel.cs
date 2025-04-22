@@ -4,18 +4,20 @@ namespace NeoIsisJob.Models
 {
     public class UserWorkoutModel
     {
-        private int _userId;
-        private int _workoutId;
-        private DateTime _date;
-        private bool _completed;
+        private int userId;
+        private int workoutId;
+        private DateTime date;
+        private bool completed;
 
-        public int UserId { get => _userId; set => _userId = value; }
-        public int WorkoutId { get => _workoutId; set => _workoutId = value; }
-        public DateTime Date { get => _date; set => _date = value; }
-        public bool Completed { get => _completed; set => _completed = value; }
+        public int UserId { get => userId; set => userId = value; }
+        public int WorkoutId { get => workoutId; set => workoutId = value; }
+        public DateTime Date { get => date; set => date = value; }
+        public bool Completed { get => completed; set => completed = value; }
         public int UserWorkoutId { get; set; }
 
-        private UserWorkoutModel() { }
+        private UserWorkoutModel()
+        {
+        }
 
         public UserWorkoutModel(int userId, int workoutId, DateTime date, bool completed)
         {

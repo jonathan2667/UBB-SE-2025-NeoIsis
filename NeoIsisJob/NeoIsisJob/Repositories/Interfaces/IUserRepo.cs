@@ -1,5 +1,5 @@
-﻿using NeoIsisJob.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Repositories
 {

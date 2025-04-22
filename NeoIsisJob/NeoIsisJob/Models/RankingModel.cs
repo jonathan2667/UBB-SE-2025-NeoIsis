@@ -2,15 +2,17 @@
 {
     public class RankingModel
     {
-        private int _userId;
-        private int _muscleGroupId;
-        private int _rank;
+        private int userId;
+        private int muscleGroupId;
+        private int rank;
 
-        public int UserId { get => _userId; set => _userId = value; }
-        public int MuscleGroupId { get => _muscleGroupId; set => _muscleGroupId = value; }
-        public int Rank { get => _rank; set => _rank = value; }
+        public int UserId { get => userId; set => userId = value; }
+        public int MuscleGroupId { get => muscleGroupId; set => muscleGroupId = value; }
+        public int Rank { get => rank; set => rank = value; }
 
-        private RankingModel() { }
+        private RankingModel()
+        {
+        }
 
         public RankingModel(int userId, int muscleGroupId, int rank)
         {

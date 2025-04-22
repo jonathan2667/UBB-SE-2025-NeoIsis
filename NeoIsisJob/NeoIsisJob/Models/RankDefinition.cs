@@ -11,4 +11,4 @@ namespace NeoIsisJob.Models
         public Color Color { get; set; }
         public string ImagePath { get; set; }
     }
-} 
+}

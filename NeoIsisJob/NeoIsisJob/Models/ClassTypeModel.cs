@@ -2,12 +2,14 @@
 {
     public class ClassTypeModel
     {
-        private int _id;
-        private string _name;
-        public int Id { get => _id; set => _id = value; }
-        public string Name { get => _name; set => _name = value; }
+        private int id;
+        private string name;
+        public int Id { get => id; set => id = value; }
+        public string Name { get => name; set => name = value; }
 
-        public ClassTypeModel() { }
+        public ClassTypeModel()
+        {
+        }
 
         public ClassTypeModel(int id, string name)
         {

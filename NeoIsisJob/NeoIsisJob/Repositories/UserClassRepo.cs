@@ -10,16 +10,16 @@ namespace NeoIsisJob.Repositories
 {
     public class UserClassRepo : IUserClassRepo
     {
-        private readonly IDatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper databaseHelper;
 
-        public UserClassRepo() 
+        public UserClassRepo()
         {
-            _databaseHelper = new DatabaseHelper();
+            databaseHelper = new DatabaseHelper();
         }
 
         public UserClassRepo(IDatabaseHelper databaseHelper)
         {
-            _databaseHelper = databaseHelper;
+            this.databaseHelper = databaseHelper;
         }
 
         public UserClassModel GetUserClassModelById(int userId, int classId, DateTime enrollmentDate)
@@ -33,7 +33,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@Date", enrollmentDate)
             };
 
-            DataTable result = _databaseHelper.ExecuteReader(query, parameters);
+            DataTable result = databaseHelper.ExecuteReader(query, parameters);
 
             if (result.Rows.Count > 0)
             {
@@ -41,8 +41,7 @@ namespace NeoIsisJob.Repositories
                 return new UserClassModel(
                     Convert.ToInt32(row["UID"]),
                     Convert.ToInt32(row["CID"]),
-                    Convert.ToDateTime(row["Date"])
-                );
+                    Convert.ToDateTime(row["Date"]));
             }
 
             return new UserClassModel();
@@ -52,7 +51,7 @@ namespace NeoIsisJob.Repositories
         {
             string query = "SELECT UID, CID, Date FROM UserClasses";
 
-            DataTable result = _databaseHelper.ExecuteReader(query, null);
+            DataTable result = databaseHelper.ExecuteReader(query, null);
             List<UserClassModel> userClasses = new List<UserClassModel>();
 
             foreach (DataRow row in result.Rows)
@@ -60,8 +59,7 @@ namespace NeoIsisJob.Repositories
                 userClasses.Add(new UserClassModel(
                     Convert.ToInt32(row["UID"]),
                     Convert.ToInt32(row["CID"]),
-                    Convert.ToDateTime(row["Date"])
-                ));
+                    Convert.ToDateTime(row["Date"])));
             }
 
             return userClasses;
@@ -78,7 +76,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@Date", userClass.EnrollmentDate)
             };
 
-            _databaseHelper.ExecuteNonQuery(query, parameters);
+            databaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         public void DeleteUserClassModel(int userId, int classId, DateTime enrollmentDate)
@@ -92,7 +90,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@Date", enrollmentDate)
             };
 
-            _databaseHelper.ExecuteNonQuery(query, parameters);
+            databaseHelper.ExecuteNonQuery(query, parameters);
         }
 
         public List<UserClassModel> GetUserClassModelByDate(DateTime date)
@@ -104,7 +102,7 @@ namespace NeoIsisJob.Repositories
                 new SqlParameter("@Date", date)
             };
 
-            DataTable result = _databaseHelper.ExecuteReader(query, parameters);
+            DataTable result = databaseHelper.ExecuteReader(query, parameters);
             List<UserClassModel> userClasses = new List<UserClassModel>();
 
             foreach (DataRow row in result.Rows)
@@ -112,8 +110,7 @@ namespace NeoIsisJob.Repositories
                 userClasses.Add(new UserClassModel(
                     Convert.ToInt32(row["UID"]),
                     Convert.ToInt32(row["CID"]),
-                    Convert.ToDateTime(row["Date"])
-                ));
+                    Convert.ToDateTime(row["Date"])));
             }
 
             return userClasses;

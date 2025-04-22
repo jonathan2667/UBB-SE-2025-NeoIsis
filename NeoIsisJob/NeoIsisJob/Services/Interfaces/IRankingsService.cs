@@ -1,5 +1,5 @@
-using NeoIsisJob.Models;
 using System.Collections.Generic;
+using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Services.Interfaces
 {
@@ -9,4 +9,4 @@ namespace NeoIsisJob.Services.Interfaces
         IList<RankingModel> GetAllRankingsByUserID(int userId);
         int CalculatePointsToNextRank(int currentPoints, IList<RankDefinition> rankDefinitions);
     }
-} 
+}

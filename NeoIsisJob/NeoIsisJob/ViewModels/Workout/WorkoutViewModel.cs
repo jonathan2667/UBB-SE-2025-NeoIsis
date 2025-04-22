@@ -1,13 +1,13 @@
-﻿using NeoIsisJob.Models;
-using NeoIsisJob.Services;
-using NeoIsisJob.Services.Interfaces;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using NeoIsisJob.Models;
+using NeoIsisJob.Services;
+using NeoIsisJob.Services.Interfaces;
 using NeoIsisJob.Commands;
 
 namespace NeoIsisJob.ViewModels.Workout
@@ -15,13 +15,13 @@ namespace NeoIsisJob.ViewModels.Workout
     public class WorkoutViewModel : INotifyPropertyChanged
     {
         // Use interfaces instead of concrete implementations
-        private readonly IWorkoutService _workoutService;
-        private readonly IWorkoutTypeService _workoutTypeService;
-        private readonly ICompleteWorkoutService _completeWorkoutService;
-        private readonly IExerciseService _exerciseService;
-        private ObservableCollection<WorkoutModel> _workouts;
-        private ObservableCollection<WorkoutTypeModel> _workoutTypes;
-        private WorkoutTypeModel _selectedWorkoutType;
+        private readonly IWorkoutService workoutService;
+        private readonly IWorkoutTypeService workoutTypeService;
+        private readonly ICompleteWorkoutService completeWorkoutService;
+        private readonly IExerciseService exerciseService;
+        private ObservableCollection<WorkoutModel> workouts;
+        private ObservableCollection<WorkoutTypeModel> workoutTypes;
+        private WorkoutTypeModel selectedWorkoutType;
 
         // Add SelectedWorkoutViewModel as a property
         public SelectedWorkoutViewModel SelectedWorkoutViewModel { get; }
@@ -47,11 +47,11 @@ namespace NeoIsisJob.ViewModels.Workout
             ICompleteWorkoutService completeWorkoutService,
             IExerciseService exerciseService)
         {
-            this._workoutService = workoutService;
-            this._workoutTypeService = workoutTypeService;
-            this._completeWorkoutService = completeWorkoutService;
-            this._exerciseService = exerciseService;
-            
+            this.workoutService = workoutService;
+            this.workoutTypeService = workoutTypeService;
+            this.completeWorkoutService = completeWorkoutService;
+            this.exerciseService = exerciseService;
+
             Workouts = new ObservableCollection<WorkoutModel>();
             WorkoutTypes = new ObservableCollection<WorkoutTypeModel>();
 
@@ -74,30 +74,30 @@ namespace NeoIsisJob.ViewModels.Workout
         // Add properties for Workouts, WorkoutTypes, and SelectedWorkoutType
         public ObservableCollection<WorkoutModel> Workouts
         {
-            get => _workouts;
+            get => workouts;
             set
             {
-                _workouts = value;
+                workouts = value;
                 OnPropertyChanged();
             }
         }
 
         public ObservableCollection<WorkoutTypeModel> WorkoutTypes
         {
-            get => _workoutTypes;
+            get => workoutTypes;
             set
             {
-                _workoutTypes = value;
+                workoutTypes = value;
                 OnPropertyChanged();
             }
         }
 
         public WorkoutTypeModel SelectedWorkoutType
         {
-            get => _selectedWorkoutType;
+            get => selectedWorkoutType;
             set
             {
-                _selectedWorkoutType = value;
+                selectedWorkoutType = value;
                 OnPropertyChanged();
                 ApplyWorkoutFilter();
             }
@@ -110,13 +110,13 @@ namespace NeoIsisJob.ViewModels.Workout
             set => SelectedWorkoutViewModel.SelectedWorkout = value;
         }
 
-        private bool _isEditPopupOpen;
+        private bool isEditPopupOpen;
         public bool IsEditPopupOpen
         {
-            get => _isEditPopupOpen;
+            get => isEditPopupOpen;
             set
             {
-                _isEditPopupOpen = value;
+                isEditPopupOpen = value;
                 OnPropertyChanged();
             }
         }
@@ -125,7 +125,7 @@ namespace NeoIsisJob.ViewModels.Workout
         {
             Workouts.Clear();
 
-            foreach (var workout in this._workoutService.GetAllWorkouts())
+            foreach (var workout in this.workoutService.GetAllWorkouts())
             {
                 Workouts.Add(workout);
             }
@@ -134,7 +134,7 @@ namespace NeoIsisJob.ViewModels.Workout
         private void LoadWorkoutTypes()
         {
             WorkoutTypes.Clear();
-            foreach (var workoutType in this._workoutTypeService.GetAllWorkoutTypes())
+            foreach (var workoutType in this.workoutTypeService.GetAllWorkoutTypes())
             {
                 WorkoutTypes.Add(workoutType);
             }
@@ -143,7 +143,7 @@ namespace NeoIsisJob.ViewModels.Workout
         private void ApplyWorkoutFilter()
         {
             Workouts.Clear();
-            IList<WorkoutModel> allWorkouts = this._workoutService.GetAllWorkouts();
+            IList<WorkoutModel> allWorkouts = this.workoutService.GetAllWorkouts();
 
             if (SelectedWorkoutType != null)
             {
@@ -176,8 +176,8 @@ namespace NeoIsisJob.ViewModels.Workout
         public void DeleteWorkout(int workoutId)
         {
             // Delete the selected workout and its complete workouts
-            this._completeWorkoutService.DeleteCompleteWorkoutsByWorkoutId(workoutId);
-            this._workoutService.DeleteWorkout(workoutId);
+            this.completeWorkoutService.DeleteCompleteWorkoutsByWorkoutId(workoutId);
+            this.workoutService.DeleteWorkout(workoutId);
 
             // Loading workouts again
             LoadWorkouts();
@@ -189,7 +189,7 @@ namespace NeoIsisJob.ViewModels.Workout
             if (SelectedWorkout != null && !string.IsNullOrWhiteSpace(newName))
             {
                 SelectedWorkout.Name = newName;
-                _workoutService.UpdateWorkout(SelectedWorkout);
+                workoutService.UpdateWorkout(SelectedWorkout);
                 LoadWorkouts();
                 IsEditPopupOpen = false;
             }

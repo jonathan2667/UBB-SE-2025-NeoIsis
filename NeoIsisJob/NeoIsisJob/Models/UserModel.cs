@@ -2,12 +2,17 @@
 {
     public class UserModel
     {
-        private int _id;
+        private int id;
 
-        public int Id { get => _id; set => _id = value; }
+        public int Id { get => id; set => id = value; }
 
-        public UserModel() { }
+        public UserModel()
+        {
+        }
 
-        public UserModel(int id) { Id = id; }
+        public UserModel(int id)
+        {
+            Id = id;
+        }
     }
 }

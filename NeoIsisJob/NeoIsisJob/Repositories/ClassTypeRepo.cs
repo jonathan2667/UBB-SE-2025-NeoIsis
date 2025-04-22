@@ -12,13 +12,16 @@ namespace NeoIsisJob.Repositories
 {
     public class ClassTypeRepo
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly DatabaseHelper databaseHelper;
 
-        public ClassTypeRepo() { this._databaseHelper = new DatabaseHelper(); }
+        public ClassTypeRepo()
+        {
+            this.databaseHelper = new DatabaseHelper();
+        }
 
         public ClassTypeModel GetClassTypeModelById(int classTypeId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
                 // open the connection
                 connection.Open();
@@ -50,7 +53,7 @@ namespace NeoIsisJob.Repositories
         {
             List<ClassTypeModel> classTypes = new List<ClassTypeModel>();
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
                 // open the connection
                 connection.Open();
@@ -76,20 +79,20 @@ namespace NeoIsisJob.Repositories
 
         public void AddClassTypeModel(ClassTypeModel classType)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
                 // open the connection
                 connection.Open();
-                
+
                 // create the query
                 string query = "INSERT INTO ClassTypes (Name) VALUES (@name)";
-                
+
                 // create the command now
                 SqlCommand command = new SqlCommand(query, connection);
-                
+
                 // add the parameter
                 command.Parameters.AddWithValue("@name", classType.Name);
-                
+
                 // execute the query
                 command.ExecuteNonQuery();
             }
@@ -97,20 +100,20 @@ namespace NeoIsisJob.Repositories
 
         public void DeleteClassTypeModel(int classTypeId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            using (SqlConnection connection = this.databaseHelper.GetConnection())
             {
                 // open the connection
                 connection.Open();
 
                 // create the query
                 string query = "DELETE FROM ClassTypes WHERE CTID=@ctid";
-                
+
                 // create the command now
                 SqlCommand command = new SqlCommand(query, connection);
-                
+
                 // add the parameter
                 command.Parameters.AddWithValue("@ctid", classTypeId);
-                
+
                 // execute the query
                 command.ExecuteNonQuery();
             }

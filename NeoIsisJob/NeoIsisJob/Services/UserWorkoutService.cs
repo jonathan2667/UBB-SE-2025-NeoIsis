@@ -1,30 +1,30 @@
-﻿using NeoIsisJob.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using NeoIsisJob.Models;
 using NeoIsisJob.Repositories;
 using NeoIsisJob.Repositories.Interfaces;
 using NeoIsisJob.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NeoIsisJob.Services
 {
     public class UserWorkoutService : IUserWorkoutService
     {
-        private readonly IUserWorkoutRepository _userWorkoutRepository;
+        private readonly IUserWorkoutRepository userWorkoutRepository;
 
         public UserWorkoutService()
         {
-            _userWorkoutRepository = new UserWorkoutRepo(new Data.DatabaseHelper());
+            userWorkoutRepository = new UserWorkoutRepo(new Data.DatabaseHelper());
         }
 
         public UserWorkoutService(IUserWorkoutRepository userWorkoutRepository)
         {
-            _userWorkoutRepository = userWorkoutRepository; // ?? throw new ArgumentNullException(nameof(userWorkoutRepository));
+            this.userWorkoutRepository = userWorkoutRepository; // ?? throw new ArgumentNullException(nameof(userWorkoutRepository));
         }
 
         public UserWorkoutModel GetUserWorkoutForDate(int userId, DateTime date)
         {
-            var userWorkouts = _userWorkoutRepository.GetUserWorkoutModelByDate(date);
+            var userWorkouts = userWorkoutRepository.GetUserWorkoutModelByDate(date);
             return userWorkouts.FirstOrDefault(userWorkout => userWorkout.UserId == userId);
         }
 
@@ -36,29 +36,29 @@ namespace NeoIsisJob.Services
             if (existingWorkout != null)
             {
                 // If there's an existing workout, update it
-                _userWorkoutRepository.UpdateUserWorkout(userWorkout);
+                userWorkoutRepository.UpdateUserWorkout(userWorkout);
             }
             else
             {
                 // Otherwise, add a new one
-                _userWorkoutRepository.AddUserWorkout(userWorkout);
+                userWorkoutRepository.AddUserWorkout(userWorkout);
             }
         }
 
         public void CompleteUserWorkout(int userId, int workoutId, DateTime date)
         {
-            var userWorkout = _userWorkoutRepository.GetUserWorkoutModel(userId, workoutId, date);
+            var userWorkout = userWorkoutRepository.GetUserWorkoutModel(userId, workoutId, date);
 
             if (userWorkout != null)
             {
                 userWorkout.Completed = true;
-                _userWorkoutRepository.UpdateUserWorkout(userWorkout);
+                userWorkoutRepository.UpdateUserWorkout(userWorkout);
             }
         }
 
         public void DeleteUserWorkout(int userId, int workoutId, DateTime date)
         {
-            _userWorkoutRepository.DeleteUserWorkout(userId, workoutId, date);
+            userWorkoutRepository.DeleteUserWorkout(userId, workoutId, date);
         }
     }
 }
