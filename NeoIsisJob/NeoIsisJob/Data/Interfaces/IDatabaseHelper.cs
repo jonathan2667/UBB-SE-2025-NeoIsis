@@ -17,5 +17,4 @@ namespace NeoIsisJob.Data.Interfaces
         void CloseConnection();
         T? ExecuteScalar<T>(string storedProcedure, SqlParameter[]? sqlParameters = null);
     }
-
 }

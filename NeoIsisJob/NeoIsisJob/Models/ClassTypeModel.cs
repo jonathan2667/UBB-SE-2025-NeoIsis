@@ -7,7 +7,9 @@
         public int Id { get => id; set => id = value; }
         public string Name { get => name; set => name = value; }
 
-        public ClassTypeModel() { }
+        public ClassTypeModel()
+        {
+        }
 
         public ClassTypeModel(int id, string name)
         {

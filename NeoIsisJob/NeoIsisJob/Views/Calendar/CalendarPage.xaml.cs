@@ -479,7 +479,7 @@ namespace NeoIsisJob.Views
 
         public void GoToCalendarPage_Tap(object sender, RoutedEventArgs e)
         {
-            // Already on CalendarPage, no action needed
+            // Already on CalendarPage, no Action needed
         }
 
         public void GoToClassPage_Tap(object sender, RoutedEventArgs e)

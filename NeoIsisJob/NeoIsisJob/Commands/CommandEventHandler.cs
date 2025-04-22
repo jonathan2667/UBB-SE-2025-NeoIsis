@@ -11,7 +11,7 @@ namespace NeoIsisJob.Commands
     {
         public event EventHandler CanExecuteChanged;
 
-        public Action<T> action;
+        public Action<T> Action;
         public bool CanExecute(object parameter)
         {
             return true;
@@ -19,13 +19,11 @@ namespace NeoIsisJob.Commands
 
         public void Execute(object parameter)
         {
-            this.action((T)parameter);
+            this.Action((T)parameter);
         }
         public CommandEventHandler(Action<T> action)
         {
-            this.action = action;
-
+            this.Action = action;
         }
     }
-
 }
