@@ -1,119 +1,117 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using NeoIsisJob.Data;
+﻿using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 
 namespace NeoIsisJob.Repositories
 {
     public class ClassTypeRepository : IClassTypeRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
-        public ClassTypeRepository() { this._databaseHelper = new DatabaseHelper(); }
-
-        public ClassTypeModel GetClassTypeModelById(int classTypeId)
+        public ClassTypeRepository()
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            this._databaseHelper = new DatabaseHelper();
+        }
+
+        public ClassTypeRepository(IDatabaseHelper databaseHelper)
+        {
+            this._databaseHelper = databaseHelper;
+        }
+
+        public ClassTypeModel? GetClassTypeModelById(int classTypeId)
+        {
+            string query = "SELECT CTID, Name FROM ClassTypes WHERE CTID = @ctid";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                // open the connection
-                connection.Open();
+                new SqlParameter("@ctid", classTypeId)
+            };
 
-                // create the query
-                string query = "SELECT CTID, Name FROM ClassTypes WHERE CTID=@ctid";
+            try
+            {
+                var dataTable = _databaseHelper.ExecuteReader(query, parameters);
 
-                // create the command now
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // add the parameter
-                command.Parameters.AddWithValue("@ctid", classTypeId);
-
-                // read the data
-                SqlDataReader reader = command.ExecuteReader();
-
-                // now check if the type exists -> if yes return it
-                if (reader.Read())
+                if (dataTable.Rows.Count > 0)
                 {
-                    return new ClassTypeModel(Convert.ToInt32(reader["WTID"]), Convert.ToString(reader["Name"]) ?? string.Empty);
+                    var row = dataTable.Rows[0];
+                    return new ClassTypeModel
+                    {
+                        Id = Convert.ToInt32(row["CTID"]),
+                        Name = Convert.ToString(row["Name"]) ?? string.Empty
+                    };
                 }
 
-                // otherwise return empty instance
-                return new ClassTypeModel();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching class type by ID: " + ex.Message);
             }
         }
 
         public List<ClassTypeModel> GetAllClassTypeModel()
         {
             List<ClassTypeModel> classTypes = new List<ClassTypeModel>();
+            string query = "SELECT CTID, Name FROM ClassTypes";
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            try
             {
-                // open the connection
-                connection.Open();
+                var dataTable = _databaseHelper.ExecuteReader(query, null);
 
-                // create the query
-                string query = "SELECT CTID, Name from ClassTypes";
-
-                // create the command now
-                SqlCommand command = new SqlCommand(query, connection);
-
-                // read the data
-                SqlDataReader reader = command.ExecuteReader();
-
-                // now check if the type exists -> if yes return it
-                while (reader.Read())
+                foreach (DataRow row in dataTable.Rows)
                 {
-                    classTypes.Add(new ClassTypeModel(Convert.ToInt32(reader["CTID"]), Convert.ToString(reader["Name"]) ?? string.Empty));
+                    classTypes.Add(new ClassTypeModel
+                    {
+                        Id = Convert.ToInt32(row["CTID"]),
+                        Name = Convert.ToString(row["Name"]) ?? string.Empty
+                    });
                 }
-            }
 
-            return classTypes;
+                return classTypes;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching class types: " + ex.Message);
+            }
         }
 
         public void AddClassTypeModel(ClassTypeModel classType)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string query = "INSERT INTO ClassTypes (Name) VALUES (@name)";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                // open the connection
-                connection.Open();
-                
-                // create the query
-                string query = "INSERT INTO ClassTypes (Name) VALUES (@name)";
-                
-                // create the command now
-                SqlCommand command = new SqlCommand(query, connection);
-                
-                // add the parameter
-                command.Parameters.AddWithValue("@name", classType.Name);
-                
-                // execute the query
-                command.ExecuteNonQuery();
+                new SqlParameter("@name", classType.Name)
+            };
+
+            try
+            {
+                _databaseHelper.ExecuteNonQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while adding class type: " + ex.Message);
             }
         }
 
         public void DeleteClassTypeModel(int classTypeId)
         {
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            string query = "DELETE FROM ClassTypes WHERE CTID = @ctid";
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                // open the connection
-                connection.Open();
+                new SqlParameter("@ctid", classTypeId)
+            };
 
-                // create the query
-                string query = "DELETE FROM ClassTypes WHERE CTID=@ctid";
-                
-                // create the command now
-                SqlCommand command = new SqlCommand(query, connection);
-                
-                // add the parameter
-                command.Parameters.AddWithValue("@ctid", classTypeId);
-                
-                // execute the query
-                command.ExecuteNonQuery();
+            try
+            {
+                _databaseHelper.ExecuteNonQuery(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while deleting class type: " + ex.Message);
             }
         }
     }

@@ -1,81 +1,90 @@
 ﻿using NeoIsisJob.Data;
+using NeoIsisJob.Data.Interfaces;
 using NeoIsisJob.Models;
 using NeoIsisJob.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeoIsisJob.Repositories
 {
     public class ExerciseRepo : IExerciseRepository
     {
-        private readonly DatabaseHelper _databaseHelper;
+        private readonly IDatabaseHelper _databaseHelper;
 
         public ExerciseRepo()
         {
             this._databaseHelper = new DatabaseHelper();
         }
 
+        public ExerciseRepo(IDatabaseHelper databaseHelper)
+        {
+            _databaseHelper = databaseHelper;
+        }
+
         public IList<ExercisesModel> GetAllExercises()
         {
             IList<ExercisesModel> exercises = new List<ExercisesModel>();
+            string query = "SELECT * FROM Exercises";
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            try
             {
-                connection.Open();
+                var dataTable = _databaseHelper.ExecuteReader(query, null);
 
-                String query = "SELECT * FROM Exercises";
-                SqlCommand command = new SqlCommand(query, connection);
-                SqlDataReader reader = command.ExecuteReader();
-
-                while (reader.Read())
+                foreach (DataRow row in dataTable.Rows)
                 {
-                    ExercisesModel exercise = new ExercisesModel(
-                        Convert.ToInt32(reader["EID"]),
-                        Convert.ToString(reader["Name"]),
-                        Convert.ToString(reader["Description"]),
-                        Convert.ToInt32(reader["Difficulty"]),
-                        Convert.ToInt32(reader["MGID"])
-                    );
-                    exercises.Add(exercise);
+                    exercises.Add(new ExercisesModel(
+                        Convert.ToInt32(row["EID"]),
+                        Convert.ToString(row["Name"]),
+                        Convert.ToString(row["Description"]),
+                        Convert.ToInt32(row["Difficulty"]),
+                        Convert.ToInt32(row["MGID"])
+                    ));
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching exercises: " + ex.Message);
             }
 
             return exercises;
         }
 
-        public ExercisesModel GetExerciseById(int exerciseId)
+        public ExercisesModel? GetExerciseById(int exerciseId)
         {
-            //return it as null if not found
             ExercisesModel? exercise = null;
+            string query = "SELECT * FROM Exercises WHERE EID=@eid";
 
-            using (SqlConnection connection = this._databaseHelper.GetConnection())
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                connection.Open();
+                new SqlParameter("@eid", exerciseId)
+            };
 
-                String query = "SELECT * FROM Exercises WHERE EID=@eid";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@eid", exerciseId);
-                SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                var dataTable = _databaseHelper.ExecuteReader(query, parameters);
 
-                if(reader.Read())
+                if (dataTable.Rows.Count > 0)
                 {
+                    var row = dataTable.Rows[0];
                     exercise = new ExercisesModel(
-                        Convert.ToInt32(reader["EID"]), 
-                        Convert.ToString(reader["Name"]), 
-                        Convert.ToString(reader["Description"]), 
-                        Convert.ToInt32(reader["Difficulty"]), 
-                        Convert.ToInt32(reader["MGID"])
+                        Convert.ToInt32(row["EID"]),
+                        Convert.ToString(row["Name"]),
+                        Convert.ToString(row["Description"]),
+                        Convert.ToInt32(row["Difficulty"]),
+                        Convert.ToInt32(row["MGID"])
                     );
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while fetching exercise by ID: " + ex.Message);
             }
 
             return exercise;
         }
 
-        //TODO -> implement the rest of CRUD if needed
+        // TODO -> implement the rest of CRUD if needed
     }
 }
