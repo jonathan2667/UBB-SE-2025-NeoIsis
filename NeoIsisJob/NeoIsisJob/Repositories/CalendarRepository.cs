@@ -1,10 +1,10 @@
-﻿using NeoIsisJob.Models;
-using NeoIsisJob.Data.Interfaces;
-using NeoIsisJob.Repositories.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using NeoIsisJob.Models;
+using NeoIsisJob.Data.Interfaces;
+using NeoIsisJob.Repositories.Interfaces;
 using NeoIsisJob.Data;
 
 namespace NeoIsisJob.Repositories

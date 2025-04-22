@@ -1,5 +1,5 @@
-using NeoIsisJob.Models;
 using System.Collections.Generic;
+using NeoIsisJob.Models;
 
 namespace NeoIsisJob.Repositories.Interfaces
 {
@@ -8,4 +8,4 @@ namespace NeoIsisJob.Repositories.Interfaces
         RankingModel GetRankingByFullID(int userId, int muscleGroupId);
         IList<RankingModel> GetAllRankingsByUserID(int userId);
     }
-} 
+}
